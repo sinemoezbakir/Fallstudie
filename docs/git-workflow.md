@@ -26,7 +26,7 @@ git config user.email "name@example.com"
 
 ## Regeln
 
-- Nie direkt auf `main` programmieren – nur Kanban-/Doku-Änderungen dürfen direkt auf `main`.
+- Nie direkt auf `main` programmieren – nur Kanban-/Doku-Änderungen dürfen direkt auf `main` (z. B. Ardita: Protokolle, Risiken, Abgaben).
 - Vor dem Arbeiten: `git pull` auf `main`, danach den eigenen Branch aktualisieren (`git merge main`).
 - Keine Passwörter committen.
 - Änderung an Tabellen: `database/schema.sql` anpassen und der anderen Person Bescheid geben (sie muss neu importieren).

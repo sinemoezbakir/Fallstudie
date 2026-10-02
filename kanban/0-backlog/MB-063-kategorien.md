@@ -6,6 +6,7 @@
 | Rolle | Owner |
 | Priorität | Kann |
 | Zuständig | – |
+| Fällig | nur wenn Zeit bleibt, spätestens Feature-Freeze 04.11. |
 | Abhängig von | MB-034 |
 | Aufwand geschätzt | M (≈ 4 h) |
 | Aufwand tatsächlich | – |

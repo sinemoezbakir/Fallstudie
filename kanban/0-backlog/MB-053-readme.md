@@ -5,7 +5,8 @@
 | Epic | 5 – Qualität & Abgabe |
 | Rolle | – |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: A) |
+| Zuständig | – (Vorschlag: Sinem) |
+| Fällig | Mi 04.11.2026 (Phase 4 – Feature-Freeze) |
 | Abhängig von | MB-005 |
 | Aufwand geschätzt | S (≈ 2 h) |
 | Aufwand tatsächlich | – |
@@ -20,7 +21,7 @@ Jemand Fremdes startet das Projekt in 10 Minuten.
 - [ ] Häufige Fehler (MySQL nicht gestartet, Port belegt)
 
 ## Akzeptanzkriterien
-- [ ] Die andere Person schafft das Setup in einem frisch geklonten Ordner nur mit dem README
+- [ ] Natalia bzw. Ardita schafft das Setup in einem frisch geklonten Ordner nur mit dem README
 
 ## Umsetzung
 

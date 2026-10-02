@@ -5,7 +5,8 @@
 | Epic | 1 – Oberfläche (Maliá-Design) |
 | Rolle | alle |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: B) |
+| Zuständig | – (Vorschlag: Natalia) |
+| Fällig | So 11.10.2026 (Phase 1) |
 | Abhängig von | MB-003 |
 | Aufwand geschätzt | M (≈ 4 h) |
 | Aufwand tatsächlich | – |

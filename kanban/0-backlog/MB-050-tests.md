@@ -5,7 +5,8 @@
 | Epic | 5 – Qualität & Abgabe |
 | Rolle | – |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: A) |
+| Zuständig | – (Vorschlag: Sinem) |
+| Fällig | Mi 04.11.2026 (Phase 4 – Feature-Freeze) |
 | Abhängig von | MB-033, MB-022 |
 | Aufwand geschätzt | M (≈ 4 h) |
 | Aufwand tatsächlich | – |

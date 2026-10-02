@@ -5,7 +5,8 @@
 | Epic | 2 – Login & Rollen |
 | Rolle | Owner |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: A) |
+| Zuständig | – (Vorschlag: Sinem) |
+| Fällig | Do 22.10.2026 (Phase 2 – Stand für Sprechstunde 23.10.) |
 | Abhängig von | MB-021, MB-031 |
 | Aufwand geschätzt | S (≈ 3 h) |
 | Aufwand tatsächlich | – |

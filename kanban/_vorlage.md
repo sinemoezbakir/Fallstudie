@@ -6,6 +6,7 @@
 | Rolle | Owner / Finance / Admin / alle |
 | Priorität | Muss / Soll / Kann |
 | Zuständig | |
+| Fällig | |
 | Abhängig von | |
 | Aufwand geschätzt | S / M / L |
 | Aufwand tatsächlich | – |

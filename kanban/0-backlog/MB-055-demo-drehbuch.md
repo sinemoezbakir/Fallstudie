@@ -1,24 +1,26 @@
-# MB-055 · Demo-Drehbuch und Präsentation
+# MB-055 · Demo-Drehbuch und Generalprobe
 
 | Feld | Wert |
 |---|---|
 | Epic | 5 – Qualität & Abgabe |
 | Rolle | – |
 | Priorität | Muss |
-| Zuständig | A + B gemeinsam |
-| Abhängig von | MB-054 |
-| Aufwand geschätzt | M (≈ 4 h) |
+| Zuständig | Sinem + Natalia |
+| Fällig | Mi 04.11.2026 (Phase 4 – Feature-Freeze) |
+| Abhängig von | MB-045 |
+| Aufwand geschätzt | S (≈ 3 h) |
 | Aufwand tatsächlich | – |
 | Gestartet / Fertig | – / – |
 | Reviewt von | – |
 
 ## Ziel
-Eine flüssige Live-Demo und eine überzeugende Präsentation.
+Eine flüssige Live-Demo ohne Überraschungen am 06.11.
 
 ## Aufgaben
 - [ ] Ablauf: Admin legt Owner an → Finance legt Budget an → Owner erfasst, korrigiert, plant Forecast → Status ändert sich → anderer Owner sieht nichts davon
-- [ ] Demo-Daten vor der Präsentation neu importieren
-- [ ] Folien im Maliá-Look, Redeanteile aufteilen, Probedurchlauf
+- [ ] Demo-Daten vor der Präsentation neu importieren (Anleitung)
+- [ ] Notfallplan: Screenshots/Video, falls die Live-Demo streikt
+- [ ] Generalprobe mit Ardita am 05.11.
 
 ## Akzeptanzkriterien
 - [ ] Demo zweimal komplett durchgespielt

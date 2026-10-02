@@ -5,7 +5,8 @@
 | Epic | 0 – Setup & Organisation |
 | Rolle | alle |
 | Priorität | Muss |
-| Zuständig | A + B gemeinsam |
+| Zuständig | Sinem + Natalia |
+| Fällig | So 04.10.2026 (Teil des Projektplans) |
 | Abhängig von | – |
 | Aufwand geschätzt | S (≈ 2 h) |
 | Aufwand tatsächlich | – |

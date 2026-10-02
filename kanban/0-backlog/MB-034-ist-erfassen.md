@@ -5,7 +5,8 @@
 | Epic | 3 – Grundsystem |
 | Rolle | Owner |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: B) |
+| Zuständig | – (Vorschlag: Natalia) |
+| Fällig | Do 22.10.2026 (Phase 2 – Stand für Sprechstunde 23.10.) |
 | Abhängig von | MB-022, MB-033 |
 | Aufwand geschätzt | M (≈ 4 h) |
 | Aufwand tatsächlich | – |

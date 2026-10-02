@@ -5,7 +5,8 @@
 | Epic | 0 – Setup & Organisation |
 | Rolle | – |
 | Priorität | Muss |
-| Zuständig | A + B gemeinsam |
+| Zuständig | Sinem + Natalia + Ardita |
+| Fällig | So 04.10.2026 (Teil des Projektplans) |
 | Abhängig von | – |
 | Aufwand geschätzt | S (≈ 2 h) |
 | Aufwand tatsächlich | – |
@@ -13,22 +14,23 @@
 | Reviewt von | – |
 
 ## Ziel
-Beide wissen, wie Aufgaben verteilt, dokumentiert und zusammengeführt werden.
+Alle drei wissen, wie Aufgaben verteilt, dokumentiert und zusammengeführt werden.
 
 ## Aufgaben
 - [x] Kanban-Board mit allen Karten, Kartenvorlage, `board.ps1`
-- [x] `docs/git-workflow.md`, `docs/arbeitsprotokoll.md`, `docs/entscheidungen.md`
-- [ ] Gemeinsam durchlesen, Person B im Kanban-README eintragen
+- [x] `docs/git-workflow.md`, `docs/arbeitsprotokoll.md`, `docs/entscheidungen.md`, `docs/meetings/`, `docs/risiken.md`
+- [ ] Gemeinsam durchlesen (Kickoff-Meeting, MB-071)
 - [ ] Offene Entscheidungen im Entscheidungslog bestätigen
-- [ ] Person B als Collaborator im GitHub-Repo hinzufügen, beide pushen einmal
+- [ ] Natalia und Ardita als Collaborators im GitHub-Repo hinzufügen, alle pushen einmal
 
 ## Akzeptanzkriterien
-- [ ] Beide haben `git config user.name` gesetzt und einen Commit gepusht
-- [ ] Phasenplan ist abgestimmt
+- [ ] Alle drei haben `git config user.name` gesetzt und einen Commit gepusht
+- [ ] Zeitplan ist abgestimmt
 
 ## Umsetzung
 
 | 2026-10-02 | Claude (für Sinem) | Entwurf erstellt, Plan bewusst vereinfacht (E-009) → `3-review` |
+| 2026-10-02 | Claude (für Sinem) | Team ergänzt: Natalia (Entwicklung), Ardita (Projektleitung & Dokumentation); Termine als Fälligkeiten |
 
 ## Probleme & Lösungen
 

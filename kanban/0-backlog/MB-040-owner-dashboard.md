@@ -5,7 +5,8 @@
 | Epic | 4 – Owner-Sicht |
 | Rolle | Owner |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: B) |
+| Zuständig | – (Vorschlag: Natalia) |
+| Fällig | So 01.11.2026 (Phase 3) |
 | Abhängig von | MB-022, MB-033, MB-012 |
 | Aufwand geschätzt | M (≈ 5 h) |
 | Aufwand tatsächlich | – |

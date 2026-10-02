@@ -5,7 +5,8 @@
 | Epic | 0 – Setup & Organisation |
 | Rolle | – |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: A) |
+| Zuständig | – (Vorschlag: Sinem) |
+| Fällig | So 11.10.2026 (Phase 1) |
 | Abhängig von | MB-002, MB-003 |
 | Aufwand geschätzt | M (≈ 4 h) |
 | Aufwand tatsächlich | – |

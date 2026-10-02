@@ -4,6 +4,26 @@ Fallstudie: Budget-Verwaltungssystem (Grundsystem + Ausprägung **Owner-Sicht**)
 fiktive Studio *Maliá – Pilates & Café*. Das Design orientiert sich an der Maliá-Website
 (Projekt `WebProgrammierung-neuaufbau`).
 
+## Team
+
+| Person | Rolle |
+|---|---|
+| Ardita | Projektleitung & Dokumentation |
+| Sinem | Entwicklung |
+| Natalia | Entwicklung |
+
+## Termine
+
+| Datum | Termin |
+|---|---|
+| So 04.10.2026 | Abgabe Projektplan |
+| Fr 23.10.2026 | Sprechstunde |
+| So 25.10.2026 | Abgabe Zwischenbericht |
+| Fr 06.11.2026 | Präsentation |
+| So 22.11.2026 | Abgabe Ergebnisdokumentation |
+
+Abgaben jeweils bis 23:59 UTC in Moodle. Zeitplan und Meilensteine: [kanban/README.md](kanban/README.md#zeitplan-und-meilensteine)
+
 ## Worum geht's?
 
 | Rolle | Wer im Studio? | Darf |

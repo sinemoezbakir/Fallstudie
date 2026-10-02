@@ -5,7 +5,8 @@
 | Epic | 5 – Qualität & Abgabe |
 | Rolle | alle |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: B) |
+| Zuständig | – (Vorschlag: Natalia) |
+| Fällig | Mi 04.11.2026 (Phase 4 – Feature-Freeze) |
 | Abhängig von | MB-031, MB-034 |
 | Aufwand geschätzt | S (≈ 3 h) |
 | Aufwand tatsächlich | – |

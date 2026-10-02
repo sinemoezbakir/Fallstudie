@@ -5,7 +5,8 @@
 | Epic | 2 – Login & Rollen |
 | Rolle | alle |
 | Priorität | Muss |
-| Zuständig | – (Vorschlag: A) |
+| Zuständig | – (Vorschlag: Sinem) |
+| Fällig | So 11.10.2026 (Phase 1) |
 | Abhängig von | MB-020 |
 | Aufwand geschätzt | S (≈ 2 h) |
 | Aufwand tatsächlich | – |
