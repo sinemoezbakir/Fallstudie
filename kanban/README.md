@@ -1,18 +1,29 @@
 # Kanban-Board
 
-Das Board ist gleichzeitig unsere **Dokumentation des Werdegangs**. Jede Teilaufgabe ist eine
-Markdown-Datei (**Karte**), der **Ordner** zeigt den Status. Verschoben wird mit `git mv`. So
-steht jeder Statuswechsel mit Person und Datum in der Git-Historie und ist auf GitHub nachvollziehbar.
+**Board: https://github.com/users/sinemoezbakir/projects/3**
 
-| Ordner | Bedeutung |
+Das Board ist gleichzeitig unsere **Dokumentation des Werdegangs**. Jede Teilaufgabe ist ein
+**GitHub-Issue** (Karte `MB-xxx`). GitHub protokolliert automatisch, wer eine Karte wann
+verschoben, kommentiert oder geschlossen hat.
+
+| Spalte | Bedeutung |
 |---|---|
-| `0-backlog/` | gesammelt, noch nicht eingeplant (inkl. eigener Ideen) |
-| `1-todo/` | für die aktuelle Phase eingeplant, kann gestartet werden |
-| `2-in-arbeit/` | jemand arbeitet gerade daran (**max. 2 Karten pro Person**) |
-| `3-review/` | fertig, wartet auf Review |
-| `4-fertig/` | reviewt und in `main` |
+| Backlog | gesammelt, noch nicht eingeplant (inkl. eigener Ideen) |
+| Todo | für die aktuelle Phase eingeplant, kann gestartet werden |
+| In Arbeit | jemand arbeitet gerade daran (**max. 2 Karten pro Person**) |
+| Review | fertig, wartet auf Review |
+| Fertig | reviewt und in `main` |
 
-Übersicht im Terminal: `powershell -File kanban/board.ps1` · Neue Karte: [`_vorlage.md`](_vorlage.md) kopieren.
+| Ansicht | Wofür |
+|---|---|
+| **Kanban** | tägliche Arbeit: Karten per Drag & Drop verschieben |
+| **Tabelle** | Überblick mit Fälligkeit, Aufwand, Labels, Milestone – sortier- und filterbar |
+| **Zeitplan** | Karten auf der Zeitachse nach Fälligkeit (für Projektplan/Berichte) |
+
+- **Labels:** Epic (`Epic 0` … `Epic 7`), Person (`Sinem`, `Natalia`, `Ardita`), Priorität (`Muss`, `Soll`, `Kann`)
+- **Milestones:** die sechs Phasen mit Fälligkeitsdatum – zeigen unter *Issues → Milestones* den Fortschritt in %
+- **Neue Karte:** *Issues → New issue → Karte (Aufgabe)*, danach im Board einsortieren
+- Sobald Natalia und Ardita Collaborators sind: zusätzlich als **Assignee** eintragen
 
 ## Team
 
@@ -58,11 +69,11 @@ Eigene Ideen (MB-06x) nur, wenn eine Phase früher fertig ist – spätestens bi
 
 | Zeitpunkt | Wer | Was | Wo |
 |---|---|---|---|
-| Karte starten | Bearbeiter:in | „Zuständig“ und „Gestartet“ ausfüllen, Verlauf-Zeile, Datei nach `2-in-arbeit/` | Karte |
-| Während der Arbeit | Bearbeiter:in | Stichpunkte unter **Umsetzung** und **Probleme & Lösungen** | Karte |
-| Oberfläche fertig | Bearbeiter:in | Screenshot nach `docs/screenshots/MB-xxx-name.png`, in der Karte verlinken | Karte |
-| Karte fertig | Bearbeiter:in | „Aufwand tatsächlich“, Verlauf-Zeile, Datei nach `3-review/` | Karte |
-| Review | Reviewer:in | „Reviewt von“, Ergebnis in den Verlauf, Datei nach `4-fertig/` | Karte |
+| Karte starten | Bearbeiter:in | Sich als Assignee eintragen, „Gestartet“ im Issue-Text, Karte nach **In Arbeit** | Issue |
+| Während der Arbeit | Bearbeiter:in | Stichpunkte unter **Umsetzung** und **Probleme & Lösungen** (Issue-Text bearbeiten oder Kommentar) | Issue |
+| Oberfläche fertig | Bearbeiter:in | Screenshot per Drag & Drop in einen Kommentar ziehen (GitHub speichert das Bild) | Issue |
+| Karte fertig | Bearbeiter:in | „Aufwand tatsächlich“ eintragen, Checkboxen abhaken, Karte nach **Review** | Issue |
+| Review | Reviewer:in | Kommentar „Review OK“ bzw. Änderungswünsche, „Reviewt von“ eintragen, Karte nach **Fertig** und Issue schließen | Issue |
 | Ende jeder Sitzung | alle | eine Zeile pro Person | [Arbeitsprotokoll](../docs/arbeitsprotokoll.md) |
 | Wöchentliches Meeting | Ardita | Protokoll | [docs/meetings/](../docs/meetings/) |
 | Ende jeder Woche | Ardita mit Team | Wochenrückblick, Meilenstein-Status, Risiken | Arbeitsprotokoll, diese Datei, [Risiken](../docs/risiken.md) |
@@ -73,7 +84,7 @@ Lieber kurze Stichpunkte sofort als lange Texte am Ende – daraus schreibt Ardi
 
 ## Definition of Done
 
-Eine Karte darf nach `4-fertig/`, wenn:
+Eine Karte darf nach **Fertig**, wenn:
 
 - [ ] alle Akzeptanzkriterien erfüllt sind (bei Code: funktioniert im Browser)
 - [ ] eine andere Person reviewt hat (Name in „Reviewt von“)

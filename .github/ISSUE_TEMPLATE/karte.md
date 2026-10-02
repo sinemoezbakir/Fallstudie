@@ -1,5 +1,9 @@
-# MB-0xx · Titel
-
+---
+name: Karte (Aufgabe)
+about: Neue Teilaufgabe für das Kanban-Board
+title: "MB-0xx · "
+labels: []
+---
 | Feld | Wert |
 |---|---|
 | Epic | |
@@ -35,6 +39,4 @@ _Bei Oberflächen-Karten: `docs/screenshots/MB-0xx-<name>.png` ablegen und hier 
 
 ## Verlauf
 
-| Datum | Wer | Was |
-|---|---|---|
-| | | Karte angelegt |
+_Wird automatisch von GitHub protokolliert (Statuswechsel, Kommentare). Wichtige Notizen bitte als Kommentar._

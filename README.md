@@ -44,8 +44,9 @@ Begründungen: [docs/entscheidungen.md](docs/entscheidungen.md)
 
 | Was | Wo |
 |---|---|
-| Kanban-Board (alle Teilaufgaben + Werdegang) | [kanban/](kanban/README.md) |
-| Wer hat wann was gemacht | Karten-Verlauf, [docs/arbeitsprotokoll.md](docs/arbeitsprotokoll.md), `git log` |
+| **Kanban-Board** | https://github.com/users/sinemoezbakir/projects/3 |
+| Board-Regeln, Team, Zeitplan, Doku-Regeln | [kanban/README.md](kanban/README.md) |
+| Wer hat wann was gemacht | Issue-Timeline, Pull Requests, [docs/arbeitsprotokoll.md](docs/arbeitsprotokoll.md), `git log` |
 | Technische Entscheidungen | [docs/entscheidungen.md](docs/entscheidungen.md) |
 | Fachkonzept, Datenmodell, Regeln | [docs/konzept.md](docs/konzept.md) |
 | Git-Regeln | [docs/git-workflow.md](docs/git-workflow.md) |
