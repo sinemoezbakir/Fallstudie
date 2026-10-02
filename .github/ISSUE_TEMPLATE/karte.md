@@ -7,13 +7,14 @@ labels: []
 | Feld | Wert |
 |---|---|
 | Epic | |
+| Arbeitspaket | AP1 … AP7 (wie im Projektplan 6.2) |
 | Rolle | Owner / Finance / Admin / alle |
 | Priorität | Muss / Soll / Kann |
 | Zuständig | |
 | Fällig | |
 | Abhängig von | |
-| Aufwand geschätzt | S / M / L |
-| Aufwand tatsächlich | – |
+| Soll-Stunden | h (auch ins Board-Feld „Soll (h)“) |
+| Ist-Stunden | – (beim Abschluss ins Board-Feld „Ist (h)“) |
 | Gestartet / Fertig | – / – |
 | Reviewt von | – |
 

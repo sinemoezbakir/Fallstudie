@@ -8,9 +8,12 @@ fiktive Studio *Maliá – Pilates & Café*. Das Design orientiert sich an der M
 
 | Person | Rolle |
 |---|---|
-| Ardita | Projektleitung & Dokumentation |
-| Sinem | Entwicklung |
-| Natalia | Entwicklung |
+| Ardita | Projektleitung & Teamsprecherin · Datenbank, Backend |
+| Sinem | Entwicklung · Frontend, Übersichtsseiten, Formulare |
+| Natalia | Qualität & Dokumentation · Forecast, Reporting, Tests, Berichte |
+
+Grundlage ist der Projektplan (Abgabe 04.10.2026, PDF in [docs/abgaben/](docs/abgaben/)). Jedes Arbeitspaket
+AP1–AP7 aus dem Plan ist im Kanban-Board in Karten zerlegt; die Soll-Stunden der Karten ergeben die Stunden aus dem Plan.
 
 ## Termine
 
@@ -28,15 +31,16 @@ Abgaben jeweils bis 23:59 UTC in Moodle. Zeitplan und Meilensteine: [kanban/READ
 
 | Rolle | Wer im Studio? | Darf |
 |---|---|---|
-| **Finance** | Buchhaltung | Budgets anlegen, Ownern zuweisen, Soll-Ist aller Budgets sehen |
+| **Finance** | Inhaberin | Budgets anlegen, Ownern zuweisen, Soll-Ist aller Budgets sehen |
 | **Owner** | Studio-Leitung, Café-Leitung, Marketing | eigene Budgets sehen, Ausgaben erfassen/korrigieren, Forecast eintragen, Soll-Ist- und Forecast-Vergleich |
-| **Admin** | IT | Benutzer anlegen, Rollen zuweisen |
+| **Admin** | Verwaltung | Benutzer anlegen, Rollen zuweisen |
 
 ## Tech-Stack
 
-- **Java 21+** mit **Spring Boot** (Web, Thymeleaf, Security, Data JPA, Validation)
+- **PHP 8** ohne Framework, Datenbankzugriff mit **PDO** (Prepared Statements)
 - **MariaDB aus XAMPP**, Tabellen und Demo-Daten als SQL-Dateien in `database/`
-- Oberfläche: **Thymeleaf**-Seiten im Maliá-Design, Diagramme mit **Chart.js**
+- Oberfläche: **Bootstrap 5** im Maliá-Design, Diagramme mit **Chart.js**
+- Tests mit **PHPUnit**
 
 Begründungen: [docs/entscheidungen.md](docs/entscheidungen.md)
 

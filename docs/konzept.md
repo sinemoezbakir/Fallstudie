@@ -13,10 +13,10 @@
 | Eintragen / Zuweisen neuer Budgets | Finance-Formular | MB-031 |
 | Anlegen von Benutzern, Rollen zuweisen | Admin-Formular | MB-030 |
 | Verfallszeiten | `gueltig_bis` je Budget, danach gesperrt | MB-045 |
-| 3 Rollen fix im Code | Java-`enum Rolle` | MB-021 |
-| Zugang per Username & Passwort | Spring Security, BCrypt | MB-020 |
+| 3 Rollen fix im Code | Konstanten in `src/rollen.php` | MB-021 |
+| Zugang per Username & Passwort | PHP-Session, `password_hash()` / `password_verify()` | MB-020 |
 | Logische Trennung der Daten | Owner sieht nur eigene Budgets | MB-022 |
-| Owner: Statusanzeige | Dashboard mit Status je Budget | MB-040 |
+| Owner: Statusanzeige | Dashboard mit Status je Budget (Berechnung MB-033) | MB-033, MB-040 |
 | Owner: alle aktuellen Ausgaben | Budget-Detailseite | MB-041 |
 | Owner: verfügbares Budget | Detailseite + Dashboard | MB-040, MB-041 |
 | Owner: Forecast eintragen / anzeigen | Forecast pro Monat | MB-042 |
@@ -36,7 +36,7 @@
 | Forecast eintragen | | | ✔ (nur eigene Budgets) |
 
 Zugriffsschutz auf **zwei Ebenen**:
-1. URL-Regeln: `/admin/**`, `/finance/**`, `/owner/**` nur für die passende Rolle
+1. Ordner-Regeln: `/admin/`, `/finance/`, `/owner/` prüfen am Seitenanfang mit `erfordereRolle()` die passende Rolle
 2. Im Code: Jede Owner-Seite lädt das Budget über `ladeEigenesBudget(id, benutzer)`.
    Gehört es jemand anderem → 403. So hilft es nicht, die ID in der URL zu ändern.
 
@@ -111,7 +111,7 @@ Zusätzlich wird überall „noch X Tage“ bis zum Verfall angezeigt.
 | Benutzer | Rolle | Budgets |
 |---|---|---|
 | `admin` | Admin | – |
-| `finance` | Finance (Buchhaltung) | – |
+| `finance` | Finance (Inhaberin) | – |
 | `studio` | Owner (Studio-Leitung) | Reformer-Wartung 2026 (4.800 €), Kursmaterial & Kleingeräte (2.500 €), Trainer-Fortbildung (3.000 €) |
 | `cafe` | Owner (Café-Leitung) | Café-Wareneinkauf Q4 (12.000 €), Café-Ausstattung Siebträger (6.500 €) |
 | `marketing` | Owner (Marketing) | Social Media & Fotoshooting (2.000 €), Frühlings-Event (1.500 €, abgelaufen) |
