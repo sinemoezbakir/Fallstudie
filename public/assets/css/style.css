@@ -1,0 +1,82 @@
+/*
+ * Maliá Budget – Design-Grundlage
+ * Farben und Schriften aus der Maliá-Website übernommen
+ * (siehe docs/konzept.md Abschnitt 6, Quelle: WebProgrammierung-neuaufbau).
+ */
+
+:root {
+    --paper: #fffdfa;
+    --cream: #f3eee5;
+    --ink: #49443e;
+    --muted: #7c776f;
+    --sage: #8d9b7f;
+    --sage-deep: #728267;
+    --rose: #c99388;
+    --line: #e5dfd4;
+    --serif: "Instrument Serif", Georgia, serif;
+    --sans: "DM Sans", system-ui, sans-serif;
+
+    /* Status-Farben (konzept.md Abschnitt 4) */
+    --status-im-rahmen: var(--sage);
+    --status-warnung: #d9a441;
+    --status-ueberschritten: var(--rose);
+    --status-abgelaufen: var(--muted);
+}
+
+body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+}
+
+h1, h2, h3, h4, .zahl-gross {
+    font-family: var(--serif);
+    color: var(--ink);
+}
+
+.card, .maliá-karte {
+    background-color: var(--cream);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+}
+
+a {
+    color: var(--sage-deep);
+}
+
+/* Status-Badge: vier Zustände gemäß konzept.md Abschnitt 4 */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.status-badge.im-rahmen { background-color: var(--status-im-rahmen); }
+.status-badge.warnung { background-color: var(--status-warnung); }
+.status-badge.ueberschritten { background-color: var(--status-ueberschritten); }
+.status-badge.abgelaufen { background-color: var(--status-abgelaufen); }
+
+/* Fortschrittsbalken für Verbrauch % */
+.verbrauch-balken {
+    height: 0.75rem;
+    background-color: var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.verbrauch-balken__fuellung {
+    height: 100%;
+    background-color: var(--sage);
+}
+
+.verbrauch-balken__fuellung.warnung { background-color: var(--status-warnung); }
+.verbrauch-balken__fuellung.ueberschritten { background-color: var(--status-ueberschritten); }
+
+/* Navigation */
+.navbar {
+    background-color: var(--cream);
+    border-bottom: 1px solid var(--line);
+}
