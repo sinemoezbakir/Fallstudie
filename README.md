@@ -8,9 +8,9 @@ fiktive Studio *Maliá – Pilates & Café*. Das Design orientiert sich an der M
 
 | Person | Rolle |
 |---|---|
-| Ardita | Projektleitung & Teamsprecherin · Datenbank, Backend |
-| Sinem | Entwicklung · Frontend, Übersichtsseiten, Formulare |
-| Natalia | Qualität & Dokumentation · Forecast, Reporting, Tests, Berichte |
+| Ardita | Projektleitung, Teamsprecherin & Dokumentation · Koordination, Risiko- und Projektcontrolling, Testkoordination (programmiert nicht mit) |
+| Sinem | Entwicklung Backend · Datenbank, Login & Rollen, Datentrennung, Berechnungen, Forecast & Hochrechnung, Verfallszeit |
+| Natalia | Entwicklung Frontend · Design, Layout, Formulare, Finance-Übersicht, Owner-Dashboard, Diagramme |
 
 Grundlage ist der Projektplan (Abgabe 04.10.2026, PDF in [docs/abgaben/](docs/abgaben/)). Jedes Arbeitspaket
 AP1–AP7 aus dem Plan ist im Kanban-Board in Karten zerlegt; die Soll-Stunden der Karten ergeben die Stunden aus dem Plan.
@@ -58,4 +58,4 @@ Begründungen: [docs/entscheidungen.md](docs/entscheidungen.md)
 
 ## Setup
 
-Folgt mit MB-003 (Projekt-Setup) und MB-004 (Datenbank).
+Schritt-für-Schritt-Bauanleitung: [docs/bauanleitung.md](docs/bauanleitung.md).

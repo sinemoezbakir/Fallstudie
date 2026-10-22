@@ -6,7 +6,7 @@ Wahrscheinlichkeit (W) und Auswirkung (A): niedrig / mittel / hoch. **Kritisch**
 
 | Nr. | Risiko | W | A | Strategie und Maßnahme | Betrifft | Karten | Verantwortlich | Status |
 |---|---|---|---|---|---|---|---|---|
-| R1 | Ein Teammitglied fällt aus (**kritisch**) | mittel | hoch | Vermindern: alle programmieren mit, Wissen in Karten dokumentieren, MoSCoW-Liste | AP4, AP5 | MB-058 | Ardita | beobachten |
+| R1 | Ein Teammitglied fällt aus (**kritisch**) | mittel | hoch | Vermindern: Sinem und Natalia arbeiten beide an Grundsystem und Owner-Sicht mit und reviewen sich gegenseitig, Wissen in Karten dokumentieren, MoSCoW-Liste | AP4, AP5 | MB-058 | Ardita | beobachten |
 | R2 | Die KI baut Fehler in den Code (**kritisch**) | hoch | mittel | Vermindern: Pull Requests, jede Funktion wird von einer zweiten Person geprüft | AP6 | MB-058 | Sinem, Natalia | beobachten |
 | R3 | Owner sehen fremde Daten (**kritisch**) | mittel | hoch | Vermindern: Tests mit zwei Owner-Konten | AP4, AP6 | MB-022, 050, 056 | Natalia | beobachten |
 | R4 | Umsetzung dauert wegen wenig Erfahrung mit PHP und Datenbanken länger (**kritisch**) | hoch | mittel | Vermindern: Einarbeitung in AP3, kein Framework | AP3, AP4 | MB-003, 004 | Ardita | beobachten |

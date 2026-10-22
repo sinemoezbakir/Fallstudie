@@ -40,12 +40,13 @@ Wie im Projektplan (3.2 Rollenverteilung, 3.3 RACI). Jede Person hat 45 h, davon
 
 | Person | Rolle | Verantwortlich für |
 |---|---|---|
-| **Ardita** | Projektleitung & Teamsprecherin | AP1 Projektmanagement, AP3 Einrichtung, Datenbank und Backend im Grundsystem (Login, Rollen, Datentrennung, Berechnung, Verfallszeit) |
-| **Sinem** | Entwicklung | Frontend: Design, Layout, Formulare, Finance-Übersicht, Owner-Dashboard, Diagramm; Code-Reviews; Demo |
-| **Natalia** | Qualität & Dokumentation | Forecast und Forecast-Vergleich, Eingabeprüfung, AP6 Testen, Zwischenbericht, Präsentation, Ergebnisdoku |
+| **Ardita** | Projektleitung, Teamsprecherin & Dokumentation | AP1 Projektmanagement, Risiko- und Projektcontrolling, Testkoordination (System- und Abnahmetest), Zwischenbericht, Präsentation, Ergebnisdokumentation — **programmiert nicht mit** |
+| **Sinem** | Entwicklung Backend | Datenbank, Login und Rollen, Datentrennung, Berechnungen, Forecast und Hochrechnung, Verfallszeit; Code-Reviews |
+| **Natalia** | Entwicklung Frontend | Design, Layout, Formulare, Finance-Übersicht, Owner-Dashboard, Diagramme; Code-Reviews; Demo |
 
-Alle drei programmieren mit, damit nicht nur eine Person den Code versteht (Risiko R1).
-Jede Code-Karte wird von einer anderen Person reviewt (Risiko R2).
+Sinem und Natalia arbeiten beide an Grundsystem und Owner-Sicht mit und reviewen sich gegenseitig, damit nicht nur
+eine Person den Code versteht (Risiko R1). Jede Code-Karte wird von einer anderen Person reviewt (Risiko R2).
+Die Projektleitung programmiert nicht mit und steuert so Planung, Tests und Dokumentation unabhängig vom Code.
 
 ## Arbeitspakete im Board
 
@@ -53,11 +54,11 @@ Jede Code-Karte wird von einer anderen Person reviewt (Risiko R2).
 |---|--:|--:|--:|--:|---|
 | AP1 Projektmanagement | 12 | – | – | 12 | MB-070, 071, 072, 073, 077 |
 | AP2 Analyse und Konzept | 4 | 3 | 3 | 10 | MB-002 |
-| AP3 Einrichtung | 6 | – | – | 6 | MB-001, 003, 004 |
-| AP4 Grundsystem | 14 | 14 | 2 | 30 | Ardita: MB-005, 020, 021, 022, 030, 033, 045 · Sinem: MB-010, 011, 012, 031, 032, 034, 035 · Natalia: MB-051 |
-| AP5 Owner-Sicht | – | 10 | 8 | 18 | Sinem: MB-040, 041, 043 · Natalia: MB-042, 044 |
-| AP6 Testen | – | 4 | 12 | 16 | MB-050, 056, 057, 058 |
-| AP7 Dokumentation | – | 5 | 11 | 16 | Sinem: MB-053, 054, 055 · Natalia: MB-074, 075, 076 |
+| AP3 Einrichtung | 2 | 3 | 1 | 6 | Ardita: MB-001 · Sinem: MB-003, 004 · Natalia: Abstimmung/Review |
+| AP4 Grundsystem | – | 11 | 10 | 21 | Sinem: MB-005, 020, 021, 022, 033, 045 · Natalia: MB-010, 011, 012, 030, 031, 032, 034, 035, 051 |
+| AP5 Owner-Sicht | – | 5 | 7 | 12 | Sinem: MB-042, 044 · Natalia: MB-040, 041, 043 |
+| AP6 Testen | 5 | 8 | 8 | 21 | Ardita: MB-057 · Sinem: MB-050, 058 · Natalia: MB-056, 058 |
+| AP7 Dokumentation | 13 | 6 | 7 | 26 | Ardita: MB-074, 075, 076 · Sinem: MB-053 · Natalia: MB-054, 055 |
 | Absprachen (20 %) | 9 | 9 | 9 | 27 | Jour fixe, keine Karte |
 | **Summe** | **45** | **45** | **45** | **135** | |
 
@@ -82,14 +83,14 @@ Gleich wie Abschnitt 6.1 im Projektplan. Ardita hält die Spalte **Status** aktu
 
 | Phase | Zeitraum | Meilenstein (Ende der Phase) | Ardita | Sinem | Natalia | Status |
 |---|---|---|---|---|---|---|
-| 0 – Planung | 07.09. – 04.10. | **M1** Projektplan abgegeben | MB-070, 001, 002 | MB-001, 002 | MB-001, 002 | in Arbeit |
-| 1 – Fundament | 05.10. – 11.10. | **M2** App läuft, DB mit Demodaten, Design-Grundlage, Annahmen bestätigt | MB-003, 004, 005, 077 | MB-010, 011, 012 | – | offen |
-| 2 – Grundsystem | 12.10. – 22.10. | **M3** Grundsystem fertig und getestet, Demo in der Sprechstunde | MB-020, 021, 022, 030, 033, 045, 073 | MB-031, 032, 034, 035 | MB-050, 051 | offen |
-| 3 – Owner-Sicht | 23.10. – 01.11. | **M4** Owner-Sicht komplett, Zwischenbericht abgegeben | – | MB-040, 041, 043, 054 | MB-042, 044, 074 | offen |
-| 4 – Abschluss | 02.11. – 06.11. | **M5** Präsentation (Feature-Freeze 04.11.) | – | MB-052 (Soll), 053, 055 | MB-056, 057, 075 | offen |
-| 5 – Ergebnisdoku | 07.11. – 22.11. | **M6** Ergebnisdokumentation abgegeben | – | nur Bugfixes | MB-076 | offen |
+| 0 – Planung | 07.09. – 04.10. | **M1** Projektplan abgegeben | MB-070, 001, 002 | MB-002 | MB-002 | in Arbeit |
+| 1 – Fundament | 05.10. – 11.10. | **M2** App läuft, DB mit Demodaten, Design-Grundlage, Annahmen bestätigt | MB-001, 077 | MB-003, 004, 005 | MB-010, 011, 012 | offen |
+| 2 – Grundsystem | 12.10. – 22.10. | **M3** Grundsystem fertig und getestet, Demo in der Sprechstunde | MB-073 | MB-020, 021, 022, 033, 045 | MB-030, 031, 032, 034, 035, 051 | offen |
+| 3 – Owner-Sicht | 23.10. – 01.11. | **M4** Owner-Sicht komplett, Zwischenbericht abgegeben | MB-074 | MB-042, 044 | MB-040, 041, 043 | offen |
+| 4 – Abschluss | 02.11. – 06.11. | **M5** Präsentation (Feature-Freeze 04.11.) | MB-057, 075 | MB-052 (Soll), 053 | MB-054, 055, 056 | offen |
+| 5 – Ergebnisdoku | 07.11. – 22.11. | **M6** Ergebnisdokumentation abgegeben | MB-076 | nur Bugfixes | nur Bugfixes | offen |
 
-Laufend: Ardita MB-071, MB-072 · Sinem und Natalia MB-058 (Code-Reviews).
+Laufend: Ardita MB-071, MB-072 (Testkoordination auch MB-057) · Sinem und Natalia MB-058 (Code-Reviews).
 Eigene Ideen (MB-06x, `Kann`) nur, wenn eine Phase früher fertig ist – spätestens bis zum Feature-Freeze.
 
 ## Was wird wann dokumentiert?
