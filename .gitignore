@@ -1,16 +1,11 @@
-# Build
-target/
-!.mvn/wrapper/maven-wrapper.jar
+# Build (PHP/Composer, falls genutzt)
+vendor/
+composer.lock
 
 # IDE
 .idea/
-*.iml
 .vscode/*
 !.vscode/extensions.json
-.classpath
-.project
-.settings/
-.factorypath
 
 # Lokale Konfiguration
 .env
