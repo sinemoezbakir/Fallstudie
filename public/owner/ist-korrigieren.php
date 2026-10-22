@@ -40,6 +40,8 @@ if ($istAbgelaufen) {
         $fehler = 'Betrag muss eine positive Zahl sein.';
     } elseif ($grund === '') {
         $fehler = 'Bitte einen Grund für die Korrektur angeben.';
+    } elseif (mb_strlen($grund) > 255) {
+        $fehler = 'Grund darf höchstens 255 Zeichen lang sein.';
     } else {
         // Ursprünglichen Betrag nur beim ersten Mal festhalten.
         $urspruenglicherBetrag = $buchung['urspruenglicher_betrag'] ?? $buchung['betrag'];
@@ -96,7 +98,7 @@ require __DIR__ . '/../../templates/header.php';
         </div>
         <div class="mb-3">
             <label for="grund" class="form-label">Grund der Korrektur</label>
-            <input type="text" class="form-control" id="grund" name="grund" required>
+            <input type="text" class="form-control" id="grund" name="grund" maxlength="255" required>
         </div>
         <button type="submit" class="btn" style="background-color: var(--sage); color: #fff;">Korrektur speichern</button>
         <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn" style="border: 1px solid var(--line);">Abbrechen</a>

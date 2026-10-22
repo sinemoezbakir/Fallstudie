@@ -33,6 +33,8 @@ if ($istAbgelaufen) {
         $fehler = 'Bitte ein Datum angeben.';
     } elseif ($beschreibung === '') {
         $fehler = 'Bitte eine Beschreibung angeben.';
+    } elseif (mb_strlen($beschreibung) > 255) {
+        $fehler = 'Beschreibung darf höchstens 255 Zeichen lang sein.';
     } else {
         $stmt = $pdo->prepare(
             'INSERT INTO ist_buchung (budget_id, betrag, datum, beschreibung, erfasst_von)
@@ -77,7 +79,7 @@ require __DIR__ . '/../../templates/header.php';
         </div>
         <div class="mb-3">
             <label for="beschreibung" class="form-label">Beschreibung</label>
-            <input type="text" class="form-control" id="beschreibung" name="beschreibung" required>
+            <input type="text" class="form-control" id="beschreibung" name="beschreibung" maxlength="255" required>
         </div>
         <button type="submit" class="btn" style="background-color: var(--sage); color: #fff;">Speichern</button>
         <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn" style="border: 1px solid var(--line);">Abbrechen</a>

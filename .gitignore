@@ -2,6 +2,10 @@
 vendor/
 composer.lock
 
+# PHPUnit
+.phpunit.result.cache
+/phpunit.phar
+
 # IDE
 .idea/
 .vscode/*

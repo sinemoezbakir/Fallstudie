@@ -26,6 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($name === '' || $gueltigVon === '' || $gueltigBis === '' || $ownerId === '') {
         $fehler = 'Bitte alle Pflichtfelder ausfüllen.';
+    } elseif (mb_strlen($name) > 150) {
+        $fehler = 'Name darf höchstens 150 Zeichen lang sein.';
     } elseif (!in_array($bereich, $gueltigeBereiche, true)) {
         $fehler = 'Bitte einen gültigen Bereich auswählen.';
     } elseif (!is_numeric($sollBetrag) || (float) $sollBetrag <= 0) {
@@ -66,7 +68,7 @@ require __DIR__ . '/../../templates/header.php';
     <form method="post" action="/finance/neu.php">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" name="name"
+            <input type="text" class="form-control" id="name" name="name" maxlength="150"
                    value="<?= htmlspecialchars($_POST['name'] ?? '') ?>" required>
         </div>
         <div class="mb-3">

@@ -26,6 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($anzeigename === '' || $username === '' || $passwort === '') {
         $fehler = 'Bitte alle Pflichtfelder ausfüllen.';
+    } elseif (mb_strlen($anzeigename) > 100) {
+        $fehler = 'Anzeigename darf höchstens 100 Zeichen lang sein.';
+    } elseif (mb_strlen($username) > 50) {
+        $fehler = 'Benutzername darf höchstens 50 Zeichen lang sein.';
     } elseif (!in_array($rolle, $gueltigeRollen, true)) {
         $fehler = 'Bitte eine gültige Rolle auswählen.';
     } elseif (strlen($passwort) < 8) {
@@ -72,11 +76,11 @@ require __DIR__ . '/../../templates/header.php';
     <form method="post" action="/admin/" class="row g-3">
         <div class="col-md-3">
             <label for="anzeigename" class="form-label">Anzeigename</label>
-            <input type="text" class="form-control" id="anzeigename" name="anzeigename" required>
+            <input type="text" class="form-control" id="anzeigename" name="anzeigename" maxlength="100" required>
         </div>
         <div class="col-md-3">
             <label for="username" class="form-label">Benutzername</label>
-            <input type="text" class="form-control" id="username" name="username" required>
+            <input type="text" class="form-control" id="username" name="username" maxlength="50" required>
         </div>
         <div class="col-md-2">
             <label for="rolle" class="form-label">Rolle</label>
