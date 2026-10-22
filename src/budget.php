@@ -117,6 +117,20 @@ function berechneStatus(array $budget): string
 }
 
 /**
+ * Prüft, ob ein Budget wegen Zeitablauf gesperrt ist (MB-045). Wird von den
+ * Formularen zum Erfassen/Korrigieren von Ist-Werten (MB-034/MB-035) vor
+ * dem Speichern aufgerufen - danach darf keine neue Buchung mehr rein.
+ *
+ * Reiner Datumsvergleich, unabhängig von berechneStatus() (das würde
+ * zusätzliche, hier unnötige DB-Abfragen auslösen), aber dieselbe Regel
+ * wie Status-Stufe 1 ("Abgelaufen").
+ */
+function istBudgetAbgelaufen(array $budget): bool
+{
+    return date('Y-m-d') > $budget['gueltig_bis'];
+}
+
+/**
  * Bündelt alle Kennzahlen eines Budgets für die Anzeige (Dashboard,
  * Detailseite, Übersichten). Rechnet bei jedem Aufruf live aus der
  * Datenbank ("Echtzeit", siehe konzept.md Abschnitt 4).
