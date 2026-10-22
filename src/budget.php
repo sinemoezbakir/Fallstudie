@@ -14,11 +14,11 @@
 require_once __DIR__ . '/db.php';
 
 /**
- * Lädt ein Budget, aber NUR wenn es dem angegebenen Owner gehört.
- * Gehört es jemand anderem (oder existiert es nicht), bricht die Anfrage
- * mit 403 ab - unabhängig davon, ob die ID in der URL manipuliert wurde.
+ * Reine Datentrennungs-Abfrage ohne Seiteneffekt (kein exit) - das macht
+ * sie mit PHPUnit testbar (MB-050). Gibt null zurück, wenn das Budget
+ * nicht existiert oder jemand anderem gehört.
  */
-function ladeEigenesBudget(int $budgetId, int $ownerId): array
+function findeBudgetFuerOwner(int $budgetId, int $ownerId): ?array
 {
     global $pdo;
 
@@ -26,7 +26,20 @@ function ladeEigenesBudget(int $budgetId, int $ownerId): array
     $stmt->execute(['id' => $budgetId, 'owner_id' => $ownerId]);
     $budget = $stmt->fetch();
 
-    if (!$budget) {
+    return $budget ?: null;
+}
+
+/**
+ * Lädt ein Budget, aber NUR wenn es dem angegebenen Owner gehört.
+ * Gehört es jemand anderem (oder existiert es nicht), bricht die Anfrage
+ * mit 403 ab - unabhängig davon, ob die ID in der URL manipuliert wurde.
+ * Dünner Wrapper um findeBudgetFuerOwner() für den Web-Kontext.
+ */
+function ladeEigenesBudget(int $budgetId, int $ownerId): array
+{
+    $budget = findeBudgetFuerOwner($budgetId, $ownerId);
+
+    if ($budget === null) {
         http_response_code(403);
         require __DIR__ . '/../templates/403.php';
         exit;
@@ -51,12 +64,10 @@ function ladeBudgetsVonOwner(int $ownerId): array
 }
 
 /**
- * Lädt eine einzelne Ist-Buchung, aber NUR wenn das zugehörige Budget dem
- * angegebenen Owner gehört (dieselbe Logik wie ladeEigenesBudget(), nur für
- * Buchungen statt Budgets - wichtig für MB-035, sonst liesse sich über die
- * Buchungs-ID eine fremde Buchung korrigieren).
+ * Reine Datentrennungs-Abfrage für Ist-Buchungen, ohne Seiteneffekt
+ * (analog zu findeBudgetFuerOwner(), MB-050 testbar).
  */
-function ladeEigeneBuchung(int $buchungId, int $ownerId): array
+function findeBuchungFuerOwner(int $buchungId, int $ownerId): ?array
 {
     global $pdo;
 
@@ -68,7 +79,21 @@ function ladeEigeneBuchung(int $buchungId, int $ownerId): array
     $stmt->execute(['id' => $buchungId, 'owner_id' => $ownerId]);
     $buchung = $stmt->fetch();
 
-    if (!$buchung) {
+    return $buchung ?: null;
+}
+
+/**
+ * Lädt eine einzelne Ist-Buchung, aber NUR wenn das zugehörige Budget dem
+ * angegebenen Owner gehört (dieselbe Logik wie ladeEigenesBudget(), nur für
+ * Buchungen statt Budgets - wichtig für MB-035, sonst liesse sich über die
+ * Buchungs-ID eine fremde Buchung korrigieren). Dünner Wrapper für den
+ * Web-Kontext um findeBuchungFuerOwner().
+ */
+function ladeEigeneBuchung(int $buchungId, int $ownerId): array
+{
+    $buchung = findeBuchungFuerOwner($buchungId, $ownerId);
+
+    if ($buchung === null) {
         http_response_code(403);
         require __DIR__ . '/../templates/403.php';
         exit;

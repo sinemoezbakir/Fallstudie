@@ -32,4 +32,9 @@ function verbindeDatenbank(): PDO
     return new PDO($dsn, DB_USER, DB_PASS, $optionen);
 }
 
-$pdo = verbindeDatenbank();
+// Bewusst über $GLOBALS statt nur "$pdo = ...": Wird diese Datei (über eine
+// Kette von require_once) innerhalb einer Funktion eingebunden - genau das
+// macht PHPUnits Bootstrap-Mechanismus -, würde eine einfache Zuweisung nur
+// eine lokale Variable in diesem Funktions-Scope erzeugen, nicht die echte
+// PHP-Globale. $GLOBALS['pdo'] trifft in jedem Fall den globalen Scope.
+$GLOBALS['pdo'] = verbindeDatenbank();

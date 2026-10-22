@@ -5,7 +5,7 @@
  */
 
 session_start();
-require_once __DIR__ . '/../src/db.php';
+require_once __DIR__ . '/../src/auth.php';
 require_once __DIR__ . '/../src/ui.php';
 
 // Schon eingeloggt? Dann direkt weiterleiten statt nochmal Login zu zeigen.
@@ -23,11 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === '' || $passwort === '') {
         $fehler = 'Bitte Benutzername und Passwort eingeben.';
     } else {
-        $stmt = $pdo->prepare('SELECT id, passwort_hash, anzeigename, rolle FROM benutzer WHERE username = :username');
-        $stmt->execute(['username' => $username]);
-        $benutzer = $stmt->fetch();
+        $benutzer = pruefeLogin($username, $passwort);
 
-        if ($benutzer && password_verify($passwort, $benutzer['passwort_hash'])) {
+        if ($benutzer !== null) {
             session_regenerate_id(true);
             $_SESSION['user_id'] = (int) $benutzer['id'];
             $_SESSION['anzeigename'] = $benutzer['anzeigename'];
@@ -37,9 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
-        // Bewusst dieselbe Fehlermeldung für "Username unbekannt" und
-        // "Passwort falsch" - sonst lässt sich erraten, welche Usernamen
-        // existieren.
         $fehler = 'Benutzername oder Passwort ist falsch.';
     }
 }
