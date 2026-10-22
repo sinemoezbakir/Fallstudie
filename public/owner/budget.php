@@ -25,6 +25,18 @@ $buchungen = $buchungenStmt->fetchAll();
 
 $istAbgelaufen = istBudgetAbgelaufen($budget);
 
+// Für MB-043 (Soll-Ist-Diagramm) und MB-044 (Forecast-Ist-Soll-Vergleich).
+$chartSollIst = [
+    'soll' => (float) $budget['soll_betrag'],
+    'ist' => $k['ist'],
+];
+$chartHochrechnung = [
+    'soll' => (float) $budget['soll_betrag'],
+    'ist' => $k['ist'],
+    'offener_forecast' => $k['offener_forecast'],
+    'hochrechnung' => $k['hochrechnung'],
+];
+
 $pageTitle = $budget['name'];
 require __DIR__ . '/../../templates/header.php';
 ?>
@@ -62,6 +74,21 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 <?php endif; ?>
 
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h2 class="h6">Soll-Ist-Vergleich</h2>
+            <canvas id="chartSollIst" height="200"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3">
+            <h2 class="h6">Forecast-Ist-Soll-Vergleich (Hochrechnung)</h2>
+            <canvas id="chartHochrechnung" height="200"></canvas>
+        </div>
+    </div>
+</div>
+
 <h2 class="h5 mb-3">Alle Ausgaben</h2>
 <table class="table">
     <thead>
@@ -94,5 +121,51 @@ require __DIR__ . '/../../templates/header.php';
         <?php endif; ?>
     </tbody>
 </table>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+const datenSollIst = <?= json_encode($chartSollIst) ?>;
+const datenHochrechnung = <?= json_encode($chartHochrechnung) ?>;
+const farbeSage = getComputedStyle(document.documentElement).getPropertyValue('--sage').trim();
+const farbeRose = getComputedStyle(document.documentElement).getPropertyValue('--rose').trim();
+const farbeMuted = getComputedStyle(document.documentElement).getPropertyValue('--muted').trim();
+
+// MB-043: Soll-Ist-Diagramm
+new Chart(document.getElementById('chartSollIst'), {
+    type: 'bar',
+    data: {
+        labels: ['Soll', 'Ist'],
+        datasets: [{
+            data: [datenSollIst.soll, datenSollIst.ist],
+            backgroundColor: [farbeMuted, datenSollIst.ist > datenSollIst.soll ? farbeRose : farbeSage],
+        }],
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } },
+    },
+});
+
+// MB-044: Forecast-Ist-Soll-Vergleich - zeigt, ob Ist + offener Forecast
+// (Hochrechnung) das Soll übersteigen würde.
+new Chart(document.getElementById('chartHochrechnung'), {
+    type: 'bar',
+    data: {
+        labels: ['Soll', 'Ist', 'Hochrechnung'],
+        datasets: [{
+            data: [datenHochrechnung.soll, datenHochrechnung.ist, datenHochrechnung.hochrechnung],
+            backgroundColor: [
+                farbeMuted,
+                farbeSage,
+                datenHochrechnung.hochrechnung > datenHochrechnung.soll ? farbeRose : farbeSage,
+            ],
+        }],
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } },
+    },
+});
+</script>
 
 <?php require __DIR__ . '/../../templates/footer.php'; ?>
