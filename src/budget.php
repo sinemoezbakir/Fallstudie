@@ -50,6 +50,33 @@ function ladeBudgetsVonOwner(int $ownerId): array
     return $stmt->fetchAll();
 }
 
+/**
+ * Lädt eine einzelne Ist-Buchung, aber NUR wenn das zugehörige Budget dem
+ * angegebenen Owner gehört (dieselbe Logik wie ladeEigenesBudget(), nur für
+ * Buchungen statt Budgets - wichtig für MB-035, sonst liesse sich über die
+ * Buchungs-ID eine fremde Buchung korrigieren).
+ */
+function ladeEigeneBuchung(int $buchungId, int $ownerId): array
+{
+    global $pdo;
+
+    $stmt = $pdo->prepare(
+        'SELECT ib.* FROM ist_buchung ib
+         JOIN budget b ON b.id = ib.budget_id
+         WHERE ib.id = :id AND b.owner_id = :owner_id'
+    );
+    $stmt->execute(['id' => $buchungId, 'owner_id' => $ownerId]);
+    $buchung = $stmt->fetch();
+
+    if (!$buchung) {
+        http_response_code(403);
+        require __DIR__ . '/../templates/403.php';
+        exit;
+    }
+
+    return $buchung;
+}
+
 // --- Kennzahlen und Status (MB-033, Formeln aus konzept.md Abschnitt 4) ---
 //
 // Summen werden per SQL SUM() gebildet, nicht in PHP aufaddiert (E-015).
