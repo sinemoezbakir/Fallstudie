@@ -20,10 +20,14 @@ noch einfach gehalten (Feinschliff = MB-052, Soll-Karte, noch offen).
 - Benutzer anlegen (Anzeigename, Benutzername, Rolle, Passwort)
 - Liste aller Benutzer
 
+![Admin: Benutzerliste](screenshots/admin-benutzerliste.png)
+
 ### Finance
 - Übersicht aller Budgets mit Owner, Soll, Ist, Status
 - Filter nach Bereich (Studio/Café/Marketing)
 - Neues Budget anlegen und einem Owner zuweisen
+
+![Finance: Budget-Übersicht](screenshots/finance-uebersicht.png)
 
 ### Owner
 - Dashboard: alle eigenen Budgets, Status-Badge, Verbrauchsbalken, „noch X Tage"
@@ -32,6 +36,8 @@ noch einfach gehalten (Feinschliff = MB-052, Soll-Karte, noch offen).
 - Ausgabe erfassen
 - Ausgabe korrigieren (Originalbetrag + Grund bleiben nachvollziehbar sichtbar)
 - Forecast pro Monat eintragen (überschreibt bestehenden Wert für denselben Monat)
+
+![Owner: Dashboard](screenshots/owner-dashboard.png)
 
 ### Berechnungslogik
 - 4 Status automatisch: Im Rahmen / Warnung / Überschritten / Abgelaufen
@@ -53,4 +59,6 @@ noch einfach gehalten (Feinschliff = MB-052, Soll-Karte, noch offen).
 
 ## Screenshots
 
-Noch keine im Repo abgelegt. Platz dafür: [docs/screenshots/](screenshots/).
+Drei Screenshots aus dem echten Browser-Testlauf vom 22.10. oben bei den
+jeweiligen Rollen eingebunden, liegen auch einzeln in
+[docs/screenshots/](screenshots/).
