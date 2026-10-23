@@ -65,7 +65,8 @@ $pageTitle = 'Benutzerverwaltung';
 require __DIR__ . '/../../templates/header.php';
 ?>
 
-<h1 class="h3 mb-4">Benutzerverwaltung</h1>
+<h1 class="h3 mb-1">Benutzerverwaltung</h1>
+<p class="text-muted mb-4">Lege neue Zugänge für Finance, Owner oder Verwaltung an, oder setze ein Passwort zurück.</p>
 
 <?php if ($fehler): ?>
     <div class="alert alert-danger"><?= htmlspecialchars($fehler) ?></div>
@@ -110,6 +111,7 @@ require __DIR__ . '/../../templates/header.php';
             <th>Anzeigename</th>
             <th>Benutzername</th>
             <th>Rolle</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -118,6 +120,11 @@ require __DIR__ . '/../../templates/header.php';
                 <td><?= htmlspecialchars($benutzer['anzeigename']) ?></td>
                 <td><?= htmlspecialchars($benutzer['username']) ?></td>
                 <td><?= htmlspecialchars($benutzer['rolle']) ?></td>
+                <td>
+                    <a href="/admin/passwort-zuruecksetzen.php?id=<?= (int) $benutzer['id'] ?>" class="small">
+                        Passwort zurücksetzen
+                    </a>
+                </td>
             </tr>
         <?php endforeach; ?>
     </tbody>

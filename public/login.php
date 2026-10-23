@@ -46,7 +46,8 @@ require __DIR__ . '/../templates/header.php';
 <div class="row justify-content-center">
     <div class="col-md-5">
         <div class="card p-4">
-            <h1 class="h3 mb-4">Willkommen bei Maliá Budget</h1>
+            <h1 class="h3 mb-1">Willkommen bei Maliá Budget</h1>
+            <p class="text-muted mb-4">Budgets im Blick behalten – für Studio, Café und Marketing.</p>
 
             <?php if ($fehler): ?>
                 <div class="alert alert-danger"><?= htmlspecialchars($fehler) ?></div>
@@ -66,6 +67,9 @@ require __DIR__ . '/../templates/header.php';
                     Anmelden
                 </button>
             </form>
+            <p class="text-center text-muted mt-3 mb-0 small">
+                <a href="/passwort-vergessen.php">Passwort vergessen?</a>
+            </p>
         </div>
     </div>
 </div>

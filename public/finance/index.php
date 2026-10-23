@@ -35,8 +35,11 @@ $pageTitle = 'Budget-Übersicht';
 require __DIR__ . '/../../templates/header.php';
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0">Budget-Übersicht</h1>
+<div class="d-flex justify-content-between align-items-start mb-4">
+    <div>
+        <h1 class="h3 mb-1">Budget-Übersicht</h1>
+        <p class="text-muted mb-0">Alle Budgets im Studio mit aktuellem Soll-Ist-Stand.</p>
+    </div>
     <a href="/finance/neu.php" class="btn btn-maliá">+ Neues Budget</a>
 </div>
 

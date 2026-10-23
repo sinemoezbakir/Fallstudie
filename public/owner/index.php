@@ -17,7 +17,8 @@ $pageTitle = 'Mein Dashboard';
 require __DIR__ . '/../../templates/header.php';
 ?>
 
-<h1 class="h3 mb-4">Meine Budgets</h1>
+<h1 class="h3 mb-1">Meine Budgets</h1>
+<p class="text-muted mb-4">Status, Verbrauch und verbleibende Zeit auf einen Blick. Klick auf ein Budget für Details.</p>
 
 <div class="row g-3">
     <?php foreach ($budgets as $budget): ?>

@@ -8,7 +8,14 @@
 require_once __DIR__ . '/../src/ui.php';
 
 $rolle = $_SESSION['rolle'] ?? null;
+$anzeigename = $_SESSION['anzeigename'] ?? null;
 $pageTitle = $pageTitle ?? 'Maliá Budget';
+
+$rollenLabel = [
+    'ADMIN' => 'Verwaltung',
+    'FINANCE' => 'Finance',
+    'OWNER' => 'Owner',
+][$rolle] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="de">
@@ -29,7 +36,7 @@ $pageTitle = $pageTitle ?? 'Maliá Budget';
         <a class="navbar-brand" href="/" style="font-family: var(--serif);">Maliá Budget</a>
 
         <?php if ($rolle): ?>
-        <div class="d-flex">
+        <div class="d-flex align-items-center">
             <ul class="navbar-nav flex-row gap-3 me-3">
                 <?php if ($rolle === 'ADMIN'): ?>
                     <li class="nav-item"><a class="nav-link" href="/admin/">Benutzerverwaltung</a></li>
@@ -39,7 +46,11 @@ $pageTitle = $pageTitle ?? 'Maliá Budget';
                     <li class="nav-item"><a class="nav-link" href="/owner/">Mein Dashboard</a></li>
                 <?php endif; ?>
             </ul>
-            <a href="/logout.php" class="btn btn-sm" style="border:1px solid var(--line);">Abmelden</a>
+            <span class="text-muted small me-3 d-none d-md-inline">
+                Hallo, <strong><?= htmlspecialchars($anzeigename ?? '') ?></strong>
+                <span class="text-muted">(<?= htmlspecialchars($rollenLabel) ?>)</span>
+            </span>
+            <a href="/logout.php" class="btn btn-sm btn-maliá-outline">Abmelden</a>
         </div>
         <?php endif; ?>
     </div>
