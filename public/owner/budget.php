@@ -69,8 +69,8 @@ require __DIR__ . '/../../templates/header.php';
 
 <?php if (!$istAbgelaufen): ?>
 <div class="mb-4">
-    <a href="/owner/ist-erfassen.php?budget_id=<?= (int) $budget['id'] ?>" class="btn" style="background-color: var(--sage); color: #fff;">+ Ausgabe erfassen</a>
-    <a href="/owner/forecast.php?budget_id=<?= (int) $budget['id'] ?>" class="btn" style="border: 1px solid var(--line);">Forecast eintragen</a>
+    <a href="/owner/ist-erfassen.php?budget_id=<?= (int) $budget['id'] ?>" class="btn btn-maliá">+ Ausgabe erfassen</a>
+    <a href="/owner/forecast.php?budget_id=<?= (int) $budget['id'] ?>" class="btn btn-maliá-outline">Forecast eintragen</a>
 </div>
 <?php endif; ?>
 

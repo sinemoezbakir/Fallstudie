@@ -62,7 +62,7 @@ require __DIR__ . '/../templates/header.php';
                     <label for="passwort" class="form-label">Passwort</label>
                     <input type="password" class="form-control" id="passwort" name="passwort" required>
                 </div>
-                <button type="submit" class="btn w-100" style="background-color: var(--sage); color: #fff;">
+                <button type="submit" class="btn btn-maliá w-100">
                     Anmelden
                 </button>
             </form>

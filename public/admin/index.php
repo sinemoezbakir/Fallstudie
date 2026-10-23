@@ -96,7 +96,7 @@ require __DIR__ . '/../../templates/header.php';
             <input type="password" class="form-control" id="passwort" name="passwort" minlength="8" required>
         </div>
         <div class="col-md-1 d-flex align-items-end">
-            <button type="submit" class="btn w-100" style="background-color: var(--sage); color: #fff;">
+            <button type="submit" class="btn btn-maliá w-100">
                 Anlegen
             </button>
         </div>

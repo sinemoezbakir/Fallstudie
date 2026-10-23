@@ -100,8 +100,8 @@ require __DIR__ . '/../../templates/header.php';
             <label for="grund" class="form-label">Grund der Korrektur</label>
             <input type="text" class="form-control" id="grund" name="grund" maxlength="255" required>
         </div>
-        <button type="submit" class="btn" style="background-color: var(--sage); color: #fff;">Korrektur speichern</button>
-        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn" style="border: 1px solid var(--line);">Abbrechen</a>
+        <button type="submit" class="btn btn-maliá">Korrektur speichern</button>
+        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn btn-maliá-outline">Abbrechen</a>
     </form>
 </div>
 <?php endif; ?>

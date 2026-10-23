@@ -37,7 +37,7 @@ require __DIR__ . '/../../templates/header.php';
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Budget-Übersicht</h1>
-    <a href="/finance/neu.php" class="btn" style="background-color: var(--sage); color: #fff;">+ Neues Budget</a>
+    <a href="/finance/neu.php" class="btn btn-maliá">+ Neues Budget</a>
 </div>
 
 <form method="get" action="/finance/" class="mb-3" style="max-width: 250px;">

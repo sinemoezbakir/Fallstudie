@@ -75,8 +75,8 @@ require __DIR__ . '/../../templates/header.php';
                 <input type="number" step="0.01" min="0" class="form-control" id="betrag" name="betrag" required>
             </div>
         </div>
-        <button type="submit" class="btn" style="background-color: var(--sage); color: #fff;">Speichern</button>
-        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn" style="border: 1px solid var(--line);">Zurück</a>
+        <button type="submit" class="btn btn-maliá">Speichern</button>
+        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn btn-maliá-outline">Zurück</a>
     </form>
 </div>
 

@@ -81,8 +81,8 @@ require __DIR__ . '/../../templates/header.php';
             <label for="beschreibung" class="form-label">Beschreibung</label>
             <input type="text" class="form-control" id="beschreibung" name="beschreibung" maxlength="255" required>
         </div>
-        <button type="submit" class="btn" style="background-color: var(--sage); color: #fff;">Speichern</button>
-        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn" style="border: 1px solid var(--line);">Abbrechen</a>
+        <button type="submit" class="btn btn-maliá">Speichern</button>
+        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn btn-maliá-outline">Abbrechen</a>
     </form>
 </div>
 <?php endif; ?>

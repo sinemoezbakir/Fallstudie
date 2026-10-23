@@ -103,10 +103,10 @@ require __DIR__ . '/../../templates/header.php';
                 <?php endforeach; ?>
             </select>
         </div>
-        <button type="submit" class="btn" style="background-color: var(--sage); color: #fff;">
+        <button type="submit" class="btn btn-maliá">
             Budget anlegen
         </button>
-        <a href="/finance/" class="btn" style="border: 1px solid var(--line);">Abbrechen</a>
+        <a href="/finance/" class="btn btn-maliá-outline">Abbrechen</a>
     </form>
 </div>
 
