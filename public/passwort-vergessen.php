@@ -12,21 +12,18 @@ $pageTitle = 'Passwort vergessen';
 require __DIR__ . '/../templates/header.php';
 ?>
 
-<div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card p-4">
-            <h1 class="h3 mb-3">Passwort vergessen?</h1>
-            <p>
-                Kein Problem — wende dich kurz an die <strong>Verwaltung</strong> (Admin).
-                Sie kann dein Passwort in der Benutzerverwaltung zurücksetzen.
-            </p>
-            <p class="text-muted small">
-                Es gibt bewusst keinen automatischen Reset per E-Mail, dafür ist in diesem
-                kleinen Studio kein Mailversand eingerichtet.
-            </p>
-            <a href="/login.php" class="btn btn-maliá-outline">Zurück zum Login</a>
-        </div>
-    </div>
+<div class="card p-4 p-md-5 mx-auto" style="max-width: 520px;">
+    <h1 class="h2 mb-3">Passwort vergessen?</h1>
+    <p>Kein Problem – so geht's:</p>
+    <ol class="mb-4">
+        <li class="mb-2">Gib der <strong>Verwaltung (Admin)</strong> kurz Bescheid.</li>
+        <li class="mb-2">Sie setzt in der Benutzerverwaltung ein vorläufiges Passwort für dich.</li>
+        <li>Melde dich damit an und ändere es im Kontomenü unter <strong>„Passwort ändern“</strong>.</li>
+    </ol>
+    <p class="small text-muted">
+        Einen automatischen Reset per E-Mail gibt es bewusst nicht – dafür ist in diesem kleinen Studio kein Mailversand eingerichtet.
+    </p>
+    <a href="/login.php" class="btn btn-maliá-outline align-self-start">← Zurück zum Login</a>
 </div>
 
 <?php require __DIR__ . '/../templates/footer.php'; ?>

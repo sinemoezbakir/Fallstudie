@@ -75,6 +75,7 @@ if ($rolle && DEMO_MODUS && isset($GLOBALS['pdo'])) {
                 <div class="dropdown-menu dropdown-menu-end konto-menue">
                     <div class="px-3 py-2 small text-muted"><?= e(ROLLEN[$rolle]['beschreibung'] ?? '') ?></div>
                     <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/konto.php">Passwort ändern</a>
                     <?php if (DEMO_MODUS): ?>
                         <form method="post" action="/demo-zuruecksetzen.php">
                             <?= csrfFeld() ?>
