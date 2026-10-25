@@ -7,6 +7,7 @@ Details stehen in der jeweiligen Karte und in den Commits.
 
 | Datum | Person | Dauer | Karte(n) | Was wurde gemacht? | Probleme / offene Fragen | Nächster Schritt |
 |---|---|---|---|---|---|---|
+| 2026-10-25 | Sinem (mit Claude) | – | MB-005, 012, 020, 031–035, 040–044, 050, 051, 060, 062 | Auf Arditas Branch aufgebaut (Branch `feature/fertigstellung`): CSRF-Schutz, Demo-Modus mit Kontowechsel (E-021), Demodaten über das Jahr, Dashboard, Detail mit Verlaufsdiagramm, Live-Vorschau beim Erfassen, Forecast-Raster, Finance-Filter/Bearbeiten, CSV-Export, Passwort ändern, Tests (43 PHPUnit + Rundgang mit 64 Prüfungen), Start-Skript | Review durch Natalia/Ardita steht aus; KI-Unterstützung im Zwischenbericht angeben | PR öffnen, Review, Merge nach `main`; Karten auf dem Board nachziehen |
 | 2026-10-02 | Sinem (mit Claude) | – | MB-001, MB-002 | Projektordner, Kanban-Board, Konzept und Git-Regeln angelegt; Plan vereinfacht; Team und Termine eingetragen | Entscheidungen im Kickoff bestätigen | Ardita: MB-070 Projektplan (fällig So 04.10.), Sinem: MB-003 |
 
 ## Wochenrückblicke

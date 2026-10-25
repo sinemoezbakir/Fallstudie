@@ -56,6 +56,73 @@ Begründungen: [docs/entscheidungen.md](docs/entscheidungen.md)
 | Git-Regeln | [docs/git-workflow.md](docs/git-workflow.md) |
 | Screenshots | [docs/screenshots/](docs/screenshots/) |
 
-## Setup
+## Schnellstart
 
-Schritt-für-Schritt-Bauanleitung: [docs/bauanleitung.md](docs/bauanleitung.md).
+Voraussetzung: [XAMPP](https://www.apachefriends.org/) unter `C:\xampp` (PHP 8.2 + MariaDB).
+
+1. Repo klonen
+2. **`start-demo.bat` doppelklicken** – startet MariaDB, legt beim ersten Mal die Datenbank
+   `malia_budget` mit Demo-Daten an, startet die App und öffnet **http://localhost:8000**
+3. Anmelden mit `finance` / `demo1234` – danach oben in der dunklen Leiste die Ansicht wechseln
+
+<details>
+<summary>Manuell statt per Skript</summary>
+
+```bash
+# MariaDB im XAMPP Control Panel starten, dann:
+C:\xampp\mysql\bin\mysql.exe -uroot --default-character-set=utf8mb4 < database\schema.sql
+C:\xampp\mysql\bin\mysql.exe -uroot --default-character-set=utf8mb4 malia_budget < database\demodaten.sql
+C:\xampp\php\php.exe -S localhost:8000 -t public
+```
+
+Wichtig: Die App muss mit `public/` als Wurzel laufen (alle Links beginnen mit `/`).
+Ein Aufruf über `http://localhost/malia-budget/public/` mit dem XAMPP-Apache funktioniert deshalb nicht.
+</details>
+
+### Demo-Konten (Passwort überall `demo1234`)
+
+| Login | Name | Rolle | Was man zeigen kann |
+|---|---|---|---|
+| `admin` | Admin | Admin | Benutzer anlegen, Passwort zurücksetzen |
+| `finance` | Inhaberin | Finance | alle Budgets, Filter, Diagramm je Bereich, Budget anlegen/bearbeiten, CSV |
+| `studio` | Studio-Leitung | Owner | Warnung durch Verbrauch, Warnung durch Forecast, Budget läuft bald ab |
+| `cafe` | Café-Leitung | Owner | überschrittenes Budget |
+| `marketing` | Marketing-Leitung | Owner | abgelaufenes Budget (gesperrt) |
+
+**Demo-Modus (E-021):** Nach dem Login wechselt man über die Leiste unter der Navigation mit einem Klick in
+jedes Konto – Rollen und Datentrennung gelten dabei unverändert. Im Kontomenü setzt
+„Demo-Daten zurücksetzen“ alles auf den Ausgangsstand. Abschalten: Umgebungsvariable `MALIA_DEMO=0`.
+
+## Funktionen
+
+| Bereich | Funktion |
+|---|---|
+| Alle | Login, Rollenwechsel (Demo), Passwort ändern, Abmelden, Handy-tauglich |
+| Owner | Dashboard mit Kennzahlen und „Braucht Aufmerksamkeit“, Budget-Detail mit Verlaufsdiagramm (Ist, Forecast, Soll) und Soll-Ist-Ring, Ausgabe erfassen mit Live-Vorschau, Korrektur mit Nachweis, Forecast als Monatsraster mit Hochrechnung, CSV-Export |
+| Finance | Übersicht mit Kennzahlen, Status-/Bereichsfilter, Suche, Sortierung, Diagramm je Bereich, Budget anlegen/bearbeiten/verlängern, Detailansicht, CSV-Export |
+| Admin | Zugänge anlegen, Passwort zurücksetzen |
+| Regeln | 4 Status (konzept.md Abschnitt 4), Verfallszeit sperrt Buchungen, Owner sieht nur eigene Budgets |
+| Sicherheit | Prepared Statements, `password_hash`, CSRF-Token für jedes Formular, Session-Cookie HttpOnly/SameSite, Session-Timeout, Security-Header (CSP u. a.), Ausgabe-Escaping, CSV-Injection-Schutz |
+
+## Tests
+
+```bash
+# Unit- und Integrationstests (PHPUnit 10, phpunit.phar einmalig laden):
+curl -L -o phpunit.phar https://phar.phpunit.de/phpunit-10.5.phar
+C:\xampp\php\php.exe phpunit.phar
+
+# Systemtest: klickt sich durch die laufende App (setzt danach die Demo-Daten zurück)
+C:\xampp\php\php.exe tests\rundgang.php
+```
+
+## Projektstruktur
+
+```
+public/        alles, was der Browser aufruft (Seiten je Rolle, CSS, JS)
+src/           Logik: app.php (Einstieg), budget.php (Kennzahlen), validierung.php, csrf.php, demo.php, ...
+templates/     Kopf, Fuß, Fehlerseiten, Budget-Detail, Formulare
+database/      schema.sql, demodaten.sql
+tests/         PHPUnit-Tests + rundgang.php
+```
+
+Wie die Anwendung Schritt für Schritt entstanden ist: [docs/bauanleitung.md](docs/bauanleitung.md).
