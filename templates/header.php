@@ -75,6 +75,15 @@ if ($rolle && DEMO_MODUS && isset($GLOBALS['pdo'])) {
                 <div class="dropdown-menu dropdown-menu-end konto-menue">
                     <div class="px-3 py-2 small text-muted"><?= e(ROLLEN[$rolle]['beschreibung'] ?? '') ?></div>
                     <div class="dropdown-divider"></div>
+                    <?php if (DEMO_MODUS): ?>
+                        <form method="post" action="/demo-zuruecksetzen.php">
+                            <?= csrfFeld() ?>
+                            <button type="submit" class="dropdown-item"
+                                    data-bestaetigen="Alle Änderungen verwerfen und die Demo-Daten neu laden?">
+                                Demo-Daten zurücksetzen
+                            </button>
+                        </form>
+                    <?php endif; ?>
                     <form method="post" action="/logout.php">
                         <?= csrfFeld() ?>
                         <button type="submit" class="dropdown-item">Abmelden</button>
