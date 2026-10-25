@@ -462,3 +462,86 @@ footer {
     padding: 0.2rem 0.9rem 0.2rem 0.2rem;
     font-size: 0.85rem; font-weight: 600;
 }
+
+/* --- Kennzahl-Kacheln (Dashboard, Detail, Finance) --- */
+.kennzahl {
+    height: 100%;
+    background: var(--flaeche);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--schatten-karte);
+    padding: 1.1rem 1.25rem;
+}
+.kennzahl__wert {
+    font-family: var(--serif);
+    font-size: clamp(1.55rem, 2.6vw, 2.1rem);
+    line-height: 1.15;
+    margin: 0.35rem 0 0.15rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.kennzahl__info { color: var(--muted); font-size: 0.82rem; }
+.kennzahl--betont { background: var(--sage-deep); border-color: var(--sage-deep); color: #fff; }
+.kennzahl--betont .etikett, .kennzahl--betont .kennzahl__info { color: rgba(255, 255, 255, 0.78); }
+.kennzahl--betont .kennzahl__wert { color: #fff; }
+.kennzahl--warnung { border-color: var(--ocker); box-shadow: 0 0 0 3px var(--status-warnung-bg); }
+.kennzahl--ueberschritten { border-color: var(--rose); box-shadow: 0 0 0 3px var(--status-ueberschritten-bg); }
+.text-ueberschritten { color: var(--status-ueberschritten-text) !important; }
+.text-im-rahmen { color: var(--status-im-rahmen-text) !important; }
+
+/* --- Braucht Aufmerksamkeit --- */
+.aufmerksamkeit {
+    background: var(--flaeche);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--ocker);
+    border-radius: var(--radius);
+    box-shadow: var(--schatten-karte);
+    padding: 1rem 1.25rem 0.6rem;
+}
+.aufmerksamkeit__zeile {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 0.35rem 0.75rem;
+    padding: 0.6rem 0.5rem;
+    margin: 0 -0.5rem;
+    border-radius: var(--radius-klein);
+    color: var(--ink);
+}
+.aufmerksamkeit__zeile:hover { background: var(--cream); color: var(--ink); }
+.aufmerksamkeit__zeile:hover .aufmerksamkeit__pfeil { transform: translateX(3px); }
+.aufmerksamkeit__pfeil { color: var(--muted); transition: var(--uebergang); }
+.aufmerksamkeit__punkt { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: 0 0 0.6rem; }
+.aufmerksamkeit__punkt--ueberschritten { background: var(--rose); }
+.aufmerksamkeit__punkt--warnung { background: var(--ocker); }
+.aufmerksamkeit__punkt--laeuft_ab { background: var(--muted); }
+
+/* --- Budget-Karten im Dashboard --- */
+.budget-karte { padding: 1.25rem; display: flex; flex-direction: column; }
+.budget-karte__name { font-family: var(--sans); font-size: 1.05rem; font-weight: 700; margin: 0.6rem 0 0.9rem; }
+.budget-karte__name a { color: var(--ink); }
+.budget-karte__verfuegbar { display: flex; flex-direction: column; margin-bottom: 0.75rem; }
+.budget-karte__verfuegbar .zahl-gross { font-size: 1.9rem; line-height: 1.1; }
+.budget-karte__fuss {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: auto; padding-top: 1rem;
+}
+.budget-karte--abgelaufen { opacity: 0.7; }
+.budget-karte--abgelaufen:hover { opacity: 1; }
+
+.bereich-chip {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    background: var(--cream);
+    color: var(--muted);
+}
+.bereich-chip--studio { background: #e7ebe2; color: #55644b; }
+.bereich-chip--cafe { background: #f1e6dc; color: #7a5a43; }
+.bereich-chip--marketing { background: #f4e2dd; color: #94483a; }
+
+.leer-zustand {
+    text-align: center;
+    padding: 3rem 1rem;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius);
+    background: var(--flaeche);
+}

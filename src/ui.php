@@ -43,6 +43,14 @@ function euro(float $betrag): string
     return number_format($betrag, 2, ',', '.') . "\u{00A0}€";
 }
 
+/** 84.0 -> "84 %", 41.67 -> "41,7 %" */
+function prozent(float $wert): string
+{
+    $text = number_format($wert, 1, ',', '.');
+
+    return (str_ends_with($text, ',0') ? substr($text, 0, -2) : $text) . "\u{00A0}%";
+}
+
 /** "2026-12-31" -> "31.12.2026" */
 function datumDe(?string $datum): string
 {

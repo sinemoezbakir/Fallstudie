@@ -12,6 +12,7 @@
  */
 
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/ui.php'; // euro(), datumDe() für die Texte in statusGrund()
 
 /**
  * Reine Datentrennungs-Abfrage ohne Seiteneffekt (kein exit) - das macht
@@ -210,4 +211,158 @@ function kennzahlenFuerBudget(array $budget): array
         'status' => berechneStatus($budget),
         'tage_bis_verfall' => $tageBisVerfall,
     ];
+}
+
+// --- Auswertungen für Dashboard, Detailseite und Finance-Übersicht ----------
+
+/**
+ * Hängt an jedes Budget seine Kennzahlen: [['budget' => ..., 'k' => ...], ...]
+ * Abgelaufene Budgets wandern ans Ende, sonst bleibt die Reihenfolge.
+ */
+function budgetsMitKennzahlen(array $budgets): array
+{
+    $eintraege = array_map(fn (array $b) => ['budget' => $b, 'k' => kennzahlenFuerBudget($b)], $budgets);
+
+    usort($eintraege, fn ($a, $b) => ($a['k']['status'] === 'abgelaufen') <=> ($b['k']['status'] === 'abgelaufen'));
+
+    return $eintraege;
+}
+
+/**
+ * Summen über mehrere Budgets. Geldsummen nur über laufende Budgets
+ * (abgelaufene sind abgeschlossen und würden "Verfügbar" verfälschen),
+ * die Status-Zählung über alle.
+ */
+function zusammenfassung(array $eintraege): array
+{
+    $summe = ['soll' => 0.0, 'ist' => 0.0, 'verfuegbar' => 0.0, 'hochrechnung' => 0.0, 'laufend' => 0];
+    $anzahlJeStatus = array_fill_keys(['im_rahmen', 'warnung', 'ueberschritten', 'abgelaufen'], 0);
+
+    foreach ($eintraege as $eintrag) {
+        $k = $eintrag['k'];
+        $anzahlJeStatus[$k['status']]++;
+
+        if ($k['status'] === 'abgelaufen') {
+            continue;
+        }
+        $summe['laufend']++;
+        $summe['soll'] += (float) $eintrag['budget']['soll_betrag'];
+        $summe['ist'] += $k['ist'];
+        $summe['verfuegbar'] += $k['verfuegbar'];
+        $summe['hochrechnung'] += $k['hochrechnung'];
+    }
+
+    $summe['verbrauch_prozent'] = $summe['soll'] > 0 ? round($summe['ist'] / $summe['soll'] * 100, 1) : 0.0;
+    $summe['anzahl'] = $anzahlJeStatus;
+
+    return array_map(fn ($wert) => is_float($wert) ? round($wert, 2) : $wert, $summe);
+}
+
+/**
+ * Warum ein Budget Aufmerksamkeit braucht - in Worten, für Dashboard und
+ * Übersicht. Leerer String, wenn alles in Ordnung ist.
+ */
+function statusGrund(array $budget, array $k): string
+{
+    $soll = (float) $budget['soll_betrag'];
+
+    return match ($k['status']) {
+        'ueberschritten' => euro($k['ist'] - $soll) . ' über dem Soll',
+        'warnung' => $k['verbrauch_prozent'] >= 80
+            ? prozent($k['verbrauch_prozent']) . ' verbraucht'
+            : 'Hochrechnung ' . euro($k['hochrechnung']) . ' liegt über dem Soll',
+        'abgelaufen' => 'abgelaufen am ' . datumDe($budget['gueltig_bis']),
+        default => '',
+    };
+}
+
+/**
+ * Liste für "Braucht Aufmerksamkeit": überschrittene und gewarnte Budgets
+ * sowie laufende Budgets, die in den nächsten $tageGrenze Tagen ablaufen.
+ */
+function aufmerksamkeitsListe(array $eintraege, int $tageGrenze = 30): array
+{
+    $liste = [];
+
+    foreach ($eintraege as $eintrag) {
+        $budget = $eintrag['budget'];
+        $k = $eintrag['k'];
+
+        if (in_array($k['status'], ['ueberschritten', 'warnung'], true)) {
+            $liste[] = ['budget' => $budget, 'k' => $k, 'art' => $k['status'], 'text' => statusGrund($budget, $k)];
+        } elseif ($k['status'] === 'im_rahmen' && $k['tage_bis_verfall'] <= $tageGrenze) {
+            $liste[] = [
+                'budget' => $budget, 'k' => $k, 'art' => 'laeuft_ab',
+                'text' => ucfirst(restlaufzeitText($k['tage_bis_verfall'])) . ' – noch ' . euro($k['verfuegbar']) . ' verfügbar',
+            ];
+        }
+    }
+
+    // Überschritten zuerst, dann Warnung, dann "läuft ab"
+    $reihenfolge = ['ueberschritten' => 0, 'warnung' => 1, 'laeuft_ab' => 2];
+    usort($liste, fn ($a, $b) => $reihenfolge[$a['art']] <=> $reihenfolge[$b['art']]);
+
+    return $liste;
+}
+
+/**
+ * Monatlicher Verlauf für das Forecast-Ist-Soll-Diagramm (MB-044):
+ *  - ist:      kumulierte Ausgaben bis einschließlich des aktuellen Monats
+ *  - prognose: ab dem aktuellen Monat Ist + offener Forecast, kumuliert
+ *              (startet beim Vormonat, damit die Linie an das Ist anschließt)
+ *  - soll:     Budgetgrenze als waagrechte Linie
+ * Monate ohne Wert sind null (Chart.js zeichnet dort nichts).
+ */
+function verlaufFuerBudget(array $budget, ?string $heute = null): array
+{
+    global $pdo;
+
+    $heute ??= date('Y-m-d');
+    $aktuellerMonat = substr($heute, 0, 7) . '-01';
+    $budgetId = (int) $budget['id'];
+
+    $stmt = $pdo->prepare(
+        "SELECT DATE_FORMAT(datum, '%Y-%m-01') AS monat, SUM(betrag) AS summe
+         FROM ist_buchung WHERE budget_id = :id GROUP BY monat"
+    );
+    $stmt->execute(['id' => $budgetId]);
+    $istJeMonat = array_map('floatval', $stmt->fetchAll(PDO::FETCH_KEY_PAIR));
+
+    $stmt = $pdo->prepare('SELECT monat, betrag FROM forecast WHERE budget_id = :id');
+    $stmt->execute(['id' => $budgetId]);
+    $forecastJeMonat = array_map('floatval', $stmt->fetchAll(PDO::FETCH_KEY_PAIR));
+
+    $start = new DateTimeImmutable(substr($budget['gueltig_von'], 0, 7) . '-01');
+    $ende = new DateTimeImmutable(substr($budget['gueltig_bis'], 0, 7) . '-01');
+
+    // Buchungen vor Budgetbeginn (sollte es nicht geben) zählen zum ersten Monat
+    $kumuliert = array_sum(array_filter($istJeMonat, fn ($m) => $m < $start->format('Y-m-d'), ARRAY_FILTER_USE_KEY));
+    $istGesamt = array_sum($istJeMonat);
+    $prognoseLaufend = $istGesamt;
+
+    $verlauf = ['monate' => [], 'beschriftungen' => [], 'ist' => [], 'prognose' => [], 'soll' => (float) $budget['soll_betrag']];
+
+    for ($monat = $start; $monat <= $ende; $monat = $monat->modify('+1 month')) {
+        $schluessel = $monat->format('Y-m-d');
+        $kumuliert += $istJeMonat[$schluessel] ?? 0.0;
+
+        $verlauf['monate'][] = $schluessel;
+        $verlauf['beschriftungen'][] = monatDe($schluessel, true);
+        $verlauf['ist'][] = $schluessel <= $aktuellerMonat ? round($kumuliert, 2) : null;
+
+        if ($schluessel >= $aktuellerMonat) {
+            $prognoseLaufend += $forecastJeMonat[$schluessel] ?? 0.0;
+            $verlauf['prognose'][] = round($prognoseLaufend, 2);
+        } else {
+            $verlauf['prognose'][] = null;
+        }
+    }
+
+    // Anschluss: Prognose-Linie beginnt am letzten Ist-Punkt vor dem aktuellen Monat
+    $index = array_search($aktuellerMonat, $verlauf['monate'], true);
+    if ($index !== false && $index > 0) {
+        $verlauf['prognose'][$index - 1] = $verlauf['ist'][$index - 1];
+    }
+
+    return $verlauf;
 }
