@@ -7,6 +7,17 @@ document.addEventListener('DOMContentLoaded', () => {
         bootstrap.Toast.getOrCreateInstance(element).show();
     });
 
+    // Suchfeld filtert Tabellenzeilen: <input data-filter-tabelle="#tabellen-id">
+    document.querySelectorAll('[data-filter-tabelle]').forEach((feld) => {
+        const zeilen = document.querySelectorAll(`${feld.dataset.filterTabelle} tbody tr`);
+        feld.addEventListener('input', () => {
+            const suche = feld.value.trim().toLowerCase();
+            zeilen.forEach((zeile) => {
+                zeile.hidden = suche !== '' && !zeile.textContent.toLowerCase().includes(suche);
+            });
+        });
+    });
+
     // Sicherheitsabfrage für Buttons mit data-bestaetigen="Text".
     document.querySelectorAll('[data-bestaetigen]').forEach((element) => {
         element.addEventListener('click', (event) => {

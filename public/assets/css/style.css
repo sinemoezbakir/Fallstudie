@@ -545,3 +545,24 @@ footer {
     border-radius: var(--radius);
     background: var(--flaeche);
 }
+
+/* --- Budget-Detail: Diagramme und Ausgaben --- */
+.diagramm-rahmen { position: relative; }
+.diagramm-rahmen--gross { height: 320px; }
+.diagramm-rahmen--rund { height: 240px; }
+.forecast-liste li {
+    display: flex; justify-content: space-between;
+    padding: 0.35rem 0;
+    border-bottom: 1px dashed var(--line);
+}
+.forecast-liste li:last-child { border-bottom: none; }
+.korrektur-hinweis {
+    font-size: 0.8rem;
+    color: var(--status-warnung-text);
+    margin-top: 0.15rem;
+}
+.korrektur-hinweis::before { content: "✎ "; }
+.suche-feld { max-width: 260px; border-radius: 999px; }
+.kennzahl--negativ { background: #b5786c; border-color: #b5786c; color: #fff; }
+.kennzahl--negativ .etikett, .kennzahl--negativ .kennzahl__info { color: rgba(255, 255, 255, 0.82); }
+.kennzahl--negativ .kennzahl__wert { color: #fff; }

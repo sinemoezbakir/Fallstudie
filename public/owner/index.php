@@ -53,7 +53,7 @@ require __DIR__ . '/../../templates/header.php';
         </div>
     </div>
     <div class="col-6 col-lg-3">
-        <div class="kennzahl kennzahl--betont">
+        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
             <div class="etikett">Noch verfügbar</div>
             <div class="kennzahl__wert"><?= euro($summe['verfuegbar']) ?></div>
             <div class="kennzahl__info">über alle laufenden Budgets</div>

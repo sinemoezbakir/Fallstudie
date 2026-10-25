@@ -366,3 +366,30 @@ function verlaufFuerBudget(array $budget, ?string $heute = null): array
 
     return $verlauf;
 }
+
+/** Alle Ist-Buchungen eines Budgets, neueste zuerst, mit Name der erfassenden Person. */
+function ladeBuchungen(int $budgetId): array
+{
+    global $pdo;
+
+    $stmt = $pdo->prepare(
+        'SELECT ib.*, u.anzeigename AS erfasst_von_name
+         FROM ist_buchung ib JOIN benutzer u ON u.id = ib.erfasst_von
+         WHERE ib.budget_id = :id
+         ORDER BY ib.datum DESC, ib.id DESC'
+    );
+    $stmt->execute(['id' => $budgetId]);
+
+    return $stmt->fetchAll();
+}
+
+/** Forecast-Werte eines Budgets als ['2026-11-01' => 400.0, ...], aufsteigend. */
+function ladeForecasts(int $budgetId): array
+{
+    global $pdo;
+
+    $stmt = $pdo->prepare('SELECT monat, betrag FROM forecast WHERE budget_id = :id ORDER BY monat');
+    $stmt->execute(['id' => $budgetId]);
+
+    return array_map('floatval', $stmt->fetchAll(PDO::FETCH_KEY_PAIR));
+}
