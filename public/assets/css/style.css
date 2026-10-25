@@ -589,3 +589,15 @@ footer {
 @media (max-width: 991.98px) { .vorschau { position: static; } }
 .btn-link { text-decoration: none; font-weight: 600; }
 .btn-link:hover { color: var(--ink) !important; }
+
+/* --- Forecast-Raster (MB-042) --- */
+.forecast-raster__zeile {
+    display: grid;
+    grid-template-columns: 1fr minmax(9rem, 13rem);
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed var(--line);
+}
+.forecast-raster__zeile:last-child { border-bottom: none; }
+.forecast-raster__monat { font-weight: 600; margin: 0; }

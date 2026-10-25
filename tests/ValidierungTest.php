@@ -101,6 +101,25 @@ final class ValidierungTest extends TestCase
         $this->assertArrayHasKey('owner_id', $ergebnis['fehler']);
     }
 
+    public function testForecastRasterLeerNullUndFremdeMonate(): void
+    {
+        $ergebnis = pruefeForecast(
+            ['2026-11-01' => '1.500,00', '2026-12-01' => '', '2027-01-01' => '0', '2030-01-01' => '999'],
+            ['2026-11-01', '2026-12-01', '2027-01-01']
+        );
+
+        $this->assertSame([], $ergebnis['fehler']);
+        // leer und 0 bedeuten "löschen", Monate außerhalb der Laufzeit werden ignoriert
+        $this->assertSame(['2026-11-01' => 1500.0, '2026-12-01' => null, '2027-01-01' => null], $ergebnis['werte']);
+    }
+
+    public function testForecastMitTextWirdAmFeldGemeldet(): void
+    {
+        $ergebnis = pruefeForecast(['2026-11-01' => 'viel'], ['2026-11-01']);
+
+        $this->assertArrayHasKey('forecast-2026-11-01', $ergebnis['fehler']);
+    }
+
     public function testPasswortRegeln(): void
     {
         $this->assertNotNull(pruefePasswort('kurz'));

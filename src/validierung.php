@@ -167,6 +167,32 @@ function pruefeBudget(array $eingabe, array $ownerIds): array
 }
 
 /**
+ * Forecast als Monatsraster (MB-042): ['2026-11-01' => '400', ...].
+ * Leeres Feld oder 0 bedeutet "kein Forecast" (Wert null -> wird gelöscht).
+ * Monate außerhalb von $erlaubteMonate werden ignoriert.
+ */
+function pruefeForecast(mixed $eingabe, array $erlaubteMonate): array
+{
+    $eingabe = is_array($eingabe) ? $eingabe : [];
+    $werte = [];
+    $fehler = [];
+
+    foreach ($erlaubteMonate as $monat) {
+        $roh = trim((string) ($eingabe[$monat] ?? ''));
+
+        if ($roh === '') {
+            $werte[$monat] = null;
+            continue;
+        }
+
+        $betrag = pruefeBetragsfeld($roh, $fehler, "forecast-{$monat}", true);
+        $werte[$monat] = $betrag === 0.0 ? null : $betrag;
+    }
+
+    return ['werte' => $werte, 'fehler' => $fehler];
+}
+
+/**
  * Passwortregeln: mindestens 8 Zeichen, höchstens 72 Byte (bcrypt schneidet
  * alles danach still ab), Wiederholung muss passen (falls abgefragt).
  * Gibt die Fehlermeldung zurück oder null.
