@@ -20,6 +20,12 @@ const STATUS_LABEL = [
     'abgelaufen' => 'Abgelaufen',
 ];
 
+const ROLLEN = [
+    'ADMIN' => ['label' => 'Admin', 'beschreibung' => 'Benutzer und Rollen verwalten'],
+    'FINANCE' => ['label' => 'Finance', 'beschreibung' => 'alle Budgets anlegen und überwachen'],
+    'OWNER' => ['label' => 'Owner', 'beschreibung' => 'nur die eigenen Budgets'],
+];
+
 const MONATE = [
     1 => 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
     'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember',
@@ -61,6 +67,17 @@ function monatDe(string $datum, bool $kurz = false): string
 function bereichLabel(string $bereich): string
 {
     return BEREICHE[$bereich] ?? $bereich;
+}
+
+function rolleLabel(string $rolle): string
+{
+    return ROLLEN[$rolle]['label'] ?? $rolle;
+}
+
+/** Erster Buchstabe des Namens für den Avatar-Kreis. */
+function initiale(string $name): string
+{
+    return mb_strtoupper(mb_substr($name, 0, 1));
 }
 
 function statusLabel(string $status): string
