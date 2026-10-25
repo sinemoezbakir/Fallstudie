@@ -2,7 +2,9 @@
  * Maliá Budget – Design-Grundlage
  * Farben und Schriften aus der Maliá-Website übernommen
  * (siehe docs/konzept.md Abschnitt 6, Quelle: WebProgrammierung-neuaufbau).
- * Feinschliff (MB-052): Schatten, Übergänge, konsistente Buttons/Formulare.
+ * MB-052: Schatten, Übergänge, konsistente Buttons/Formulare.
+ * MB-012: Status-Badges mit getöntem Hintergrund und dunkler Schrift
+ *         (weiße Schrift auf Ocker war nicht gut lesbar).
  */
 
 :root {
@@ -17,114 +19,187 @@
     --serif: "Instrument Serif", Georgia, serif;
     --sans: "DM Sans", system-ui, sans-serif;
 
-    /* Status-Farben (konzept.md Abschnitt 4) */
+    --grund: #faf7f1;
+    --flaeche: #ffffff;
+    --ocker: #d9a441;
+
+    /* Status-Farben (konzept.md Abschnitt 4): Füllung + gut lesbare Schrift */
     --status-im-rahmen: var(--sage);
-    --status-warnung: #d9a441;
+    --status-warnung: var(--ocker);
     --status-ueberschritten: var(--rose);
-    --status-abgelaufen: var(--muted);
+    --status-abgelaufen: #a8a29a;
+    --status-im-rahmen-bg: #e7ebe2;   --status-im-rahmen-text: #55644b;
+    --status-warnung-bg: #f6ead0;     --status-warnung-text: #7d5a12;
+    --status-ueberschritten-bg: #f4e2dd; --status-ueberschritten-text: #94483a;
+    --status-abgelaufen-bg: #ece8e1;  --status-abgelaufen-text: #625d56;
 
     --schatten-klein: 0 1px 2px rgba(73, 68, 62, 0.06), 0 1px 1px rgba(73, 68, 62, 0.04);
-    --schatten-karte: 0 2px 8px rgba(73, 68, 62, 0.08), 0 1px 2px rgba(73, 68, 62, 0.05);
-    --schatten-karte-hover: 0 8px 20px rgba(73, 68, 62, 0.12), 0 2px 6px rgba(73, 68, 62, 0.06);
-    --radius: 0.75rem;
+    --schatten-karte: 0 1px 3px rgba(73, 68, 62, 0.06), 0 6px 16px -8px rgba(73, 68, 62, 0.12);
+    --schatten-karte-hover: 0 12px 28px -10px rgba(73, 68, 62, 0.22), 0 2px 6px rgba(73, 68, 62, 0.06);
+    --radius: 0.9rem;
+    --radius-klein: 0.55rem;
     --uebergang: all 0.18s ease;
+
+    --bs-body-font-family: var(--sans);
+    --bs-body-color: var(--ink);
+    --bs-link-color-rgb: 114, 130, 103;
+    --bs-border-color: var(--line);
 }
 
 * { box-sizing: border-box; }
 
 body {
-    background-color: var(--paper);
-    background-image: radial-gradient(circle at top right, rgba(141, 155, 127, 0.06), transparent 45%);
+    background-color: var(--grund);
+    background-image:
+        radial-gradient(60rem 30rem at 100% -10%, rgba(141, 155, 127, 0.10), transparent 60%),
+        radial-gradient(40rem 24rem at -10% 10%, rgba(201, 147, 136, 0.07), transparent 60%);
+    background-attachment: fixed;
     color: var(--ink);
     font-family: var(--sans);
     -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
+main { flex: 1; }
 
-h1, h2, h3, h4, .zahl-gross {
+h1, h2, h3, h4, .zahl-gross, .serif {
     font-family: var(--serif);
+    font-weight: 400;
     color: var(--ink);
     letter-spacing: -0.01em;
 }
+h1, .h1 { font-size: clamp(2rem, 4vw, 2.6rem); }
 
 .text-muted { color: var(--muted) !important; }
+.tabular { font-variant-numeric: tabular-nums; }
 
-a {
-    color: var(--sage-deep);
-    text-decoration: none;
-}
+a { color: var(--sage-deep); text-decoration: none; }
 a:hover { color: var(--ink); }
+
+:focus-visible { outline: 2px solid var(--sage-deep); outline-offset: 2px; }
+
+.skip-link {
+    position: absolute; left: 1rem; top: 0.5rem; z-index: 2000;
+    background: var(--ink); color: #fff; padding: 0.5rem 1rem; border-radius: var(--radius-klein);
+}
+
+/* --- Seitenkopf innerhalb einer Seite --- */
+.seitenkopf { margin-bottom: 1.75rem; }
+.seitenkopf h1 { margin-bottom: 0.25rem; }
+.seitenkopf .lead { color: var(--muted); font-size: 1rem; margin-bottom: 0; }
+.zurueck-link { display: inline-flex; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+.zurueck-link:hover { color: var(--sage-deep); }
 
 /* --- Navigation --- */
 .navbar {
-    background-color: var(--paper);
+    background-color: rgba(255, 253, 250, 0.85);
+    backdrop-filter: saturate(1.4) blur(10px);
     border-bottom: 1px solid var(--line);
-    box-shadow: var(--schatten-klein);
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
 }
-
 .navbar-brand {
-    font-size: 1.4rem;
+    font-family: var(--serif);
+    font-size: 1.55rem;
     color: var(--ink) !important;
 }
-
+.navbar-brand__zusatz { color: var(--sage-deep); font-style: italic; }
 .navbar .nav-link {
     color: var(--muted);
     font-weight: 500;
+    border-radius: 999px;
+    padding: 0.45rem 0.95rem !important;
     transition: var(--uebergang);
 }
-.navbar .nav-link:hover { color: var(--sage-deep); }
+.navbar .nav-link:hover { color: var(--ink); background: var(--cream); }
+.navbar .nav-link.active { color: var(--ink); background: var(--cream); font-weight: 700; }
+.navbar-toggler { border-color: var(--line); }
+
+.konto-knopf {
+    display: flex; align-items: center; gap: 0.6rem;
+    background: var(--flaeche);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem 0.3rem 0.3rem;
+    color: var(--ink);
+    transition: var(--uebergang);
+}
+.konto-knopf:hover, .konto-knopf[aria-expanded="true"] { border-color: var(--sage); box-shadow: var(--schatten-klein); }
+.konto-knopf::after { margin-left: 0.25rem; color: var(--muted); }
+.konto-menue {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--schatten-karte-hover);
+    padding: 0.4rem;
+    min-width: 17rem;
+}
+.konto-menue .dropdown-item { border-radius: var(--radius-klein); padding: 0.5rem 0.75rem; }
+.konto-menue .dropdown-item:active { background: var(--sage); }
+
+.avatar {
+    width: 2.1rem; height: 2.1rem; flex: 0 0 2.1rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: 700; font-size: 0.9rem;
+    color: #fff;
+    background: var(--sage);
+}
+.avatar--admin { background: var(--ink); }
+.avatar--finance { background: var(--ocker); }
+.avatar--owner { background: var(--sage-deep); }
 
 /* --- Karten --- */
 .card, .maliá-karte {
-    background-color: var(--cream);
+    background-color: var(--flaeche);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--schatten-karte);
     transition: var(--uebergang);
 }
+.karte-titel { font-family: var(--sans); font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
 
-a.text-decoration-none .card {
-    cursor: pointer;
-}
-a.text-decoration-none:hover .card {
+a.text-decoration-none .card { cursor: pointer; }
+a.text-decoration-none:hover .card,
+.card--klickbar:hover {
     box-shadow: var(--schatten-karte-hover);
     transform: translateY(-2px);
     border-color: var(--sage);
 }
 
-/* Kennzahlen-Kacheln (Soll/Ist/Verfügbar/Tage auf der Detailseite) */
-.card .text-muted.small {
+/* Kleine Großbuchstaben-Beschriftung (Kennzahlen, Tabellenköpfe) */
+.etikett {
     text-transform: uppercase;
     font-size: 0.72rem;
-    letter-spacing: 0.04em;
-    font-weight: 600;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--muted);
 }
 
 /* --- Buttons --- */
 .btn {
-    border-radius: 0.6rem;
-    padding: 0.5rem 1.4rem;
+    border-radius: 999px;
+    padding: 0.55rem 1.3rem;
     font-weight: 600;
     white-space: nowrap;
     transition: var(--uebergang);
     border: 1px solid transparent;
 }
+.btn-sm { padding: 0.3rem 0.85rem; font-size: 0.85rem; }
 
 .btn-maliá {
-    background-color: var(--sage);
+    background-color: var(--sage-deep);
     color: #fff;
     box-shadow: var(--schatten-klein);
 }
-.btn-maliá:hover {
-    background-color: var(--sage-deep);
+.btn-maliá:hover, .btn-maliá:focus-visible {
+    background-color: #5f6e55;
     color: #fff;
     box-shadow: var(--schatten-karte);
     transform: translateY(-1px);
 }
-
 .btn-maliá-outline {
-    background-color: transparent;
+    background-color: var(--flaeche);
     color: var(--ink);
     border-color: var(--line);
 }
@@ -133,67 +208,69 @@ a.text-decoration-none:hover .card {
     border-color: var(--sage);
     color: var(--ink);
 }
+.btn-maliá-gefahr { background: var(--flaeche); color: #94483a; border-color: #e8c9c1; }
+.btn-maliá-gefahr:hover { background: var(--status-ueberschritten-bg); color: #94483a; border-color: var(--rose); }
 
 /* --- Status-Badge: vier Zustände gemäß konzept.md Abschnitt 4 --- */
 .status-badge {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.3rem 0.85rem;
+    gap: 0.4rem;
+    padding: 0.28rem 0.75rem;
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #fff;
-    box-shadow: var(--schatten-klein);
+    letter-spacing: 0.01em;
+    white-space: nowrap;
 }
 .status-badge::before {
     content: "";
-    width: 0.4rem;
-    height: 0.4rem;
+    width: 0.45rem;
+    height: 0.45rem;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: currentColor;
 }
-
-.status-badge.im-rahmen { background-color: var(--status-im-rahmen); }
-.status-badge.warnung { background-color: var(--status-warnung); }
-.status-badge.ueberschritten { background-color: var(--status-ueberschritten); }
-.status-badge.abgelaufen { background-color: var(--status-abgelaufen); }
+.status-badge.im-rahmen { background-color: var(--status-im-rahmen-bg); color: var(--status-im-rahmen-text); }
+.status-badge.warnung { background-color: var(--status-warnung-bg); color: var(--status-warnung-text); }
+.status-badge.ueberschritten { background-color: var(--status-ueberschritten-bg); color: var(--status-ueberschritten-text); }
+.status-badge.abgelaufen { background-color: var(--status-abgelaufen-bg); color: var(--status-abgelaufen-text); }
 
 /* --- Fortschrittsbalken für Verbrauch % --- */
 .verbrauch-balken {
-    height: 0.6rem;
-    background-color: var(--line);
+    height: 0.55rem;
+    background-color: var(--cream);
     border-radius: 999px;
     overflow: hidden;
 }
-
 .verbrauch-balken__fuellung {
     height: 100%;
-    background-color: var(--sage);
+    background-color: var(--status-im-rahmen);
     border-radius: 999px;
-    transition: width 0.3s ease;
+    transition: width 0.6s cubic-bezier(.2, .8, .2, 1);
 }
-
 .verbrauch-balken__fuellung.warnung { background-color: var(--status-warnung); }
 .verbrauch-balken__fuellung.ueberschritten { background-color: var(--status-ueberschritten); }
 
 /* --- Tabellen --- */
-.table {
-    background-color: var(--paper);
+.tabelle-karte {
+    background: var(--flaeche);
+    border: 1px solid var(--line);
     border-radius: var(--radius);
-    overflow: hidden;
     box-shadow: var(--schatten-karte);
+    overflow: hidden;
 }
+.tabelle-karte .table-responsive { margin: 0; }
+.table { margin-bottom: 0; --bs-table-bg: transparent; }
 .table thead th {
     background-color: var(--cream);
     color: var(--muted);
     text-transform: uppercase;
     font-size: 0.72rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.05em;
     font-weight: 700;
     border-bottom: 1px solid var(--line);
-    padding: 0.85rem 1rem;
+    padding: 0.8rem 1rem;
+    white-space: nowrap;
 }
 .table tbody td {
     padding: 0.85rem 1rem;
@@ -201,29 +278,30 @@ a.text-decoration-none:hover .card {
     vertical-align: middle;
 }
 .table tbody tr:last-child td { border-bottom: none; }
-.table tbody tr {
-    transition: var(--uebergang);
-}
-.table tbody tr:hover { background-color: var(--cream); }
+.table tbody tr { transition: background-color 0.15s ease; }
+.table-hover tbody tr:hover > * { --bs-table-bg-state: var(--cream); }
+.zeile-klickbar { cursor: pointer; }
 
 /* --- Formulare --- */
 .form-control, .form-select {
     border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    padding: 0.55rem 0.9rem;
-    background-color: var(--paper);
+    border-radius: var(--radius-klein);
+    padding: 0.6rem 0.9rem;
+    background-color: var(--flaeche);
     transition: var(--uebergang);
 }
 .form-control:focus, .form-select:focus {
     border-color: var(--sage);
-    box-shadow: 0 0 0 0.2rem rgba(141, 155, 127, 0.18);
+    box-shadow: 0 0 0 0.22rem rgba(141, 155, 127, 0.2);
 }
 .form-label {
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.87rem;
     color: var(--ink);
     margin-bottom: 0.35rem;
 }
+.form-text { color: var(--muted); }
+.input-group-text { background: var(--cream); border-color: var(--line); color: var(--muted); }
 
 /* --- Meldungen --- */
 .alert {
@@ -231,12 +309,32 @@ a.text-decoration-none:hover .card {
     border: none;
     box-shadow: var(--schatten-klein);
 }
-.alert-success { background-color: rgba(141, 155, 127, 0.18); color: var(--sage-deep); }
-.alert-danger { background-color: rgba(201, 147, 136, 0.18); color: #9c4f41; }
+.alert-success { background-color: var(--status-im-rahmen-bg); color: var(--status-im-rahmen-text); }
+.alert-danger { background-color: var(--status-ueberschritten-bg); color: var(--status-ueberschritten-text); }
+.alert-warning { background-color: var(--status-warnung-bg); color: var(--status-warnung-text); }
+
+.toast-container { z-index: 1100; margin-top: 4.5rem; }
+.maliá-toast {
+    background: var(--flaeche);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--schatten-karte-hover);
+    min-width: 18rem;
+}
+.maliá-toast__icon {
+    width: 1.6rem; height: 1.6rem; flex: 0 0 1.6rem;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    font-weight: 700; font-size: 0.85rem; color: #fff;
+}
+.maliá-toast--erfolg .maliá-toast__icon { background: var(--sage-deep); }
+.maliá-toast--fehler .maliá-toast__icon { background: var(--rose); }
+.maliá-toast--hinweis .maliá-toast__icon { background: var(--ocker); }
 
 /* --- Footer --- */
 footer {
     border-top: 1px solid var(--line);
+    color: var(--muted);
     margin-top: 2rem;
 }
 
@@ -249,4 +347,8 @@ footer {
     color: var(--rose);
     opacity: 0.85;
     margin-bottom: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
 }

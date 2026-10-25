@@ -6,14 +6,9 @@
  * nicht der anfragenden Person gehört (Risiko R3: Owner sieht fremde Daten).
  */
 
-$pageTitle = 'Kein Zugriff';
-require __DIR__ . '/header.php';
-?>
-
-<div class="text-center py-5">
-    <h1 style="color: var(--rose);">403 – Kein Zugriff</h1>
-    <p>Du hast keine Berechtigung, diese Seite oder diese Daten zu sehen.</p>
-    <a href="/" class="btn" style="background-color: var(--sage); color: #fff;">Zur Startseite</a>
-</div>
-
-<?php require __DIR__ . '/footer.php'; ?>
+$fehlerCode = 403;
+$fehlerTitel = 'Kein Zugriff';
+$fehlerText = empty($_SESSION['user_id'])
+    ? 'Bitte melde dich zuerst an. <a href="/login.php">Zum Login</a>'
+    : 'Diese Seite oder diese Daten gehören nicht zu deinem Konto.';
+require __DIR__ . '/fehlerseite.php';
