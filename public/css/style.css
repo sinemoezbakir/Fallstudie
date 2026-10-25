@@ -1,0 +1,354 @@
+/*
+ * Zentrale Design-Werte. Zum Anpassen an die Maliá-Website nur diese Variablen ändern.
+ *
+ * Barrierefreiheit: Die Statusfarben stammen aus der farbenblind-tauglichen Okabe-Ito-Palette
+ * (kein Rot-Grün-Paar). Zusätzlich steht jeder Status immer als Text und Symbol da.
+ * Kontrast (WCAG AA): Text mindestens 4,5:1, Rahmen und Grafiken mindestens 3:1.
+ * Bei neuen Farben bitte mit einem Kontrastrechner prüfen, z. B. webaim.org/resources/contrastchecker
+ */
+:root {
+    /* Farben der Marke */
+    --malia-primary:      #4a3f35;   /* Hauptfarbe dunkles Taupe (Buttons); weißer Text ca. 10:1 */
+    --malia-primary-dark: #2e2620;   /* Hover / aktiver Menüpunkt */
+    --malia-accent:       #b08d5b;   /* Akzentfarbe, Sand (Markierungen) */
+    --malia-background:   #faf7f2;   /* Seitenhintergrund */
+    --malia-text:         #2f2f2f;   /* Textfarbe; auf Hintergrund 11:1 */
+    --malia-text-muted:   #595959;   /* Nebentext; auf Hintergrund 6:1 */
+    --malia-text-on-primary: #ffffff;
+
+    /* Okabe-Ito-Palette */
+    --malia-blue:        #0072B2;    /* Blau */
+    --malia-blue-dark:   #005a8e;    /* Blau, dunkler (Link beim Überfahren) */
+    --malia-orange:      #E69F00;    /* Orange */
+    --malia-vermillion:  #D55E00;    /* Vermillion */
+    --malia-bluegreen:   #009E73;    /* Blaugrün */
+    --malia-grey:        #999999;    /* Grau */
+
+    /* Statusfarben für Budgets (Fläche); Text darauf immer schwarz (mind. 5:1) */
+    --malia-status-ok:      var(--malia-bluegreen);   /* im Rahmen */
+    --malia-status-warning: var(--malia-orange);      /* Warnung */
+    --malia-status-over:    var(--malia-vermillion);  /* überschritten */
+    --malia-status-expired: var(--malia-grey);        /* abgelaufen */
+    --malia-text-on-status: #000000;
+
+    /* Statusfarben als Textfarbe auf hellem Grund (dunkler, damit mind. 4,5:1) */
+    --malia-status-ok-text:   #007A5A;
+    --malia-status-over-text: #A34700;
+
+    /* Rahmen von Eingabefeldern und Buttons (mind. 3:1 zum Hintergrund) */
+    --malia-border-strong: #767676;
+
+    /* Diagramme (Chart.js liest diese Variablen) */
+    --malia-chart-soll:     #e4d8c3;   /* Soll: helles Beige */
+    --malia-chart-ist:      #4a3f35;   /* Ist: dunkles Taupe */
+    --malia-chart-forecast: #a8895f;   /* Forecast: mittleres Sand */
+
+    /* Balken-Füllungen: Schraffur zusätzlich zur Farbe */
+    --malia-forecast-light: #f6d58a;   /* hellere Streifen im Forecast-Balken */
+
+    /* Schrift */
+    --malia-font: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --malia-font-heading: var(--malia-font);
+}
+
+/* Bootstrap-Variablen auf unsere Werte setzen */
+body {
+    --bs-body-font-family: var(--malia-font);
+    --bs-body-color: var(--malia-text);
+    --bs-body-bg: var(--malia-background);
+    --bs-primary: var(--malia-primary);
+    --bs-primary-rgb: 74, 63, 53;
+    --bs-secondary-color: var(--malia-text-muted);   /* "text-muted": Bootstrap-Grau hätte nur 4,1:1 */
+    --bs-link-color: var(--malia-primary);
+    --bs-link-hover-color: var(--malia-primary-dark);
+    --bs-link-color-rgb: 74, 63, 53;
+    --bs-link-hover-color-rgb: 46, 38, 32;
+}
+
+/* Deutlich sichtbarer Tastaturfokus (WCAG 2.4.7) */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.form-control:focus,
+.form-select:focus,
+.btn:focus-visible {
+    outline: 3px solid var(--malia-primary);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+.malia-navbar a:focus-visible,
+.malia-navbar button:focus-visible,
+.malia-navbar select:focus-visible {
+    outline-color: #ffffff;   /* auf dem dunkelgrünen Balken ist Weiß besser sichtbar */
+}
+
+/* Eingabefelder: Rahmen mit ausreichend Kontrast */
+.form-control,
+.form-select {
+    border-color: var(--malia-border-strong);
+}
+
+/* Graue Buttons: Standard-Grau von Bootstrap ist auf dem Hintergrund zu hell */
+.btn-outline-secondary {
+    --bs-btn-color: var(--malia-text);
+    --bs-btn-border-color: var(--malia-border-strong);
+    --bs-btn-hover-bg: var(--malia-text);
+    --bs-btn-hover-border-color: var(--malia-text);
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-bg: var(--malia-text);
+    --bs-btn-active-border-color: var(--malia-text);
+    --bs-btn-active-color: #ffffff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--malia-font-heading);
+}
+
+.malia-navbar {
+    background-color: var(--malia-primary);
+}
+
+.malia-navbar .navbar-brand,
+.malia-navbar .nav-link,
+.malia-navbar .navbar-text {
+    color: var(--malia-text-on-primary);
+}
+
+.malia-navbar .nav-link:hover,
+.malia-navbar .nav-link.active {
+    background-color: var(--malia-primary-dark);
+    border-radius: 0.375rem;
+}
+
+/* ---------- Seitenleiste (angemeldete Benutzer) ---------- */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;   /* bleibt beim Scrollen stehen */
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: #efe7da;
+    color: var(--malia-text);
+    border-right: 1px solid #d8cbb6;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 1.25rem 1rem;
+}
+.sidebar-brand {
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.sidebar-toggle {
+    color: var(--malia-text);
+    border: 1px solid var(--malia-border-strong);
+}
+.sidebar-body {
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 0.75rem 1.25rem;
+}
+.sidebar .nav-link {
+    color: var(--malia-text);
+    padding: 0.65rem 0.9rem;
+    margin-bottom: 0.25rem;
+    border-radius: 0.5rem;
+}
+.sidebar .nav-link:hover { background: #e2d6c1; }
+/* Aktiver Punkt: dunkler Hintergrund UND linker Strich (nicht nur Farbe) */
+.sidebar .nav-link.active {
+    background: #e2d6c1;
+    font-weight: 600;
+    box-shadow: inset 4px 0 0 var(--malia-accent);
+}
+.sidebar-foot {
+    padding: 1rem 0.5rem 0;
+    border-top: 1px solid #cdbfa8;
+}
+.sidebar-user {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+}
+.sidebar a:focus-visible,
+.sidebar button:focus-visible,
+.sidebar select:focus-visible { outline-color: var(--malia-primary); }
+
+.app-content {
+    flex: 1;
+    min-width: 0;
+    padding: 2rem 2.25rem 0;
+}
+
+/* Handy: Seitenleiste wandert nach oben */
+@media (max-width: 767.98px) {
+    .app-layout { flex-direction: column; }
+    .sidebar { width: 100%; position: static; height: auto; }
+    .sidebar-head { padding: 0.75rem 1rem; }
+    .app-content { padding: 1.25rem 1rem 0; }
+}
+
+/* ---------- Gemeinsame Optik für Karten, Tabellen, Überschriften ---------- */
+.card {
+    border: 1px solid var(--malia-border-strong);
+    border-radius: 0.75rem;
+    background: #ffffff;
+}
+.card.shadow-sm { box-shadow: none !important; }
+.table { --bs-table-bg: transparent; }
+.table > thead th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--malia-text-muted);
+    border-bottom: 2px solid var(--malia-border-strong);
+    white-space: nowrap;
+}
+.app-content h1 { font-weight: 600; }
+
+/* ---------- Dashboard: Kennzahlen, Budgetkarten, Donut ---------- */
+.page-hello { color: var(--malia-text-muted); font-size: 0.9rem; }
+
+.kpi {
+    background: #ffffff;
+    border: 1px solid var(--malia-border-strong);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    height: 100%;
+}
+.kpi-label { color: var(--malia-text-muted); font-size: 0.85rem; }
+.kpi-wert  { font-size: 1.5rem; font-weight: 600; line-height: 1.3; }
+
+.budget-karte {
+    display: block;
+    background: #ffffff;
+    border: 1px solid var(--malia-border-strong);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    color: var(--malia-text);
+    text-decoration: none;
+    height: 100%;
+}
+.budget-karte:hover { border-color: var(--malia-primary); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12); }
+.budget-karte-name { font-weight: 600; color: var(--malia-primary); text-decoration: underline; }
+.budget-karte-zahlen { display: flex; justify-content: space-between; gap: 0.5rem; }
+.budget-karte-zahlen dt { font-size: 0.75rem; font-weight: 400; color: var(--malia-text-muted); }
+.budget-karte-zahlen dd { margin: 0; font-weight: 600; }
+
+.ki-karte { border-left: 6px solid var(--malia-accent); }
+.ki-text { white-space: pre-wrap; background: #f5efe4; border: 1px solid var(--malia-border-strong); border-radius: 0.5rem; padding: 0.9rem 1rem; }
+
+.donut-wrap { position: relative; max-width: 320px; margin: 0 auto; }
+.donut-mitte {
+    position: absolute;
+    top: 42%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 700;
+    pointer-events: none;
+}
+
+.btn-primary {
+    --bs-btn-color: #ffffff;
+    --bs-btn-hover-color: #ffffff;
+    --bs-btn-active-color: #ffffff;
+    --bs-btn-bg: var(--malia-primary);
+    --bs-btn-border-color: var(--malia-primary);
+    --bs-btn-hover-bg: var(--malia-primary-dark);
+    --bs-btn-hover-border-color: var(--malia-primary-dark);
+    --bs-btn-active-bg: var(--malia-primary-dark);
+    --bs-btn-active-border-color: var(--malia-primary-dark);
+}
+
+.malia-footer {
+    color: var(--malia-text-muted);
+}
+
+/*
+ * Status-Badges. Die Farbe ist nie die einzige Information: Im Badge stehen Symbol und Text
+ * (siehe statusBadge() in helpers.php). Der Text ist schwarz, weil er auf allen vier Farben
+ * mindestens 5:1 Kontrast hat (weiß wäre auf Orange, Grau und Blaugrün zu schwach).
+ */
+.status-ok, .status-warning, .status-over, .status-expired {
+    color: var(--malia-text-on-status);
+    border: 1px solid var(--malia-text);   /* klare Kontur: Badge bleibt auch ohne Farbwahrnehmung erkennbar */
+    font-weight: 600;
+}
+.status-ok      { background-color: var(--malia-status-ok); }
+.status-warning { background-color: var(--malia-status-warning); }
+.status-over    { background-color: var(--malia-status-over); }
+.status-expired { background-color: var(--malia-status-expired); }
+
+/* Hervorgehobene Zahlen/Texte (z. B. negatives Restbudget): dunkle Textfarbe, fett, zusätzlich mit Symbol */
+.text-over { color: var(--malia-status-over-text); font-weight: 700; }
+.text-ok   { color: var(--malia-status-ok-text); font-weight: 600; }
+
+/*
+ * Balken (Fortschrittsanzeigen). Neben der Farbe unterscheidet die Füllung:
+ * Ist = einfarbig, Forecast = Schrägstreifen, Warnung = Schrägstreifen, überschritten = enge Streifen.
+ * Der Rahmen um die Spur sorgt für 3:1 Kontrast der Fläche zum Hintergrund.
+ */
+.progress {
+    border: 1px solid var(--malia-border-strong);
+    background-color: #ffffff;
+}
+.balken-ist {
+    background: var(--malia-chart-ist);
+    color: #ffffff;
+    font-weight: 600;
+}
+.balken-forecast {
+    background: repeating-linear-gradient(45deg, var(--malia-chart-forecast) 0 8px, var(--malia-chart-soll) 8px 16px);
+    color: var(--malia-text-on-status);
+    font-weight: 600;
+}
+.balken-ok      { background: var(--malia-status-ok); }
+.balken-warning { background: repeating-linear-gradient(45deg, var(--malia-orange) 0 8px, var(--malia-forecast-light) 8px 16px); }
+.balken-over    { background: repeating-linear-gradient(90deg, var(--malia-status-over) 0 5px, #7a3700 5px 8px); }
+.balken-expired { background: var(--malia-status-expired); }
+
+/* ---------- Login-Seite ---------- */
+.login-wrap {
+    max-width: 420px;
+    margin: 2rem auto;
+}
+
+.login-brand {
+    margin-bottom: 1.5rem;
+}
+
+.login-brand-title {
+    font-family: var(--malia-font-heading);
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 0.04em;
+    color: var(--malia-primary-dark);
+}
+
+.login-brand-sub {
+    color: var(--malia-text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.login-card {
+    border: 0;
+    border-top: 4px solid var(--malia-accent);   /* Akzentstreifen */
+    border-radius: 0.75rem;
+}

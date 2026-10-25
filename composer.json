@@ -1,0 +1,22 @@
+{
+    "name": "dhbw/studio-malia-budget",
+    "description": "Budgetverwaltung für Studio Maliá - Pilates & Café",
+    "type": "project",
+    "require": {
+        "php": ">=8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Malia\\": "src/"
+        },
+        "files": ["src/helpers.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Malia\\Tests\\": "tests/"
+        }
+    }
+}

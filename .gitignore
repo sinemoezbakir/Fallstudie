@@ -18,3 +18,19 @@ target/
 # OS
 .DS_Store
 Thumbs.db
+
+# --- Budget-App (PHP) ---
+# Zugangsdaten gehören nie ins Git (nur config.example.php)
+/config/config.php
+
+# Von Composer erzeugt
+/vendor/
+
+# PHPUnit-Cache
+.phpunit.result.cache
+.phpunit.cache/
+
+# Editor / System
+.vscode/
+.idea/
+Thumbs.db
