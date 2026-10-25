@@ -17,13 +17,7 @@ $filterStatus = isset(STATUS_LABEL[$_GET['status'] ?? '']) ? $_GET['status'] : '
 $filterBereich = isset(BEREICHE[$_GET['bereich'] ?? '']) ? $_GET['bereich'] : '';
 $suche = trim((string) ($_GET['q'] ?? ''));
 
-$gefiltert = array_values(array_filter($alle, function (array $eintrag) use ($filterStatus, $filterBereich, $suche): bool {
-    $budget = $eintrag['budget'];
-
-    return ($filterStatus === '' || $eintrag['k']['status'] === $filterStatus)
-        && ($filterBereich === '' || $budget['bereich'] === $filterBereich)
-        && ($suche === '' || mb_stripos($budget['name'] . ' ' . $budget['owner_name'], $suche) !== false);
-}));
+$gefiltert = filtereBudgets($alle, $filterStatus, $filterBereich, $suche);
 
 /** Link auf die Übersicht mit geänderten Filtern, übrige Filter bleiben. */
 function filterLink(array $aenderung): string
@@ -62,6 +56,8 @@ require __DIR__ . '/../../templates/header.php';
         <p class="lead">Soll-Ist-Stand aller Bereiche – Studio, Café und Marketing.</p>
     </div>
     <div class="d-flex flex-wrap gap-2">
+        <a href="/finance/export.php<?= e(substr(filterLink([]), strlen('/finance/'))) ?>" class="btn btn-maliá-outline"
+           title="Exportiert die aktuell gefilterte Liste">CSV-Export</a>
         <a href="/finance/neu.php" class="btn btn-maliá">+ Neues Budget</a>
     </div>
 </div>

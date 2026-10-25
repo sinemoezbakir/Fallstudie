@@ -427,3 +427,18 @@ function ladeAlleBudgets(): array
         'SELECT b.*, u.anzeigename AS owner_name FROM budget b JOIN benutzer u ON u.id = b.owner_id ORDER BY b.gueltig_bis, b.name'
     )->fetchAll();
 }
+
+/**
+ * Filter der Finance-Übersicht (auch für den CSV-Export, damit der Export
+ * genau das enthält, was gerade angezeigt wird). Leere Werte = kein Filter.
+ */
+function filtereBudgets(array $eintraege, string $status, string $bereich, string $suche): array
+{
+    return array_values(array_filter($eintraege, function (array $eintrag) use ($status, $bereich, $suche): bool {
+        $budget = $eintrag['budget'];
+
+        return ($status === '' || $eintrag['k']['status'] === $status)
+            && ($bereich === '' || $budget['bereich'] === $bereich)
+            && ($suche === '' || mb_stripos($budget['name'] . ' ' . ($budget['owner_name'] ?? ''), $suche) !== false);
+    }));
+}

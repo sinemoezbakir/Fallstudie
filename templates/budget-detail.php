@@ -46,6 +46,10 @@ require __DIR__ . '/header.php';
         <?php foreach ($zusatzAktionen ?? [] as $aktion): ?>
             <a href="<?= e($aktion['href']) ?>" class="btn btn-maliá-outline"><?= e($aktion['text']) ?></a>
         <?php endforeach; ?>
+        <?php if ($buchungen): ?>
+            <a href="/ausgaben-export.php?budget_id=<?= (int) $budget['id'] ?>" class="btn btn-maliá-outline"
+               title="Alle Ausgaben dieses Budgets als CSV für Excel">CSV</a>
+        <?php endif; ?>
     </div>
 </div>
 
