@@ -566,3 +566,26 @@ footer {
 .kennzahl--negativ { background: #b5786c; border-color: #b5786c; color: #fff; }
 .kennzahl--negativ .etikett, .kennzahl--negativ .kennzahl__info { color: rgba(255, 255, 255, 0.82); }
 .kennzahl--negativ .kennzahl__wert { color: #fff; }
+
+/* --- Live-Vorschau bei Ausgabe erfassen / korrigieren --- */
+.vorschau { position: sticky; top: 9rem; }
+.vorschau__liste { margin: 0; }
+.vorschau__liste > div {
+    display: flex; justify-content: space-between; gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--line);
+}
+.vorschau__liste dt { font-weight: 400; color: var(--muted); }
+.vorschau__liste dd { margin: 0; font-weight: 600; }
+.vorschau__summe { border-bottom: none !important; padding-top: 0.75rem !important; }
+.vorschau__summe dt { color: var(--ink); font-weight: 700; }
+.vorschau__summe dd { font-family: var(--serif); font-size: 1.7rem; font-weight: 400; line-height: 1; }
+.vorschau__hinweis { border-radius: var(--radius-klein); padding: 0.6rem 0.8rem; }
+.vorschau__hinweis--warnung { background: var(--status-warnung-bg); color: var(--status-warnung-text); }
+.vorschau__hinweis--ueberschritten { background: var(--status-ueberschritten-bg); color: var(--status-ueberschritten-text); }
+.input-group-lg > .form-control { font-family: var(--serif); font-size: 1.6rem; }
+.input-group > .invalid-feedback { order: 3; }
+.buchung-info { background: var(--cream); border-radius: var(--radius-klein); padding: 1rem 1.1rem; }
+@media (max-width: 991.98px) { .vorschau { position: static; } }
+.btn-link { text-decoration: none; font-weight: 600; }
+.btn-link:hover { color: var(--ink) !important; }

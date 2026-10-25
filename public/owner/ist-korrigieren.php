@@ -14,31 +14,19 @@ require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_OWNER);
 
 $benutzerId = eingeloggteBenutzerId();
-$buchungId = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 
 // Prüft gleichzeitig, dass die Buchung zu einem Budget dieses Owners gehört.
-$buchung = ladeEigeneBuchung($buchungId, $benutzerId);
-
-$budgetStmt = $pdo->prepare('SELECT * FROM budget WHERE id = :id');
-$budgetStmt->execute(['id' => $buchung['budget_id']]);
-$budget = $budgetStmt->fetch();
+$buchung = ladeEigeneBuchung((int) ($_GET['id'] ?? $_POST['id'] ?? 0), $benutzerId);
+$budget = ladeEigenesBudget((int) $buchung['budget_id'], $benutzerId);
 
 $istAbgelaufen = istBudgetAbgelaufen($budget);
-$fehler = null;
+$fehler = [];
 
-if ($istAbgelaufen) {
-    $fehler = 'Dieses Budget ist abgelaufen, Buchungen können nicht mehr korrigiert werden.';
-} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $neuerBetrag = $_POST['betrag'] ?? '';
-    $grund = trim($_POST['grund'] ?? '');
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$istAbgelaufen) {
+    $pruefung = pruefeKorrektur($_POST, $buchung);
+    $fehler = $pruefung['fehler'];
 
-    if (!is_numeric($neuerBetrag) || (float) $neuerBetrag <= 0) {
-        $fehler = 'Betrag muss eine positive Zahl sein.';
-    } elseif ($grund === '') {
-        $fehler = 'Bitte einen Grund für die Korrektur angeben.';
-    } elseif (mb_strlen($grund) > 255) {
-        $fehler = 'Grund darf höchstens 255 Zeichen lang sein.';
-    } else {
+    if (!$fehler) {
         // Ursprünglichen Betrag nur beim ersten Mal festhalten.
         $urspruenglicherBetrag = $buchung['urspruenglicher_betrag'] ?? $buchung['betrag'];
 
@@ -51,55 +39,90 @@ if ($istAbgelaufen) {
              WHERE id = :id'
         );
         $stmt->execute([
-            'neuer_betrag' => round((float) $neuerBetrag, 2),
+            'neuer_betrag' => $pruefung['werte']['betrag'],
             'urspruenglicher_betrag' => $urspruenglicherBetrag,
-            'grund' => $grund,
+            'grund' => $pruefung['werte']['grund'],
             'id' => $buchung['id'],
         ]);
 
-        setzeFlash('erfolg', 'Buchung wurde korrigiert.');
+        setzeFlash('erfolg', 'Buchung korrigiert: ' . euro((float) $buchung['betrag']) . ' → ' . euro($pruefung['werte']['betrag']) . '.');
         header('Location: /owner/budget.php?id=' . $budget['id']);
         exit;
     }
 }
 
-$pageTitle = 'Ist-Wert korrigieren';
+$k = kennzahlenFuerBudget($budget);
+$istBasis = round($k['ist'] - (float) $buchung['betrag'], 2); // Ist ohne diese Buchung
+$vorschauTitel = 'So steht das Budget nach der Korrektur';
+
+$pageTitle = 'Buchung korrigieren';
 require __DIR__ . '/../../templates/header.php';
 ?>
 
-<h1 class="h3 mb-4">Buchung korrigieren – <?= htmlspecialchars($budget['name']) ?></h1>
+<a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="zurueck-link">← <?= e($budget['name']) ?></a>
+<div class="seitenkopf">
+    <h1>Buchung korrigieren</h1>
+    <p class="lead">Der alte Betrag und der Grund bleiben nachvollziehbar gespeichert.</p>
+</div>
 
-<?php if ($fehler): ?>
-    <div class="alert alert-danger"><?= htmlspecialchars($fehler) ?></div>
-<?php endif; ?>
+<?php if ($istAbgelaufen): ?>
+    <div class="alert alert-warning">
+        <strong>Dieses Budget ist am <?= e(datumDe($budget['gueltig_bis'])) ?> abgelaufen.</strong>
+        Buchungen können nach der Verfallszeit nicht mehr korrigiert werden.
+    </div>
+<?php else: ?>
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card p-4">
+            <div class="buchung-info mb-4">
+                <div class="etikett mb-1">Aktuelle Buchung</div>
+                <div class="d-flex justify-content-between gap-3">
+                    <div>
+                        <div class="fw-semibold"><?= e($buchung['beschreibung']) ?></div>
+                        <div class="small text-muted"><?= e(datumDe($buchung['datum'])) ?></div>
+                    </div>
+                    <div class="zahl-gross fs-3 tabular"><?= euro((float) $buchung['betrag']) ?></div>
+                </div>
+                <?php if ($buchung['urspruenglicher_betrag'] !== null): ?>
+                    <div class="korrektur-hinweis mt-2">
+                        Bereits korrigiert am <?= e(datumDe($buchung['korrigiert_am'])) ?> –
+                        ursprünglich <?= euro((float) $buchung['urspruenglicher_betrag']) ?>, Grund: „<?= e($buchung['korrektur_grund']) ?>“
+                    </div>
+                <?php endif; ?>
+            </div>
 
-<?php if (!$istAbgelaufen): ?>
-<div class="card p-4" style="max-width: 500px;">
-    <p class="text-muted">
-        Aktuell: <?= number_format((float) $buchung['betrag'], 2, ',', '.') ?> €
-        am <?= htmlspecialchars($buchung['datum']) ?> –
-        <?= htmlspecialchars($buchung['beschreibung']) ?>
-        <?php if ($buchung['urspruenglicher_betrag'] !== null): ?>
-            <br><small>Bereits einmal korrigiert, ursprünglich:
-            <?= number_format((float) $buchung['urspruenglicher_betrag'], 2, ',', '.') ?> €</small>
-        <?php endif; ?>
-    </p>
-
-    <form method="post" action="/owner/ist-korrigieren.php">
-        <?= csrfFeld() ?>
-        <input type="hidden" name="id" value="<?= (int) $buchung['id'] ?>">
-        <div class="mb-3">
-            <label for="betrag" class="form-label">Neuer Betrag (€)</label>
-            <input type="number" step="0.01" min="0.01" class="form-control" id="betrag" name="betrag"
-                   value="<?= htmlspecialchars((string) $buchung['betrag']) ?>" required>
+            <?= fehlerHinweis($fehler) ?>
+            <form method="post" action="/owner/ist-korrigieren.php" novalidate>
+                <?= csrfFeld() ?>
+                <input type="hidden" name="id" value="<?= (int) $buchung['id'] ?>">
+                <div class="mb-3">
+                    <label for="betrag" class="form-label">Richtiger Betrag</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" inputmode="decimal" class="form-control<?= feldKlasse($fehler, 'betrag') ?>"
+                               id="betrag" name="betrag" autocomplete="off"
+                               value="<?= alterWert('betrag', number_format((float) $buchung['betrag'], 2, ',', '')) ?>"
+                               <?= feldAria($fehler, 'betrag') ?> required autofocus>
+                        <span class="input-group-text">€</span>
+                        <?= feldFehler($fehler, 'betrag') ?>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="grund" class="form-label">Grund der Korrektur</label>
+                    <input type="text" class="form-control<?= feldKlasse($fehler, 'grund') ?>" id="grund" name="grund"
+                           maxlength="255" placeholder="z. B. Gutschrift erhalten, Tippfehler, Rabatt nachträglich"
+                           value="<?= alterWert('grund') ?>" <?= feldAria($fehler, 'grund') ?> required>
+                    <?= feldFehler($fehler, 'grund') ?>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-maliá">Korrektur speichern</button>
+                    <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn btn-link text-muted">Abbrechen</a>
+                </div>
+            </form>
         </div>
-        <div class="mb-3">
-            <label for="grund" class="form-label">Grund der Korrektur</label>
-            <input type="text" class="form-control" id="grund" name="grund" maxlength="255" required>
-        </div>
-        <button type="submit" class="btn btn-maliá">Korrektur speichern</button>
-        <a href="/owner/budget.php?id=<?= (int) $budget['id'] ?>" class="btn btn-maliá-outline">Abbrechen</a>
-    </form>
+    </div>
+    <div class="col-lg-5">
+        <?php require __DIR__ . '/../../templates/betrag-vorschau.php'; ?>
+    </div>
 </div>
 <?php endif; ?>
 
