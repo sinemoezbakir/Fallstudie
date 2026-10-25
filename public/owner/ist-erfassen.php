@@ -3,12 +3,8 @@
  * Owner: Ist-Wert für ein eigenes Budget erfassen (MB-034).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_OWNER);
-
-require_once __DIR__ . '/../../src/budget.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $benutzerId = eingeloggteBenutzerId();
 $budgetId = (int) ($_GET['budget_id'] ?? $_POST['budget_id'] ?? 0);
@@ -67,6 +63,7 @@ require __DIR__ . '/../../templates/header.php';
 <?php if (!$istAbgelaufen): ?>
 <div class="card p-4" style="max-width: 500px;">
     <form method="post" action="/owner/ist-erfassen.php">
+        <?= csrfFeld() ?>
         <input type="hidden" name="budget_id" value="<?= (int) $budget['id'] ?>">
         <div class="mb-3">
             <label for="betrag" class="form-label">Betrag (€)</label>

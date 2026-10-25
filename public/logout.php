@@ -3,7 +3,7 @@
  * Abmelden: Session komplett beenden.
  */
 
-session_start();
+require_once __DIR__ . '/../src/app.php';
 $_SESSION = [];
 session_destroy();
 

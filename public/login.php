@@ -4,9 +4,7 @@
  * Passwort, PHP-Session, password_hash()/password_verify()).
  */
 
-session_start();
-require_once __DIR__ . '/../src/auth.php';
-require_once __DIR__ . '/../src/ui.php';
+require_once __DIR__ . '/../src/app.php';
 
 // Schon eingeloggt? Dann direkt weiterleiten statt nochmal Login zu zeigen.
 if (!empty($_SESSION['rolle'])) {
@@ -54,6 +52,7 @@ require __DIR__ . '/../templates/header.php';
             <?php endif; ?>
 
             <form method="post" action="/login.php">
+                <?= csrfFeld() ?>
                 <div class="mb-3">
                     <label for="username" class="form-label">Benutzername</label>
                     <input type="text" class="form-control" id="username" name="username"

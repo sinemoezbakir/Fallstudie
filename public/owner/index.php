@@ -3,12 +3,8 @@
  * Owner-Dashboard: Status aller eigenen Budgets (MB-040).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_OWNER);
-
-require_once __DIR__ . '/../../src/budget.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $benutzerId = eingeloggteBenutzerId();
 $budgets = ladeBudgetsVonOwner($benutzerId);

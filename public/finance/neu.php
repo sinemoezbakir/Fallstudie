@@ -3,12 +3,8 @@
  * Finance: Neues Budget anlegen und einem Owner zuweisen (MB-031).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_FINANCE);
-
-require_once __DIR__ . '/../../src/db.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $fehler = null;
 
@@ -66,6 +62,7 @@ require __DIR__ . '/../../templates/header.php';
 
 <div class="card p-4" style="max-width: 600px;">
     <form method="post" action="/finance/neu.php">
+        <?= csrfFeld() ?>
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" name="name" maxlength="150"

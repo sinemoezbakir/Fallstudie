@@ -10,12 +10,8 @@
  * Wert verloren.
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_OWNER);
-
-require_once __DIR__ . '/../../src/budget.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $benutzerId = eingeloggteBenutzerId();
 $buchungId = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
@@ -90,6 +86,7 @@ require __DIR__ . '/../../templates/header.php';
     </p>
 
     <form method="post" action="/owner/ist-korrigieren.php">
+        <?= csrfFeld() ?>
         <input type="hidden" name="id" value="<?= (int) $buchung['id'] ?>">
         <div class="mb-3">
             <label for="betrag" class="form-label">Neuer Betrag (€)</label>

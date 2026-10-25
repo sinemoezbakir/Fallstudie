@@ -7,12 +7,8 @@
  * gefordert (Admin-Zusatzfunktionen wie Audit-Log sind "Won't").
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_ADMIN);
-
-require_once __DIR__ . '/../../src/db.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $fehler = null;
 
@@ -75,6 +71,7 @@ require __DIR__ . '/../../templates/header.php';
 <div class="card p-4 mb-4">
     <h2 class="h5 mb-3">Neuen Benutzer anlegen</h2>
     <form method="post" action="/admin/" class="row g-3">
+        <?= csrfFeld() ?>
         <div class="col-md-3">
             <label for="anzeigename" class="form-label">Anzeigename</label>
             <input type="text" class="form-control" id="anzeigename" name="anzeigename" maxlength="100" required>

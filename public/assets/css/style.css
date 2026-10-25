@@ -239,3 +239,14 @@ footer {
     border-top: 1px solid var(--line);
     margin-top: 2rem;
 }
+
+/* --- Fehlerseiten (403, 404, 419, 500) --- */
+.fehlerseite { padding: 4rem 1rem; }
+.fehlerseite__code {
+    font-family: var(--serif);
+    font-size: clamp(4rem, 12vw, 7rem);
+    line-height: 1;
+    color: var(--rose);
+    opacity: 0.85;
+    margin-bottom: 0.5rem;
+}

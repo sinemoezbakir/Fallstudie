@@ -4,12 +4,8 @@
  * bewusst einfach ohne E-Mail-Versand - siehe public/passwort-vergessen.php).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_ADMIN);
-
-require_once __DIR__ . '/../../src/db.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $benutzerId = (int) ($_GET['id'] ?? $_POST['id'] ?? 0);
 
@@ -59,6 +55,7 @@ require __DIR__ . '/../../templates/header.php';
 
 <div class="card p-4" style="max-width: 500px;">
     <form method="post" action="/admin/passwort-zuruecksetzen.php">
+        <?= csrfFeld() ?>
         <input type="hidden" name="id" value="<?= (int) $benutzer['id'] ?>">
         <div class="mb-3">
             <label for="passwort" class="form-label">Neues Passwort</label>

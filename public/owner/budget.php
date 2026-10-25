@@ -5,12 +5,8 @@
  * konzept.md Abschnitt 4).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_OWNER);
-
-require_once __DIR__ . '/../../src/budget.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $benutzerId = eingeloggteBenutzerId();
 $budgetId = (int) ($_GET['id'] ?? 0);

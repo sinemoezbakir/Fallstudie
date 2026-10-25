@@ -7,12 +7,8 @@
  * Monat (konzept.md Abschnitt 3).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_OWNER);
-
-require_once __DIR__ . '/../../src/budget.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $benutzerId = eingeloggteBenutzerId();
 $budgetId = (int) ($_GET['budget_id'] ?? $_POST['budget_id'] ?? 0);
@@ -64,6 +60,7 @@ require __DIR__ . '/../../templates/header.php';
 
 <div class="card p-4 mb-4" style="max-width: 500px;">
     <form method="post" action="/owner/forecast.php">
+        <?= csrfFeld() ?>
         <input type="hidden" name="budget_id" value="<?= (int) $budget['id'] ?>">
         <div class="row">
             <div class="col-6 mb-3">

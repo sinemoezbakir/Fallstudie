@@ -6,8 +6,7 @@
  * setzt das Passwort manuell zurück.
  */
 
-session_start();
-require_once __DIR__ . '/../src/ui.php';
+require_once __DIR__ . '/../src/app.php';
 
 $pageTitle = 'Passwort vergessen';
 require __DIR__ . '/../templates/header.php';

@@ -3,12 +3,8 @@
  * Finance: Übersicht aller Budgets mit Soll-Ist-Vergleich (MB-032).
  */
 
-session_start();
-require_once __DIR__ . '/../../src/rollen.php';
+require_once __DIR__ . '/../../src/app.php';
 erfordereRolle(ROLLE_FINANCE);
-
-require_once __DIR__ . '/../../src/budget.php';
-require_once __DIR__ . '/../../src/ui.php';
 
 $bereichFilter = $_GET['bereich'] ?? '';
 $gueltigeBereiche = ['STUDIO', 'CAFE', 'MARKETING'];
