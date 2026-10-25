@@ -393,3 +393,37 @@ function ladeForecasts(int $budgetId): array
 
     return array_map('floatval', $stmt->fetchAll(PDO::FETCH_KEY_PAIR));
 }
+
+/**
+ * Finance-Sicht: lädt ein beliebiges Budget mit Owner-Namen, 404 wenn es
+ * nicht existiert. NUR auf Seiten nutzen, die vorher erfordereRolle(ROLLE_FINANCE)
+ * aufrufen - Owner-Seiten nehmen ladeEigenesBudget().
+ */
+function ladeBudget(int $budgetId): array
+{
+    global $pdo;
+
+    $stmt = $pdo->prepare(
+        'SELECT b.*, u.anzeigename AS owner_name FROM budget b JOIN benutzer u ON u.id = b.owner_id WHERE b.id = :id'
+    );
+    $stmt->execute(['id' => $budgetId]);
+    $budget = $stmt->fetch();
+
+    if (!$budget) {
+        http_response_code(404);
+        require __DIR__ . '/../templates/404.php';
+        exit;
+    }
+
+    return $budget;
+}
+
+/** Finance-Sicht: alle Budgets mit Owner-Namen, nach Ablaufdatum sortiert. */
+function ladeAlleBudgets(): array
+{
+    global $pdo;
+
+    return $pdo->query(
+        'SELECT b.*, u.anzeigename AS owner_name FROM budget b JOIN benutzer u ON u.id = b.owner_id ORDER BY b.gueltig_bis, b.name'
+    )->fetchAll();
+}
