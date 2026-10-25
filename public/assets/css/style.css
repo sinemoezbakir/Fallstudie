@@ -435,3 +435,30 @@ footer {
 .login-buehne__punkte { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
 .login-buehne__punkte li { display: flex; gap: 0.6rem; align-items: baseline; opacity: 0.92; }
 .login-buehne__punkte li::before { content: "✓"; font-weight: 700; color: #dfe7d6; }
+
+/* --- Formulare: Fehler direkt am Feld (MB-051) --- */
+.form-control.is-invalid, .form-select.is-invalid { border-color: var(--rose); background-image: none; padding-right: 0.9rem; }
+.form-control.is-invalid:focus, .form-select.is-invalid:focus { box-shadow: 0 0 0 0.22rem rgba(201, 147, 136, 0.25); }
+.invalid-feedback { color: var(--status-ueberschritten-text); font-size: 0.83rem; }
+
+/* --- Rollen-Kennzeichen --- */
+.rollen-chip {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: var(--cream);
+    color: var(--ink);
+}
+.rollen-chip--admin { background: #e6e2dc; }
+.rollen-chip--finance { background: var(--status-warnung-bg); color: var(--status-warnung-text); }
+.rollen-chip--owner { background: var(--status-im-rahmen-bg); color: var(--status-im-rahmen-text); }
+.zaehler-chip {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--flaeche);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.2rem 0.9rem 0.2rem 0.2rem;
+    font-size: 0.85rem; font-weight: 600;
+}

@@ -138,6 +138,51 @@ function verbrauchsBalken(float $verbrauchProzent): string
     );
 }
 
+// --- Formular-Helfer (MB-051): Fehlermeldung direkt am Feld ----------------
+
+/** " is-invalid", wenn das Feld einen Fehler hat (rahmt es rot ein). */
+function feldKlasse(array $fehler, string $feld): string
+{
+    return isset($fehler[$feld]) ? ' is-invalid' : '';
+}
+
+/** Fehlermeldung unter dem Feld, verknüpft per aria-describedby. */
+function feldFehler(array $fehler, string $feld): string
+{
+    if (!isset($fehler[$feld])) {
+        return '';
+    }
+
+    return sprintf('<div class="invalid-feedback" id="%s-fehler">%s</div>', e($feld), e($fehler[$feld]));
+}
+
+/** Attribute für ein Feld mit Fehler, damit Screenreader die Meldung vorlesen. */
+function feldAria(array $fehler, string $feld): string
+{
+    return isset($fehler[$feld]) ? sprintf('aria-invalid="true" aria-describedby="%s-fehler"', e($feld)) : '';
+}
+
+/** Zuletzt eingegebener Wert (nach einem Fehler bleibt die Eingabe stehen). */
+function alterWert(string $feld, string $standard = ''): string
+{
+    $wert = $_POST[$feld] ?? $standard;
+
+    return e(is_string($wert) ? $wert : $standard);
+}
+
+/** Zusammenfassung oberhalb des Formulars, wenn etwas nicht passt. */
+function fehlerHinweis(array $fehler): string
+{
+    if (!$fehler) {
+        return '';
+    }
+    $anzahl = count($fehler);
+
+    return '<div class="alert alert-danger" role="alert">'
+        . ($anzahl === 1 ? 'Bitte prüfe das markierte Feld.' : "Bitte prüfe die {$anzahl} markierten Felder.")
+        . '</div>';
+}
+
 /** "active" für den Menüpunkt der aktuellen Seite. */
 function aktivWenn(string $pfadAnfang): string
 {

@@ -60,6 +60,7 @@ require_once __DIR__ . '/csrf.php';
 require_once __DIR__ . '/ui.php';
 require_once __DIR__ . '/budget.php';
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/validierung.php';
 
 // --- CSRF-Prüfung für jedes abgeschickte Formular ---------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !csrfGueltig($_POST['csrf_token'] ?? null)) {
