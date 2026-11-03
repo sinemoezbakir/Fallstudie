@@ -76,7 +76,7 @@ Wichtig: **`DECIMAL(10,2)`**, nie `FLOAT`/`DOUBLE` (E-015). Import über phpMyAd
 
 - 5 Benutzer: `admin`, `finance`, `studio`, `cafe`, `marketing` — Passwörter mit
   `password_hash('passwort', PASSWORD_DEFAULT)` erzeugen, Hash einsetzen
-- Budgets wie in der Tabelle (Reformer-Wartung 4.800€, Café-Wareneinkauf 12.000€, usw.)
+- Budgets wie in der Tabelle (Reformer-Wartung 4.800€, Großgeräte-Beschaffung 12.000€, usw.)
 - Ist-Buchungen und Forecasts so verteilen, dass **jeder Status mindestens einmal** vorkommt
   (Abgelaufen, Überschritten, Warnung, Im Rahmen)
 

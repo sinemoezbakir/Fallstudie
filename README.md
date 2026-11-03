@@ -32,7 +32,7 @@ Abgaben jeweils bis 23:59 UTC in Moodle. Zeitplan und Meilensteine: [kanban/READ
 | Rolle | Wer im Studio? | Darf |
 |---|---|---|
 | **Finance** | Inhaberin | Budgets anlegen, Ownern zuweisen, Soll-Ist aller Budgets sehen |
-| **Owner** | Studio-Leitung, Café-Leitung, Marketing | eigene Budgets sehen, Ausgaben erfassen/korrigieren, Forecast eintragen, Soll-Ist- und Forecast-Vergleich |
+| **Owner** | Kurs-Leitung, Geräte-Leitung, Marketing | eigene Budgets sehen, Ausgaben erfassen/korrigieren, Forecast eintragen, Soll-Ist- und Forecast-Vergleich |
 | **Admin** | Verwaltung | Benutzer anlegen, Rollen zuweisen |
 
 ## Tech-Stack
@@ -85,8 +85,8 @@ Ein Aufruf über `http://localhost/malia-budget/public/` mit dem XAMPP-Apache fu
 |---|---|---|---|
 | `admin` | Admin | Admin | Benutzer anlegen, Passwort zurücksetzen |
 | `finance` | Inhaberin | Finance | alle Budgets, Filter, Diagramm je Bereich, Budget anlegen/bearbeiten, CSV |
-| `studio` | Studio-Leitung | Owner | Warnung durch Verbrauch, Warnung durch Forecast, Budget läuft bald ab |
-| `cafe` | Café-Leitung | Owner | überschrittenes Budget |
+| `kurse` | Kurs-Leitung | Owner | Warnung durch Verbrauch, Warnung durch Forecast, Budget läuft bald ab |
+| `geraete` | Geräte-Leitung | Owner | überschrittenes Budget |
 | `marketing` | Marketing-Leitung | Owner | abgelaufenes Budget (gesperrt) |
 
 **Demo-Modus (E-021):** Nach dem Login wechselt man über die Leiste unter der Navigation mit einem Klick in

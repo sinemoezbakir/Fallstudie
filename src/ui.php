@@ -8,8 +8,8 @@
  */
 
 const BEREICHE = [
-    'STUDIO' => 'Studio',
-    'CAFE' => 'Café',
+    'KURSE' => 'Kurse',
+    'GERAETE' => 'Geräte',
     'MARKETING' => 'Marketing',
 ];
 

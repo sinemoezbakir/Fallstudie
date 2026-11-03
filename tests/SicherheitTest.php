@@ -51,14 +51,14 @@ final class SicherheitTest extends TestCase
 
     public function testKontowechselSetztDenselbenZustandWieLogin(): void
     {
-        $id = (int) $this->pdo->query("SELECT id FROM benutzer WHERE username = 'cafe'")->fetchColumn();
+        $id = (int) $this->pdo->query("SELECT id FROM benutzer WHERE username = 'geraete'")->fetchColumn();
 
         $konto = wechsleZuKonto($id, true);
 
         $this->assertNotNull($konto);
         $this->assertSame($id, $_SESSION['user_id']);
         $this->assertSame('OWNER', $_SESSION['rolle']);
-        $this->assertSame('cafe', $_SESSION['username']);
+        $this->assertSame('geraete', $_SESSION['username']);
     }
 
     public function testKontowechselNurImDemoModus(): void
@@ -77,13 +77,13 @@ final class SicherheitTest extends TestCase
 
     public function testNachWechselGiltDatentrennungFuerNeuesKonto(): void
     {
-        $studio = (int) $this->pdo->query("SELECT id FROM benutzer WHERE username = 'studio'")->fetchColumn();
-        $cafe = (int) $this->pdo->query("SELECT id FROM benutzer WHERE username = 'cafe'")->fetchColumn();
-        $studioBudget = (int) $this->pdo->query("SELECT id FROM budget WHERE owner_id = {$studio} LIMIT 1")->fetchColumn();
+        $kurse = (int) $this->pdo->query("SELECT id FROM benutzer WHERE username = 'kurse'")->fetchColumn();
+        $geraete = (int) $this->pdo->query("SELECT id FROM benutzer WHERE username = 'geraete'")->fetchColumn();
+        $kurseBudget = (int) $this->pdo->query("SELECT id FROM budget WHERE owner_id = {$kurse} LIMIT 1")->fetchColumn();
 
-        wechsleZuKonto($cafe, true);
+        wechsleZuKonto($geraete, true);
 
-        $this->assertNull(findeBudgetFuerOwner($studioBudget, $_SESSION['user_id']));
+        $this->assertNull(findeBudgetFuerOwner($kurseBudget, $_SESSION['user_id']));
     }
 
     public function testSqlDateiWirdKorrektZerlegt(): void

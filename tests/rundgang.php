@@ -108,7 +108,7 @@ function kontoId(string $username): int
     global $letzteSeite;
     // Die Wechsel-Leiste enthält alle Konten: value="ID" ... Anzeigename
     preg_match_all('/name="benutzer_id" value="(\d+)"[^>]*>\s*<span[^>]*>[^<]*<\/span>\s*<span[^>]*>\s*<span class="d-block demo-konto__name">([^<]+)</', $letzteSeite, $treffer, PREG_SET_ORDER);
-    $namen = ['admin' => 'Admin', 'finance' => 'Inhaberin', 'studio' => 'Studio-Leitung', 'cafe' => 'Café-Leitung', 'marketing' => 'Marketing-Leitung'];
+    $namen = ['admin' => 'Admin', 'finance' => 'Inhaberin', 'kurse' => 'Kurs-Leitung', 'geraete' => 'Geräte-Leitung', 'marketing' => 'Marketing-Leitung'];
     foreach ($treffer as [, $id, $name]) {
         if (html_entity_decode($name) === ($namen[$username] ?? $username)) {
             return (int) $id;
@@ -157,7 +157,7 @@ pruefe('Finance landet auf /finance/', ($antwort['ziel'] ?? '') === '/finance/')
 echo "\nFinance\n";
 seite('/finance/', 200, 'Alle Budgets');
 seite('/finance/?status=warnung', 200, 'Trainer-Fortbildung');
-seite('/finance/?bereich=CAFE&q=waren', 200, 'Café-Wareneinkauf Q4');
+seite('/finance/?bereich=GERAETE&q=Beschaffung', 200, 'Großgeräte-Beschaffung Q4');
 seite('/finance/budget.php?id=999999', 404);
 seite('/finance/neu.php', 200, 'Neues Budget');
 seite('/owner/', 403);
@@ -166,16 +166,16 @@ seite('/admin/', 403);
 $antwort = formular('/finance/neu.php', '/finance/neu.php', ['name' => '', 'bereich' => 'X', 'soll_betrag' => '-1', 'gueltig_von' => '2026-12-01', 'gueltig_bis' => '2026-01-01', 'owner_id' => '0']);
 pruefe('Budget anlegen mit Fehlern zeigt 5 Feldfehler', substr_count($antwort['html'], 'class="invalid-feedback"') === 5);
 anfrage('GET', '/finance/neu.php');
-preg_match('/<option value="(\d+)"[^>]*>\s*Studio-Leitung/', $letzteSeite, $treffer);
+preg_match('/<option value="(\d+)"[^>]*>\s*Kurs-Leitung/', $letzteSeite, $treffer);
 $antwort = anfrage('POST', '/finance/neu.php', [
-    'name' => 'Rundgang-Testbudget', 'bereich' => 'STUDIO', 'soll_betrag' => '1.000,00',
+    'name' => 'Rundgang-Testbudget', 'bereich' => 'KURSE', 'soll_betrag' => '1.000,00',
     'gueltig_von' => date('Y-01-01'), 'gueltig_bis' => date('Y-12-31'), 'owner_id' => $treffer[1] ?? 0, 'csrf_token' => token(),
 ]);
-pruefe('Budget anlegen und Studio-Leitung zuweisen', $antwort['code'] === 302);
+pruefe('Budget anlegen und Kurs-Leitung zuweisen', $antwort['code'] === 302);
 $neuesBudget = (int) preg_replace('/\D/', '', $antwort['ziel'] ?? '');
 seite("/finance/budget.php?id={$neuesBudget}", 200, 'Rundgang-Testbudget');
 $antwort = formular("/finance/bearbeiten.php?id={$neuesBudget}", '/finance/bearbeiten.php', [
-    'id' => $neuesBudget, 'name' => 'Rundgang-Testbudget', 'bereich' => 'STUDIO', 'soll_betrag' => '1200',
+    'id' => $neuesBudget, 'name' => 'Rundgang-Testbudget', 'bereich' => 'KURSE', 'soll_betrag' => '1200',
     'gueltig_von' => date('Y-01-01'), 'gueltig_bis' => date('Y-12-31'), 'owner_id' => $treffer[1] ?? 0,
 ]);
 pruefe('Budget bearbeiten (Soll auf 1.200 €)', $antwort['code'] === 302);
@@ -185,11 +185,11 @@ $csv = anfrage('GET', '/finance/export.php?status=warnung');
 pruefe('CSV-Export Budgets: Download mit BOM und Semikolon', $csv['code'] === 200 && str_contains($csv['kopf'], 'text/csv')
     && str_starts_with($csv['html'], "\u{FEFF}Budget;Bereich;"));
 
-// --- 3. Owner: Studio-Leitung --------------------------------------------------
-echo "\nOwner (Studio-Leitung)\n";
-wechsle('studio');
+// --- 3. Owner: Kurs-Leitung --------------------------------------------------
+echo "\nOwner (Kurs-Leitung)\n";
+wechsle('kurse');
 seite('/owner/', 200, 'Braucht Aufmerksamkeit');
-$kursmaterial = budgetId('Kursmaterial &amp; Kleingeräte') ?: budgetId('Kursmaterial & Kleingeräte');
+$kursmaterial = budgetId('Kursmaterial &amp; Zubehör') ?: budgetId('Kursmaterial & Zubehör');
 pruefe('Dashboard zeigt das neue Testbudget von Finance', budgetId('Rundgang-Testbudget') === $neuesBudget);
 seite("/owner/budget.php?id={$neuesBudget}", 200, 'Verlauf: Ist, Forecast und Soll');
 seite('/finance/', 403);
@@ -227,9 +227,9 @@ if (date('m') !== '12') {
 $csv = anfrage('GET', "/ausgaben-export.php?budget_id={$neuesBudget}");
 pruefe('CSV-Export Ausgaben (eigenes Budget)', $csv['code'] === 200 && str_contains($csv['html'], 'Rundgang-Ausgabe'));
 
-// --- 4. Datentrennung: Café-Leitung versucht Studio-Daten --------------------
-echo "\nDatentrennung (Café-Leitung greift auf Studio-Budget zu)\n";
-wechsle('cafe');
+// --- 4. Datentrennung: Geräte-Leitung versucht Kurse-Daten -------------------
+echo "\nDatentrennung (Geräte-Leitung greift auf Kurse-Budget zu)\n";
+wechsle('geraete');
 seite("/owner/budget.php?id={$neuesBudget}", 403);
 seite("/owner/ist-erfassen.php?budget_id={$neuesBudget}", 403);
 seite("/owner/forecast.php?budget_id={$neuesBudget}", 403);
@@ -237,8 +237,8 @@ seite("/owner/ist-korrigieren.php?id={$buchung}", 403);
 seite("/ausgaben-export.php?budget_id={$neuesBudget}", 403);
 $antwort = formular('/owner/', '/owner/ist-erfassen.php', ['budget_id' => $neuesBudget, 'betrag' => '1', 'datum' => date('Y-m-d'), 'beschreibung' => 'Einbruch']);
 pruefe('POST auf fremdes Budget wird abgelehnt (403)', $antwort['code'] === 403);
-seite('/owner/', 200, 'Café-Wareneinkauf Q4');
-pruefe('Café-Dashboard zeigt keine Studio-Budgets', !str_contains($letzteSeite, 'Reformer-Wartung'));
+seite('/owner/', 200, 'Großgeräte-Beschaffung Q4');
+pruefe('Geräte-Dashboard zeigt keine Kurse-Budgets', !str_contains($letzteSeite, 'Trainer-Fortbildung'));
 
 // --- 5. Verfallszeit: Marketing, abgelaufenes Frühlings-Event ---------------
 echo "\nVerfallszeit (Marketing-Leitung, Frühlings-Event)\n";

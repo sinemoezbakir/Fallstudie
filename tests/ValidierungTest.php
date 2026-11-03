@@ -84,7 +84,7 @@ final class ValidierungTest extends TestCase
     public function testBudgetEndeVorBeginnWirdAbgelehnt(): void
     {
         $ergebnis = pruefeBudget([
-            'name' => 'Test', 'bereich' => 'CAFE', 'soll_betrag' => '500',
+            'name' => 'Test', 'bereich' => 'GERAETE', 'soll_betrag' => '500',
             'gueltig_von' => '2026-12-01', 'gueltig_bis' => '2026-11-01', 'owner_id' => '7',
         ], [7]);
 
@@ -94,7 +94,7 @@ final class ValidierungTest extends TestCase
     public function testBudgetNurFuerEchteOwner(): void
     {
         $ergebnis = pruefeBudget([
-            'name' => 'Test', 'bereich' => 'CAFE', 'soll_betrag' => '500',
+            'name' => 'Test', 'bereich' => 'GERAETE', 'soll_betrag' => '500',
             'gueltig_von' => '2026-01-01', 'gueltig_bis' => '2026-12-31', 'owner_id' => '1',
         ], [3, 4, 5]);
 
@@ -130,9 +130,9 @@ final class ValidierungTest extends TestCase
 
     public function testBenutzernameMussFreiUndSauberSein(): void
     {
-        $vergeben = fn (string $name): bool => $name === 'studio';
+        $vergeben = fn (string $name): bool => $name === 'kurse';
 
-        $doppelt = pruefeNeuenBenutzer(['anzeigename' => 'X', 'username' => 'Studio', 'rolle' => 'OWNER', 'passwort' => 'geheim123'], $vergeben);
+        $doppelt = pruefeNeuenBenutzer(['anzeigename' => 'X', 'username' => 'Kurse', 'rolle' => 'OWNER', 'passwort' => 'geheim123'], $vergeben);
         $sonderzeichen = pruefeNeuenBenutzer(['anzeigename' => 'X', 'username' => 'a b', 'rolle' => 'OWNER', 'passwort' => 'geheim123'], $vergeben);
         $ok = pruefeNeuenBenutzer(['anzeigename' => 'Yoga', 'username' => 'Yoga', 'rolle' => 'OWNER', 'passwort' => 'geheim123'], $vergeben);
 

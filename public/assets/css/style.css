@@ -534,8 +534,8 @@ footer {
     background: var(--cream);
     color: var(--muted);
 }
-.bereich-chip--studio { background: #e7ebe2; color: #55644b; }
-.bereich-chip--cafe { background: #f1e6dc; color: #7a5a43; }
+.bereich-chip--kurse { background: #e7ebe2; color: #55644b; }
+.bereich-chip--geraete { background: #f1e6dc; color: #7a5a43; }
 .bereich-chip--marketing { background: #f4e2dd; color: #94483a; }
 
 .leer-zustand {

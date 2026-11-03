@@ -38,7 +38,7 @@ final class DatentrennungTest extends TestCase
     {
         $stmt = $this->pdo->prepare(
             "INSERT INTO budget (name, bereich, soll_betrag, gueltig_von, gueltig_bis, owner_id)
-             VALUES ('Test-Budget', 'STUDIO', 100.00, '2020-01-01', '2030-12-31', :owner)"
+             VALUES ('Test-Budget', 'KURSE', 100.00, '2020-01-01', '2030-12-31', :owner)"
         );
         $stmt->execute(['owner' => $ownerId]);
 
