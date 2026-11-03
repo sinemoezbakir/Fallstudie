@@ -42,12 +42,12 @@ require __DIR__ . '/../templates/header.php';
     <div class="row g-0">
         <div class="col-lg-6 login-buehne__marke d-none d-lg-flex">
             <div>
-                <p class="etikett text-white-50 mb-3">Maliá – Pilates &amp; Café</p>
+                <p class="etikett text-white-50 mb-3">Maliá – Pilates-Studio</p>
                 <h1 class="login-buehne__titel">Jeder Euro<br><em>an seinem Platz.</em></h1>
                 <ul class="login-buehne__punkte">
                     <li>Soll, Ist und Forecast je Budget – live berechnet</li>
                     <li>Warnung, bevor ein Budget überschritten wird</li>
-                    <li>Jede Leitung sieht nur ihre eigenen Budgets</li>
+                    <li>Jede Bereichsverantwortliche sieht nur ihre eigenen Budgets</li>
                 </ul>
             </div>
         </div>
@@ -81,7 +81,7 @@ require __DIR__ . '/../templates/header.php';
                 <div class="demo-hinweis mt-4">
                     <strong>Demo-Zugang:</strong> z. B. <code>finance</code> / <code><?= e(DEMO_PASSWORT) ?></code>.
                     Nach dem Login kannst du oben jederzeit die Ansicht wechseln –
-                    Admin, Finance oder eine der drei Leitungen.
+                    Admin, Finance oder eine der drei Bereichsverantwortlichen.
                 </div>
             <?php endif; ?>
         </div>

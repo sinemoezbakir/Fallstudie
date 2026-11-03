@@ -2,7 +2,7 @@
 
 <footer class="py-4">
     <div class="container d-flex flex-wrap justify-content-between gap-2 small">
-        <span>Maliá – Pilates &amp; Café · Budget-Verwaltung</span>
+        <span>Maliá – Pilates-Studio · Budget-Verwaltung</span>
         <span>Alle Zahlen werden bei jedem Seitenaufruf live aus der Datenbank berechnet.</span>
     </div>
 </footer>

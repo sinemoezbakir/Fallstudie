@@ -19,9 +19,9 @@ USE malia_budget;
 INSERT INTO benutzer (username, passwort_hash, anzeigename, rolle) VALUES
     ('admin',     '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Admin',             'ADMIN'),
     ('finance',   '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Inhaberin',         'FINANCE'),
-    ('kurse',     '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Kurs-Leitung',      'OWNER'),
-    ('geraete',   '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Geräte-Leitung',    'OWNER'),
-    ('marketing', '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Marketing-Leitung', 'OWNER');
+    ('kurse',     '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Verantwortliche für Kurse',     'OWNER'),
+    ('geraete',   '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Verantwortliche für Geräte',    'OWNER'),
+    ('marketing', '$2y$10$1a6wpJtmvlyhAjrEJL4.LOwdwr13ehZ9K5YPN6b/e6kelaE42421S', 'Verantwortliche für Marketing', 'OWNER');
 
 SET @kurse     = (SELECT id FROM benutzer WHERE username = 'kurse');
 SET @geraete   = (SELECT id FROM benutzer WHERE username = 'geraete');
