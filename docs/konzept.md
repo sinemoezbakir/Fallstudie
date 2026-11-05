@@ -112,9 +112,9 @@ Zusätzlich wird überall „noch X Tage“ bis zum Verfall angezeigt.
 |---|---|---|
 | `admin` | Admin | – |
 | `finance` | Finance (Inhaberin) | – |
-| `kurse` | Owner (Verantwortliche für Kurse) | Kursmaterial & Zubehör (2.500 €), Trainer-Fortbildung (3.000 €), Herbst-Workshop-Reihe (1.800 €) |
-| `geraete` | Owner (Verantwortliche für Geräte) | Reformer-Wartung 2026 (4.800 €), Großgeräte-Beschaffung Q4 (12.000 €), Neue Kraftgeräte-Ausstattung (6.500 €) |
-| `marketing` | Owner (Verantwortliche für Marketing) | Social Media & Fotoshooting (2.000 €), Frühlings-Event (1.500 €, abgelaufen) |
+| `kurse` | Owner (Kurse) | Kursmaterial & Zubehör (2.500 €), Trainer-Fortbildung (3.000 €), Herbst-Workshop-Reihe (1.800 €) |
+| `geraete` | Owner (Geräte) | Reformer-Wartung 2026 (4.800 €), Großgeräte-Beschaffung Q4 (12.000 €), Neue Kraftgeräte-Ausstattung (6.500 €) |
+| `marketing` | Owner (Marketing) | Social Media & Fotoshooting (2.000 €), Frühlings-Event (1.500 €, abgelaufen) |
 
 Die Daten so wählen, dass jeder Status mindestens einmal vorkommt.
 

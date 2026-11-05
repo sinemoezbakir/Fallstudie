@@ -68,7 +68,7 @@ require __DIR__ . '/../../templates/header.php';
                 <div class="mb-3">
                     <label for="anzeigename" class="form-label">Anzeigename</label>
                     <input type="text" class="form-control<?= feldKlasse($fehler, 'anzeigename') ?>" id="anzeigename"
-                           name="anzeigename" maxlength="100" placeholder="z. B. Verantwortliche für Yoga"
+                           name="anzeigename" maxlength="100" placeholder="z. B. Yoga"
                            value="<?= alterWert('anzeigename') ?>" <?= feldAria($fehler, 'anzeigename') ?> required>
                     <?= feldFehler($fehler, 'anzeigename') ?>
                 </div>

@@ -152,7 +152,7 @@ require __DIR__ . '/../../templates/header.php';
                     <tr class="zeile-klickbar" data-link="<?= e($link) ?>">
                         <td data-wert="<?= e($budget['name']) ?>">
                             <a href="<?= e($link) ?>" class="fw-semibold text-reset"><?= e($budget['name']) ?></a>
-                            <div class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?><span class="d-xxl-none"> · <?= e($budget['owner_name']) ?></span></div>
+                            <div class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?></div>
                             <div class="d-sm-none mt-1"><?= statusBadge($k['status']) ?></div>
                         </td>
                         <td class="d-none d-xxl-table-cell" data-wert="<?= e($budget['owner_name']) ?>"><?= e($budget['owner_name']) ?></td>
