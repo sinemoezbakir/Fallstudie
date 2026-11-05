@@ -76,6 +76,9 @@ require __DIR__ . '/header.php';
     <div class="alert alert-success">
         <strong>Budget wird voraussichtlich eingehalten.</strong>
         Bis Laufzeitende bleiben voraussichtlich <?= euro($puffer) ?> übrig (bisherige plus geplante Ausgaben).
+        <?php if (laeuftBaldAb($k['tage_bis_verfall'])): ?>
+            <strong><?= e(ucfirst(restlaufzeitText($k['tage_bis_verfall']))) ?></strong> – Restbudget rechtzeitig einplanen.
+        <?php endif; ?>
     </div>
 <?php endif; ?>
 
