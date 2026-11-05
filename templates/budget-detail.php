@@ -72,41 +72,48 @@ require __DIR__ . '/header.php';
 <?php else: ?>
     <div class="alert alert-success">
         <strong>Budget wird voraussichtlich eingehalten.</strong>
-        <?= euro($puffer) ?> Puffer bis Laufzeitende (Ist + offener Forecast).
+        Bis Laufzeitende bleiben voraussichtlich <?= euro($puffer) ?> übrig (bisherige plus geplante Ausgaben).
     </div>
 <?php endif; ?>
 
 <div class="row g-3 mb-4">
     <div class="col-6 col-lg-3">
         <div class="kennzahl">
-            <div class="etikett">Soll</div>
+            <div class="etikett">Budget</div>
             <div class="kennzahl__wert"><?= euro($soll) ?></div>
-            <div class="kennzahl__info">geplantes Budget</div>
+            <div class="kennzahl__info">für die ganze Laufzeit (Soll)</div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
         <div class="kennzahl">
-            <div class="etikett">Ist</div>
+            <div class="etikett">Ausgegeben</div>
             <div class="kennzahl__wert"><?= euro($k['ist']) ?></div>
-            <div class="kennzahl__info"><?= prozent($k['verbrauch_prozent']) ?> verbraucht · <?= count($buchungen) ?> Ausgaben</div>
+            <div class="kennzahl__info"><?= prozent($k['verbrauch_prozent']) ?> verbraucht · <?= count($buchungen) ?> Ausgaben (Ist)</div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
         <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
             <div class="etikett">Verfügbar</div>
             <div class="kennzahl__wert"><?= euro(abs($k['verfuegbar'])) ?></div>
-            <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : 'Soll − Ist' ?></div>
+            <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : 'noch nicht ausgegeben' ?></div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
         <div class="kennzahl <?= $puffer < 0 ? 'kennzahl--negativ' : '' ?>">
-            <div class="etikett">Hochrechnung</div>
+            <div class="etikett">
+                Hochrechnung
+                <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
+                        data-bs-title="Was ist die Hochrechnung?"
+                        data-bs-content="Bisherige Ausgaben + geplante Ausgaben (Forecast) für die restliche Laufzeit. Zeigt, wo das Budget am Laufzeitende stehen wird, wenn alles wie geplant eintrifft – auch wenn bisher erst wenig ausgegeben wurde."
+                        aria-label="Was bedeutet Hochrechnung?">i</button>
+            </div>
             <div class="kennzahl__wert"><?= euro($k['hochrechnung']) ?></div>
             <div class="kennzahl__info <?= $puffer < 0 ? 'fw-semibold' : '' ?>">
                 <?php if ($istAbgelaufen): ?>
                     Budget abgeschlossen
                 <?php else: ?>
-                    <?= $puffer < 0 ? euro(-$puffer) . ' über Soll' : euro($puffer) . ' Puffer' ?> · Ist + offener Forecast
+                    voraussichtlich am Laufzeitende ·
+                    <?= $puffer < 0 ? euro(-$puffer) . ' über Budget' : euro($puffer) . ' bleiben übrig' ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -122,14 +129,15 @@ require __DIR__ . '/header.php';
             </div>
             <div class="diagramm-rahmen diagramm-rahmen--gross">
                 <canvas id="diagrammVerlauf" role="img"
-                        aria-label="Liniendiagramm: kumulierte Ausgaben, Forecast-Hochrechnung und Soll je Monat"></canvas>
+                        aria-label="Liniendiagramm: kumulierte Ausgaben, Forecast-Hochrechnung und Budget (Soll) je Monat"></canvas>
             </div>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card p-3 p-md-4 h-100">
             <div>
-                <h2 class="karte-titel mb-2">Offener Forecast</h2>
+                <h2 class="karte-titel mb-1">Offener Forecast</h2>
+                <p class="small text-muted mb-2">Geplante, noch nicht getätigte Ausgaben ab diesem Monat. Sie fließen in die Hochrechnung ein.</p>
                 <?php if ($offeneForecasts): ?>
                     <ul class="list-unstyled small mb-0 forecast-liste">
                         <?php foreach ($offeneForecasts as $monat => $betrag): ?>
