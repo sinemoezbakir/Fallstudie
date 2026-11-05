@@ -69,6 +69,11 @@ require __DIR__ . '/header.php';
         <strong>Budget in Warnung:</strong> <?= e(statusGrund($budget, $k)) ?>.
         Weitere Ausgaben kritisch prüfen und die Hochrechnung im Blick behalten.
     </div>
+<?php else: ?>
+    <div class="alert alert-success">
+        <strong>Budget wird voraussichtlich eingehalten.</strong>
+        <?= euro($puffer) ?> Puffer bis Laufzeitende (Ist + offener Forecast).
+    </div>
 <?php endif; ?>
 
 <div class="row g-3 mb-4">
@@ -123,13 +128,8 @@ require __DIR__ . '/header.php';
     </div>
     <div class="col-lg-4">
         <div class="card p-3 p-md-4 h-100">
-            <h2 class="karte-titel mb-2">Soll-Ist-Vergleich</h2>
-            <div class="diagramm-rahmen diagramm-rahmen--rund">
-                <canvas id="diagrammSollIst" role="img"
-                        aria-label="Ringdiagramm: <?= e(prozent($k['verbrauch_prozent'])) ?> des Budgets verbraucht"></canvas>
-            </div>
-            <div class="mt-3">
-                <div class="etikett mb-2">Offener Forecast</div>
+            <div>
+                <h2 class="karte-titel mb-2">Offener Forecast</h2>
                 <?php if ($offeneForecasts): ?>
                     <ul class="list-unstyled small mb-0 forecast-liste">
                         <?php foreach ($offeneForecasts as $monat => $betrag): ?>
@@ -207,10 +207,7 @@ require __DIR__ . '/header.php';
 </div>
 
 <script type="application/json" id="diagramm-daten"><?= json_encode([
-    'soll' => $soll,
     'ist' => $k['ist'],
-    'status' => $k['status'],
-    'verbrauch' => $k['verbrauch_prozent'],
     'verlauf' => $verlauf,
 ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) ?></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
