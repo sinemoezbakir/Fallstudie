@@ -48,6 +48,7 @@ $benutzerListe = $pdo->query(
 )->fetchAll();
 
 $anzahlJeRolle = array_count_values(array_column($benutzerListe, 'rolle'));
+$budgetsGesamt = array_sum(array_column($benutzerListe, 'anzahl_budgets'));
 
 $pageTitle = 'Benutzerverwaltung';
 require __DIR__ . '/../../templates/header.php';
@@ -56,6 +57,37 @@ require __DIR__ . '/../../templates/header.php';
 <div class="seitenkopf">
     <h1>Benutzerverwaltung</h1>
     <p class="lead">Zugänge für Finance, Owner und Verwaltung anlegen und Passwörter zurücksetzen.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="kennzahl">
+            <div class="etikett">Zugänge gesamt</div>
+            <div class="kennzahl__wert"><?= count($benutzerListe) ?></div>
+            <div class="kennzahl__info">Admin, Finance und Owner zusammen</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kennzahl kennzahl--betont">
+            <div class="etikett">Owner-Konten</div>
+            <div class="kennzahl__wert"><?= (int) ($anzahlJeRolle[ROLLE_OWNER] ?? 0) ?></div>
+            <div class="kennzahl__info">je Bereich ein eigener Zugang</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kennzahl">
+            <div class="etikett">Budgets gesamt</div>
+            <div class="kennzahl__wert"><?= (int) $budgetsGesamt ?></div>
+            <div class="kennzahl__info">über alle Owner verteilt</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="kennzahl">
+            <div class="etikett">Rollen</div>
+            <div class="kennzahl__wert">3</div>
+            <div class="kennzahl__info">Admin · Finance · Owner</div>
+        </div>
+    </div>
 </div>
 
 <div class="row g-4">
