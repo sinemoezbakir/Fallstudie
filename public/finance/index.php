@@ -191,7 +191,9 @@ require __DIR__ . '/../../templates/header.php';
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="/assets/js/diagramm-bereiche.js"></script>
 <script>
-    document.querySelectorAll('[data-bs-toggle="popover"]').forEach((el) => new bootstrap.Popover(el));
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-bs-toggle="popover"]').forEach((el) => new bootstrap.Popover(el));
+    });
 </script>
 
 <?php require __DIR__ . '/../../templates/footer.php'; ?>
