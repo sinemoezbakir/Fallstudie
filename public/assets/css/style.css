@@ -273,11 +273,11 @@ a.text-decoration-none:hover .card,
     letter-spacing: 0.05em;
     font-weight: 700;
     border-bottom: 1px solid var(--line);
-    padding: 0.8rem 1rem;
+    padding: 1rem 1.25rem;
     white-space: nowrap;
 }
 .table tbody td {
-    padding: 0.85rem 1rem;
+    padding: 1.1rem 1.25rem;
     border-bottom: 1px solid var(--line);
     vertical-align: middle;
 }
@@ -290,10 +290,11 @@ a.text-decoration-none:hover .card,
 .form-control, .form-select {
     border: 1px solid var(--line);
     border-radius: var(--radius-klein);
-    padding: 0.6rem 0.9rem;
+    padding: 0.7rem 1rem;
     background-color: var(--flaeche);
     transition: var(--uebergang);
 }
+form .mb-3 { margin-bottom: 1.1rem !important; }
 .form-control:focus, .form-select:focus {
     border-color: var(--sage);
     box-shadow: 0 0 0 0.22rem rgba(124, 154, 146, 0.2);
@@ -608,8 +609,19 @@ footer {
 .forecast-raster__monat { font-weight: 600; margin: 0; }
 
 /* --- Finance-Übersicht: Filter und sortierbare Tabelle --- */
-.filterleiste { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.75rem; }
-.filterleiste__trenner { width: 1px; height: 1.4rem; background: var(--line); margin: 0 0.15rem; }
+.filterleiste { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1.5rem 2rem; }
+.filterleiste__gruppe { display: flex; flex-direction: column; gap: 0.5rem; }
+.filterleiste__label { display: block; }
+.filter-chip__entfernen {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 1.1rem; height: 1.1rem;
+    margin-left: 0.35rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    font-weight: 700;
+    line-height: 1;
+}
+.filter-chip.aktiv:hover .filter-chip__entfernen { background: rgba(255, 255, 255, 0.45); }
 .filter-chip {
     display: inline-flex; align-items: center; gap: 0.45rem;
     padding: 0.35rem 0.5rem 0.35rem 0.9rem;

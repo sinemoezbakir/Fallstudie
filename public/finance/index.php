@@ -115,37 +115,49 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 
 <div class="filterleiste mb-3">
-    <div class="d-flex flex-wrap align-items-center gap-2">
-        <a href="<?= e(filterLink(['status' => ''])) ?>" class="filter-chip <?= $filterStatus === '' ? 'aktiv' : '' ?>">
-            Alle <span class="filter-chip__zahl"><?= count($alle) ?></span>
-        </a>
-        <?php foreach (STATUS_LABEL as $status => $label): ?>
-            <?php $aktiv = $filterStatus === $status; ?>
-            <a href="<?= e(filterLink(['status' => $aktiv ? '' : $status])) ?>"
-               class="filter-chip filter-chip--<?= e(str_replace('_', '-', $status)) ?> <?= $aktiv ? 'aktiv' : '' ?>"
-               title="<?= $aktiv ? 'Klicken, um den Filter zu entfernen' : '' ?>">
-                <?= e($label) ?> <span class="filter-chip__zahl"><?= $summe['anzahl'][$status] ?></span><?= $aktiv ? ' ×' : '' ?>
+    <div class="filterleiste__gruppe">
+        <span class="etikett filterleiste__label">Status</span>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="<?= e(filterLink(['status' => ''])) ?>" class="filter-chip <?= $filterStatus === '' ? 'aktiv' : '' ?>">
+                Alle <span class="filter-chip__zahl"><?= count($alle) ?></span>
             </a>
-        <?php endforeach; ?>
-        <span class="filterleiste__trenner d-none d-md-block" aria-hidden="true"></span>
-        <a href="<?= e(filterLink(['bereich' => ''])) ?>" class="filter-chip <?= $filterBereich === '' ? 'aktiv' : '' ?>">
-            Alle Bereiche
-        </a>
-        <?php foreach (BEREICHE as $schluessel => $label): ?>
-            <?php $aktiv = $filterBereich === $schluessel; ?>
-            <a href="<?= e(filterLink(['bereich' => $aktiv ? '' : $schluessel])) ?>"
-               class="filter-chip <?= $aktiv ? 'aktiv' : '' ?>"
-               title="<?= $aktiv ? 'Klicken, um den Filter zu entfernen' : '' ?>">
-                <?= e($label) ?> <span class="filter-chip__zahl"><?= (int) ($anzahlJeBereich[$schluessel] ?? 0) ?></span><?= $aktiv ? ' ×' : '' ?>
-            </a>
-        <?php endforeach; ?>
+            <?php foreach (STATUS_LABEL as $status => $label): ?>
+                <?php $aktiv = $filterStatus === $status; ?>
+                <a href="<?= e(filterLink(['status' => $aktiv ? '' : $status])) ?>"
+                   class="filter-chip filter-chip--<?= e(str_replace('_', '-', $status)) ?> <?= $aktiv ? 'aktiv' : '' ?>"
+                   title="<?= $aktiv ? 'Klicken, um den Filter zu entfernen' : '' ?>">
+                    <?= e($label) ?> <span class="filter-chip__zahl"><?= $summe['anzahl'][$status] ?></span>
+                    <?php if ($aktiv): ?><span class="filter-chip__entfernen" aria-hidden="true">×</span><?php endif; ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
     </div>
-    <form method="get" action="/finance/" class="d-flex flex-wrap flex-sm-nowrap gap-2">
-        <input type="hidden" name="status" value="<?= e($filterStatus) ?>">
-        <input type="hidden" name="bereich" value="<?= e($filterBereich) ?>">
-        <input type="search" class="form-control form-control-sm suche-feld" name="q" value="<?= e($suche) ?>"
-               placeholder="Budget oder Owner suchen …" aria-label="Budget oder Owner suchen">
-    </form>
+    <div class="filterleiste__gruppe">
+        <span class="etikett filterleiste__label">Bereich</span>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="<?= e(filterLink(['bereich' => ''])) ?>" class="filter-chip <?= $filterBereich === '' ? 'aktiv' : '' ?>">
+                Alle Bereiche
+            </a>
+            <?php foreach (BEREICHE as $schluessel => $label): ?>
+                <?php $aktiv = $filterBereich === $schluessel; ?>
+                <a href="<?= e(filterLink(['bereich' => $aktiv ? '' : $schluessel])) ?>"
+                   class="filter-chip <?= $aktiv ? 'aktiv' : '' ?>"
+                   title="<?= $aktiv ? 'Klicken, um den Filter zu entfernen' : '' ?>">
+                    <?= e($label) ?> <span class="filter-chip__zahl"><?= (int) ($anzahlJeBereich[$schluessel] ?? 0) ?></span>
+                    <?php if ($aktiv): ?><span class="filter-chip__entfernen" aria-hidden="true">×</span><?php endif; ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <div class="filterleiste__gruppe">
+        <span class="etikett filterleiste__label">Suche</span>
+        <form method="get" action="/finance/" class="d-flex flex-wrap flex-sm-nowrap gap-2">
+            <input type="hidden" name="status" value="<?= e($filterStatus) ?>">
+            <input type="hidden" name="bereich" value="<?= e($filterBereich) ?>">
+            <input type="search" class="form-control form-control-sm suche-feld" name="q" value="<?= e($suche) ?>"
+                   placeholder="Budget oder Owner suchen …" aria-label="Budget oder Owner suchen">
+        </form>
+    </div>
 </div>
 
 <div class="tabelle-karte">
