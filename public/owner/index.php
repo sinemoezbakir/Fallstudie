@@ -121,8 +121,14 @@ require __DIR__ . '/../../templates/header.php';
 <?php endif; ?>
 
 <h2 class="karte-titel mb-3">Meine Budgets</h2>
+<?php
+    // Dringendste Budgets zuerst, nicht in Lade-Reihenfolge (Priorisierungsregel:
+    // Handlungsbedarf vor Detaildaten) - "schlechtester Status" zuerst.
+    $sortierteEintraege = $eintraege;
+    usort($sortierteEintraege, fn ($a, $b) => STATUS_RANG[$a['k']['status']] <=> STATUS_RANG[$b['k']['status']]);
+?>
 <div class="row g-3">
-    <?php foreach ($eintraege as ['budget' => $budget, 'k' => $k]): ?>
+    <?php foreach ($sortierteEintraege as ['budget' => $budget, 'k' => $k]): ?>
         <?php $abgelaufen = $k['status'] === 'abgelaufen'; ?>
         <div class="col-md-6 col-xl-4">
             <article class="card budget-karte h-100 card--klickbar <?= $abgelaufen ? 'budget-karte--abgelaufen' : '' ?>">
