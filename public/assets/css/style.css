@@ -473,6 +473,31 @@ footer {
     font-size: 0.85rem; font-weight: 600;
 }
 
+/* --- Status-Banner: die eine Aussage ganz oben, noch vor den Kennzahlen
+   ("Aussagekraft vor Optik") --- */
+.status-banner {
+    display: flex; align-items: flex-start; gap: 1rem;
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--schatten-karte);
+}
+.status-banner__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 2.5rem; height: 2.5rem; flex: 0 0 2.5rem;
+    border-radius: 50%;
+    font-family: var(--serif);
+    font-size: 1.3rem; font-weight: 700;
+    color: #fff;
+}
+.status-banner__titel { font-family: var(--serif); font-size: 1.4rem; margin: 0 0 0.2rem; }
+.status-banner__text { margin: 0; }
+.status-banner--gut { background: var(--status-im-rahmen-bg); }
+.status-banner--gut .status-banner__icon { background: var(--sage-deep); }
+.status-banner--gut .status-banner__titel { color: var(--status-im-rahmen-text); }
+.status-banner--risiko { background: var(--status-ueberschritten-bg); }
+.status-banner--risiko .status-banner__icon { background: #a84f4f; }
+.status-banner--risiko .status-banner__titel { color: var(--status-ueberschritten-text); }
+
 /* --- Kennzahl-Kacheln (Dashboard, Detail, Finance) --- */
 .kennzahl {
     height: 100%;

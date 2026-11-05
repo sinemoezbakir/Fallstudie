@@ -15,6 +15,21 @@ $eintraege = budgetsMitKennzahlen(ladeBudgetsVonOwner($benutzerId));
 $summe = zusammenfassung($eintraege);
 $aufmerksamkeit = aufmerksamkeitsListe($eintraege);
 
+// Status-Banner: dasselbe Prinzip wie bei Finance - eine Aussage statt Zahlen.
+// Nutzt dieselbe, bereits bestehende aufmerksamkeitsListe() wie der Bereich
+// weiter unten (ueberschritten/warnung/laeuft-bald-ab), damit beide
+// Anzeigen immer konsistent sind.
+$istRisiko = (bool) $aufmerksamkeit;
+$dringendsterPunkt = null;
+foreach (['ueberschritten', 'warnung', 'laeuft_ab'] as $art) {
+    foreach ($aufmerksamkeit as $punkt) {
+        if ($punkt['art'] === $art) {
+            $dringendsterPunkt = $punkt;
+            break 2;
+        }
+    }
+}
+
 $stunde = (int) date('G');
 $gruss = $stunde < 11 ? 'Guten Morgen' : ($stunde < 18 ? 'Hallo' : 'Guten Abend');
 
@@ -25,16 +40,29 @@ require __DIR__ . '/../../templates/header.php';
 <div class="seitenkopf">
     <p class="etikett mb-2">Stand: <?= date('d.m.Y, H:i') ?> Uhr</p>
     <h1><?= e($gruss) ?>, <?= e($_SESSION['anzeigename']) ?></h1>
-    <p class="lead">
-        <?php if (!$eintraege): ?>
-            Dir sind noch keine Budgets zugewiesen.
-        <?php elseif (!$aufmerksamkeit): ?>
-            Alle deine Budgets sind im grünen Bereich.
-        <?php else: ?>
-            <?= count($aufmerksamkeit) === 1 ? 'Ein Budget braucht' : count($aufmerksamkeit) . ' Budgets brauchen' ?> deine Aufmerksamkeit.
-        <?php endif; ?>
-    </p>
 </div>
+
+<?php if (!$eintraege): ?>
+    <p class="lead mb-4">Dir sind noch keine Budgets zugewiesen.</p>
+<?php else: ?>
+    <div class="status-banner <?= $istRisiko ? 'status-banner--risiko' : 'status-banner--gut' ?> mb-4">
+        <span class="status-banner__icon" aria-hidden="true"><?= $istRisiko ? '!' : '✓' ?></span>
+        <div>
+            <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Alles im Plan' ?></p>
+            <p class="status-banner__text">
+                <?php if ($istRisiko): ?>
+                    <strong><?= e($dringendsterPunkt['budget']['name']) ?></strong>:
+                    <?= e($dringendsterPunkt['text']) ?>.
+                    <?php if (count($aufmerksamkeit) > 1): ?>
+                        Insgesamt <?= count($aufmerksamkeit) ?> Budgets brauchen deine Aufmerksamkeit.
+                    <?php endif; ?>
+                <?php else: ?>
+                    Alle deine Budgets sind im grünen Bereich.
+                <?php endif; ?>
+            </p>
+        </div>
+    </div>
+<?php endif; ?>
 
 <?php if ($eintraege): ?>
 <div class="row g-3 mb-4">

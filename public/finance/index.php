@@ -12,6 +12,23 @@ erfordereRolle(ROLLE_FINANCE);
 $alle = budgetsMitKennzahlen(ladeAlleBudgets());
 $summe = zusammenfassung($alle);
 
+// --- Status-Banner: ein einziger Satz ganz oben statt Zahlen, die man erst
+// interpretieren muss. "Schlechtester Status gewinnt" ueber alle Budgets,
+// benennt das dringendste Budget konkret statt nur eine Anzahl zu nennen.
+$dringendsterEintrag = null;
+$dringendsterRang = null;
+foreach ($alle as $eintrag) {
+    if ($eintrag['k']['status'] === 'abgelaufen') {
+        continue;
+    }
+    $rang = STATUS_RANG[$eintrag['k']['status']];
+    if ($dringendsterRang === null || $rang < $dringendsterRang) {
+        $dringendsterRang = $rang;
+        $dringendsterEintrag = $eintrag;
+    }
+}
+$istRisiko = $dringendsterRang !== null && $dringendsterRang <= STATUS_RANG['warnung'];
+
 // --- Filter (alle per GET, damit man gefilterte Ansichten verlinken kann) ---
 $filterStatus = isset(STATUS_LABEL[$_GET['status'] ?? '']) ? $_GET['status'] : '';
 $filterBereich = isset(BEREICHE[$_GET['bereich'] ?? '']) ? $_GET['bereich'] : '';
@@ -77,6 +94,24 @@ require __DIR__ . '/../../templates/header.php';
         <a href="/finance/export.php<?= e(substr(filterLink([]), strlen('/finance/'))) ?>" class="btn btn-maliá-outline"
            title="Exportiert die aktuell gefilterte Liste">CSV-Export</a>
         <a href="/finance/neu.php" class="btn btn-maliá">+ Neues Budget</a>
+    </div>
+</div>
+
+<div class="status-banner <?= $istRisiko ? 'status-banner--risiko' : 'status-banner--gut' ?> mb-4">
+    <span class="status-banner__icon" aria-hidden="true"><?= $istRisiko ? '!' : '✓' ?></span>
+    <div>
+        <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Alles im Plan' ?></p>
+        <p class="status-banner__text">
+            <?php if ($istRisiko): ?>
+                <strong><?= e($dringendsterEintrag['budget']['name']) ?></strong>:
+                <?= e(statusGrund($dringendsterEintrag['budget'], $dringendsterEintrag['k'])) ?>.
+                <?php if ($handlungsbedarf > 1): ?>
+                    Insgesamt <?= $handlungsbedarf ?> Budgets brauchen Aufmerksamkeit.
+                <?php endif; ?>
+            <?php else: ?>
+                Alle <?= $summe['laufend'] ?> laufenden Budgets sind im grünen Bereich.
+            <?php endif; ?>
+        </p>
     </div>
 </div>
 
