@@ -70,7 +70,14 @@ require __DIR__ . '/header.php';
 <?php elseif ($k['status'] === 'warnung'): ?>
     <div class="alert alert-warning">
         <strong>Budget in Warnung:</strong> <?= e(statusGrund($budget, $k)) ?>.
-        Weitere Ausgaben kritisch prüfen und die Hochrechnung im Blick behalten.
+        <?php // Konkreter naechster Schritt je Rolle und Ursache statt eines allgemeinen Satzes ?>
+        <?php if ($istOwner): ?>
+            <?= $puffer < 0 ? 'Geplante Ausgaben (Forecast) anpassen oder mit Finance abstimmen.' : 'Weitere Ausgaben kritisch prüfen.' ?>
+        <?php else: ?>
+            <?= $puffer < 0
+                ? 'Mit dem Budget-Owner (' . e($budget['owner_name'] ?? '') . ') klären, ob alle geplanten Ausgaben nötig sind.'
+                : 'Beobachten – bei weiteren Ausgaben mit dem Budget-Owner (' . e($budget['owner_name'] ?? '') . ') sprechen.' ?>
+        <?php endif; ?>
     </div>
 <?php else: ?>
     <div class="alert alert-success">
@@ -99,7 +106,7 @@ require __DIR__ . '/header.php';
     </div>
     <div class="col-6 col-lg-3">
         <?php $verplant = !$istAbgelaufen && $k['verfuegbar'] >= 0 && $k['offener_forecast'] > 0; ?>
-        <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($puffer < 0 || $istAbgelaufen ? '' : 'kennzahl--betont') ?>">
+        <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($k['status'] === 'im_rahmen' ? 'kennzahl--betont' : '') ?>">
             <div class="etikett"><?= $k['verfuegbar'] < 0 ? 'Überzogen' : ($istAbgelaufen ? 'Nicht ausgegeben' : 'Verfügbar') ?></div>
             <div class="kennzahl__wert"><?= euro(abs($k['verfuegbar'])) ?></div>
             <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : ($istAbgelaufen ? 'Restbetrag bei Ablauf' : 'noch nicht ausgegeben') ?><?= $verplant ? ' · davon ' . euro($k['offener_forecast']) . ' schon verplant' : '' ?></div>

@@ -159,7 +159,7 @@ require __DIR__ . '/../../templates/header.php';
                     <span class="fw-semibold"><?= e(BEREICHE[$schluessel]) ?></span>
                     <?= statusBadge($status) ?>
                     <span class="ms-auto tabular small <?= $diff > 0 ? 'text-ueberschritten fw-semibold' : 'text-muted' ?>">
-                        <?= $diff > 0 ? '+' . euro($diff) . ' über Budget' : euro(-$diff) . ' Puffer bis Jahresende' ?>
+                        <?= $diff > 0 ? '+' . euro($diff) . ' über Budget' : euro(-$diff) . ' Puffer bis Laufzeitende' ?>
                     </span>
                 </div>
                 <div class="verbrauch-balken verbrauch-balken--gross">
