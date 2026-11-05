@@ -1,27 +1,31 @@
 /*
  * Maliá Budget – Design-Grundlage
  * Farben und Schriften aus der Maliá-Website übernommen
- * (siehe docs/konzept.md Abschnitt 6, Quelle: WebProgrammierung-neuaufbau).
+ * (siehe docs/konzept.md Abschnitt 6, Quelle: WebProgrammierung-neuaufbau);
+ * MB-079 an eine hochwertige Wellness-Palette angeglichen (gleiche
+ * Sage-Grün-Familie, nur näher an definierten Hex-Werten). --sage-deep
+ * ist bewusst dunkler als die angegebene Primärfarbe, damit weiße
+ * Button-Schrift lesbar bleibt (Kontrast 4,5:1 statt nur 3:1).
  * MB-052: Schatten, Übergänge, konsistente Buttons/Formulare.
  * MB-012: Status-Badges mit getöntem Hintergrund und dunkler Schrift
  *         (weiße Schrift auf Ocker war nicht gut lesbar).
  */
 
 :root {
-    --paper: #fffdfa;
-    --cream: #f3eee5;
-    --ink: #49443e;
-    --muted: #7c776f;
-    --sage: #8d9b7f;
-    --sage-deep: #728267;
-    --rose: #c99388;
-    --line: #e5dfd4;
+    --paper: #faf8f5;
+    --cream: #f2ebe2;
+    --ink: #3a3a3a;
+    --muted: #716d68;
+    --sage: #7c9a92;
+    --sage-deep: #5c7a72;
+    --rose: #c96b6b;
+    --line: #ece7e1;
     --serif: "Instrument Serif", Georgia, serif;
     --sans: "DM Sans", system-ui, sans-serif;
 
-    --grund: #faf7f1;
+    --grund: #faf8f5;
     --flaeche: #ffffff;
-    --ocker: #d9a441;
+    --ocker: #d5a44f;
 
     /* Status-Farben (konzept.md Abschnitt 4): Füllung + gut lesbare Schrift */
     --status-im-rahmen: var(--sage);
@@ -42,7 +46,7 @@
 
     --bs-body-font-family: var(--sans);
     --bs-body-color: var(--ink);
-    --bs-link-color-rgb: 114, 130, 103;
+    --bs-link-color-rgb: 92, 122, 114;
     --bs-border-color: var(--line);
 }
 
@@ -51,8 +55,8 @@
 body {
     background-color: var(--grund);
     background-image:
-        radial-gradient(60rem 30rem at 100% -10%, rgba(141, 155, 127, 0.10), transparent 60%),
-        radial-gradient(40rem 24rem at -10% 10%, rgba(201, 147, 136, 0.07), transparent 60%);
+        radial-gradient(60rem 30rem at 100% -10%, rgba(124, 154, 146, 0.10), transparent 60%),
+        radial-gradient(40rem 24rem at -10% 10%, rgba(201, 107, 107, 0.07), transparent 60%);
     background-attachment: fixed;
     color: var(--ink);
     font-family: var(--sans);
@@ -85,7 +89,7 @@ a:hover { color: var(--ink); }
 }
 
 /* --- Seitenkopf innerhalb einer Seite --- */
-.seitenkopf { margin-bottom: 1.75rem; }
+.seitenkopf { margin-bottom: 2.25rem; }
 .seitenkopf h1 { margin-bottom: 0.25rem; }
 .seitenkopf .lead { color: var(--muted); font-size: 1rem; margin-bottom: 0; }
 .zurueck-link { display: inline-flex; gap: 0.35rem; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
@@ -193,7 +197,7 @@ a.text-decoration-none:hover .card,
     box-shadow: var(--schatten-klein);
 }
 .btn-maliá:hover, .btn-maliá:focus-visible {
-    background-color: #5f6e55;
+    background-color: #4e675f;
     color: #fff;
     box-shadow: var(--schatten-karte);
     transform: translateY(-1px);
@@ -292,7 +296,7 @@ a.text-decoration-none:hover .card,
 }
 .form-control:focus, .form-select:focus {
     border-color: var(--sage);
-    box-shadow: 0 0 0 0.22rem rgba(141, 155, 127, 0.2);
+    box-shadow: 0 0 0 0.22rem rgba(124, 154, 146, 0.2);
 }
 .form-label {
     font-weight: 600;
@@ -369,7 +373,7 @@ footer {
 }
 .demo-leiste__punkt {
     width: 0.5rem; height: 0.5rem; border-radius: 50%;
-    background: #b9c7a9;
+    background: #a8c2bb;
     box-shadow: 0 0 0 0 rgba(185, 199, 169, 0.7);
     animation: puls 2s infinite;
 }
@@ -421,8 +425,8 @@ footer {
     min-height: 520px;
     background:
         linear-gradient(160deg, rgba(73, 68, 62, 0.15), rgba(73, 68, 62, 0.75)),
-        radial-gradient(30rem 20rem at 20% 10%, #b9c7a9, transparent 70%),
-        radial-gradient(26rem 22rem at 90% 60%, #c99388, transparent 70%),
+        radial-gradient(30rem 20rem at 20% 10%, #a8c2bb, transparent 70%),
+        radial-gradient(26rem 22rem at 90% 60%, #d9a3a3, transparent 70%),
         var(--sage-deep);
 }
 .login-buehne__titel {
@@ -438,7 +442,7 @@ footer {
 
 /* --- Formulare: Fehler direkt am Feld (MB-051) --- */
 .form-control.is-invalid, .form-select.is-invalid { border-color: var(--rose); background-image: none; padding-right: 0.9rem; }
-.form-control.is-invalid:focus, .form-select.is-invalid:focus { box-shadow: 0 0 0 0.22rem rgba(201, 147, 136, 0.25); }
+.form-control.is-invalid:focus, .form-select.is-invalid:focus { box-shadow: 0 0 0 0.22rem rgba(201, 107, 107, 0.25); }
 .invalid-feedback { color: var(--status-ueberschritten-text); font-size: 0.83rem; }
 
 /* --- Rollen-Kennzeichen --- */
@@ -470,7 +474,7 @@ footer {
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow: var(--schatten-karte);
-    padding: 1.1rem 1.25rem;
+    padding: 1.4rem 1.5rem;
 }
 .kennzahl__wert {
     font-family: var(--serif);
@@ -515,7 +519,7 @@ footer {
 .aufmerksamkeit__punkt--laeuft_ab { background: var(--ocker); }
 
 /* --- Budget-Karten im Dashboard --- */
-.budget-karte { padding: 1.25rem; display: flex; flex-direction: column; }
+.budget-karte { padding: 1.5rem; display: flex; flex-direction: column; }
 .budget-karte__name { font-family: var(--sans); font-size: 1.05rem; font-weight: 700; margin: 0.6rem 0 0.9rem; }
 .budget-karte__name a { color: var(--ink); }
 .budget-karte__verfuegbar { display: flex; flex-direction: column; margin-bottom: 0.75rem; }
@@ -564,7 +568,7 @@ footer {
 }
 .korrektur-hinweis::before { content: "✎ "; }
 .suche-feld { max-width: 260px; border-radius: 999px; }
-.kennzahl--negativ { background: #b5786c; border-color: #b5786c; color: #fff; }
+.kennzahl--negativ { background: #a84f4f; border-color: #a84f4f; color: #fff; }
 .kennzahl--negativ .etikett, .kennzahl--negativ .kennzahl__info { color: rgba(255, 255, 255, 0.82); }
 .kennzahl--negativ .kennzahl__wert { color: #fff; }
 
