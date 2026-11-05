@@ -176,38 +176,27 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 
 <div class="row g-3 mb-4">
-    <div class="col-6 col-lg-3">
+    <div class="col-12 col-sm-4">
         <div class="kennzahl">
             <div class="etikett">Gesamtbudget</div>
             <div class="kennzahl__wert"><?= euro($summe['soll']) ?></div>
             <div class="kennzahl__info"><?= $summe['laufend'] === 1 ? '1 laufendes Budget' : $summe['laufend'] . ' laufende Budgets' ?></div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-12 col-sm-4">
         <div class="kennzahl">
             <div class="etikett">Ausgegeben</div>
             <div class="kennzahl__wert"><?= euro($summe['ist']) ?></div>
             <div class="kennzahl__info"><?= prozent($summe['verbrauch_prozent']) ?> vom Budget</div>
         </div>
     </div>
-    <div class="col-6 col-lg-3">
+    <div class="col-12 col-sm-4">
         <?php // Nicht gruen, wenn die Hochrechnung schon ueber dem Budget liegt ?>
         <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($summe['hochrechnung'] > $summe['soll'] ? '' : 'kennzahl--betont') ?>">
             <div class="etikett">Verfügbares Budget</div>
             <div class="kennzahl__wert"><?= euro($summe['verfuegbar']) ?></div>
             <div class="kennzahl__info">Hochrechnung <?= euro($summe['hochrechnung']) ?></div>
         </div>
-    </div>
-    <div class="col-6 col-lg-3">
-        <a href="<?= e(filterLink(['status' => $summe['anzahl']['ueberschritten'] ? 'ueberschritten' : 'warnung'])) ?>" class="text-decoration-none">
-            <div class="kennzahl card--klickbar <?= $handlungsbedarf ? 'kennzahl--negativ' : '' ?>">
-                <div class="etikett">Handlungsbedarf</div>
-                <div class="kennzahl__wert"><?= $handlungsbedarf ?> <span class="fs-6 <?= $handlungsbedarf ? '' : 'text-muted' ?>">Budgets</span></div>
-                <div class="kennzahl__info">
-                    <?= $summe['anzahl']['ueberschritten'] ?> überschritten · <?= $summe['anzahl']['warnung'] ?> mit Warnung
-                </div>
-            </div>
-        </a>
     </div>
 </div>
 
