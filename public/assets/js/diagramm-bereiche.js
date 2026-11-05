@@ -22,16 +22,16 @@
         data: {
             labels: bereiche.map((b) => b.label),
             datasets: [
-                { label: 'Soll', data: bereiche.map((b) => b.soll), backgroundColor: css('--line'), borderRadius: 6 },
+                { label: 'Soll (geplant)', data: bereiche.map((b) => b.soll), backgroundColor: css('--line'), borderRadius: 6 },
                 {
-                    label: 'Ist',
+                    label: 'Ist (ausgegeben)',
                     data: bereiche.map((b) => b.ist),
                     // Ist rosé, wenn der Bereich insgesamt über dem Soll liegt
                     backgroundColor: bereiche.map((b) => (b.ist > b.soll ? css('--rose') : css('--sage-deep'))),
                     borderRadius: 6,
                 },
                 {
-                    label: 'Hochrechnung',
+                    label: 'Hochrechnung (erwarteter Endstand)',
                     data: bereiche.map((b) => b.hochrechnung),
                     backgroundColor: 'rgba(217, 164, 65, 0.25)',
                     borderColor: css('--ocker'),

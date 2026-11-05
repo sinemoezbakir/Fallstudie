@@ -98,10 +98,14 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 
 <div class="card p-3 p-md-4 mb-4">
-    <div class="d-flex justify-content-between align-items-baseline mb-2">
+    <div class="d-flex justify-content-between align-items-baseline mb-1">
         <h2 class="karte-titel mb-0">Soll, Ist und Hochrechnung je Bereich</h2>
         <span class="small text-muted">laufende Budgets</span>
     </div>
+    <p class="small text-muted mb-3">
+        Hochrechnung = Ist-Ausgaben + bereits eingetragener Forecast für die restliche Laufzeit —
+        also der erwartete Endstand, wenn alles wie geplant eintrifft.
+    </p>
     <div class="diagramm-rahmen" style="height: 260px;">
         <canvas id="diagrammBereiche" role="img" aria-label="Balkendiagramm: Soll, Ist und Hochrechnung je Bereich"></canvas>
     </div>
