@@ -86,9 +86,9 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="col-6 col-lg-3">
         <a href="<?= e(filterLink(['status' => $summe['anzahl']['ueberschritten'] ? 'ueberschritten' : 'warnung'])) ?>" class="text-decoration-none">
-            <div class="kennzahl card--klickbar <?= $handlungsbedarf ? 'kennzahl--ueberschritten' : '' ?>">
+            <div class="kennzahl card--klickbar <?= $handlungsbedarf ? 'kennzahl--negativ' : '' ?>">
                 <div class="etikett">Handlungsbedarf</div>
-                <div class="kennzahl__wert"><?= $handlungsbedarf ?> <span class="fs-6 text-muted">Budgets</span></div>
+                <div class="kennzahl__wert"><?= $handlungsbedarf ?> <span class="fs-6 <?= $handlungsbedarf ? '' : 'text-muted' ?>">Budgets</span></div>
                 <div class="kennzahl__info">
                     <?= $summe['anzahl']['ueberschritten'] ?> überschritten · <?= $summe['anzahl']['warnung'] ?> mit Warnung
                 </div>
