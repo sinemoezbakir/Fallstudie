@@ -488,6 +488,7 @@ footer {
 .kennzahl--ueberschritten { border-color: var(--rose); box-shadow: 0 0 0 3px var(--status-ueberschritten-bg); }
 .text-ueberschritten { color: var(--status-ueberschritten-text) !important; }
 .text-im-rahmen { color: var(--status-im-rahmen-text) !important; }
+.text-warnung { color: var(--status-warnung-text) !important; }
 
 /* --- Braucht Aufmerksamkeit --- */
 .aufmerksamkeit {
@@ -511,7 +512,7 @@ footer {
 .aufmerksamkeit__punkt { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: 0 0 0.6rem; }
 .aufmerksamkeit__punkt--ueberschritten { background: var(--rose); }
 .aufmerksamkeit__punkt--warnung { background: var(--ocker); }
-.aufmerksamkeit__punkt--laeuft_ab { background: var(--muted); }
+.aufmerksamkeit__punkt--laeuft_ab { background: var(--ocker); }
 
 /* --- Budget-Karten im Dashboard --- */
 .budget-karte { padding: 1.25rem; display: flex; flex-direction: column; }

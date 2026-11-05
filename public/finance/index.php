@@ -173,7 +173,7 @@ require __DIR__ . '/../../templates/header.php';
                         <td class="d-none d-sm-table-cell" data-wert="<?= e(statusLabel($k['status'])) ?>"><?= statusBadge($k['status']) ?></td>
                         <td class="small text-nowrap d-none d-lg-table-cell" data-wert="<?= e($budget['gueltig_bis']) ?>">
                             <?= e(datumDe($budget['gueltig_bis'])) ?>
-                            <div class="text-muted"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></div>
+                            <div class="<?= laeuftBaldAb($k['tage_bis_verfall']) ? 'text-warnung fw-semibold' : 'text-muted' ?>"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

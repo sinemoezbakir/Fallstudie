@@ -115,7 +115,7 @@ require __DIR__ . '/../../templates/header.php';
                 </div>
 
                 <div class="budget-karte__fuss">
-                    <span class="small text-muted"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></span>
+                    <span class="small <?= laeuftBaldAb($k['tage_bis_verfall']) ? 'text-warnung fw-semibold' : 'text-muted' ?>"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></span>
                     <?php if (!$abgelaufen): ?>
                         <a href="/owner/ist-erfassen.php?budget_id=<?= (int) $budget['id'] ?>"
                            class="btn btn-sm btn-maliá position-relative" style="z-index: 2;">+ Ausgabe</a>

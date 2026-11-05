@@ -30,7 +30,8 @@ require __DIR__ . '/header.php';
             <span class="bereich-chip bereich-chip--<?= e(strtolower($budget['bereich'])) ?>"><?= e(bereichLabel($budget['bereich'])) ?></span>
             <?= statusBadge($k['status']) ?>
             <span class="small text-muted">
-                <?= e(datumDe($budget['gueltig_von'])) ?> – <?= e(datumDe($budget['gueltig_bis'])) ?> · <?= e(restlaufzeitText($k['tage_bis_verfall'])) ?>
+                <?= e(datumDe($budget['gueltig_von'])) ?> – <?= e(datumDe($budget['gueltig_bis'])) ?> ·
+                <span class="<?= laeuftBaldAb($k['tage_bis_verfall']) ? 'text-warnung fw-semibold' : '' ?>"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></span>
             </span>
         </div>
         <h1><?= e($budget['name']) ?></h1>

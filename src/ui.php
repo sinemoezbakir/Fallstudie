@@ -93,20 +93,29 @@ function statusLabel(string $status): string
     return STATUS_LABEL[$status] ?? ucfirst($status);
 }
 
-/** "noch 12 Tage" / "läuft heute ab" / "seit 3 Tagen abgelaufen" */
+/** "läuft in 12 Tagen ab" / "läuft morgen ab" / "läuft heute ab" / "seit 3 Tagen abgelaufen" */
 function restlaufzeitText(int $tage): string
 {
     if ($tage > 1) {
-        return "noch {$tage} Tage";
+        return "läuft in {$tage} Tagen ab";
     }
     if ($tage === 1) {
-        return 'noch 1 Tag';
+        return 'läuft morgen ab';
     }
     if ($tage === 0) {
         return 'läuft heute ab';
     }
 
     return abs($tage) === 1 ? 'seit 1 Tag abgelaufen' : 'seit ' . abs($tage) . ' Tagen abgelaufen';
+}
+
+/**
+ * Ob die Restlaufzeit "bald" ist (gleiche 30-Tage-Grenze wie
+ * aufmerksamkeitsListe()) - für farbliche Hervorhebung in Tabellen/Karten.
+ */
+function laeuftBaldAb(int $tage): bool
+{
+    return $tage >= 0 && $tage <= 30;
 }
 
 /**
