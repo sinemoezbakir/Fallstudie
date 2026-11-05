@@ -31,13 +31,17 @@ function filterLink(array $aenderung): string
 }
 
 // --- Diagramm: Soll / Ist / Hochrechnung je Bereich (laufende Budgets) ---
-// $problemeJeBereich zaehlt Budgets mit Warnung/Ueberschritten einzeln, auch
-// wenn die Summe im Diagramm wegen anderer, gut stehender Budgets im selben
-// Bereich unauffaellig bleibt (ein einzelnes Problem soll nicht "untergehen").
+// "Schlechtester Status gewinnt" (Enterprise-Standard, z. B. Power BI/SAP
+// Analytics Cloud): die Status-Ampel eines Bereichs kommt NICHT aus der
+// Soll-Ist-Summe, sondern aus dem schlechtesten Einzelstatus seiner Budgets.
+// So kann ein einzelnes ueberschrittenes Budget nicht in der Summe
+// "untergehen", selbst wenn andere Budgets im selben Bereich gut dastehen.
 $jeBereich = [];
+$schlechtesterStatusJeBereich = [];
 $problemeJeBereich = [];
 foreach (BEREICHE as $schluessel => $label) {
     $jeBereich[$schluessel] = ['label' => $label, 'soll' => 0.0, 'ist' => 0.0, 'hochrechnung' => 0.0];
+    $schlechtesterStatusJeBereich[$schluessel] = null;
     $problemeJeBereich[$schluessel] = 0;
 }
 foreach ($alle as ['budget' => $budget, 'k' => $k]) {
@@ -45,6 +49,11 @@ foreach ($alle as ['budget' => $budget, 'k' => $k]) {
         $jeBereich[$budget['bereich']]['soll'] += (float) $budget['soll_betrag'];
         $jeBereich[$budget['bereich']]['ist'] += $k['ist'];
         $jeBereich[$budget['bereich']]['hochrechnung'] += $k['hochrechnung'];
+
+        $bisher = $schlechtesterStatusJeBereich[$budget['bereich']];
+        if ($bisher === null || STATUS_RANG[$k['status']] < STATUS_RANG[$bisher]) {
+            $schlechtesterStatusJeBereich[$budget['bereich']] = $k['status'];
+        }
     }
     if (in_array($k['status'], ['warnung', 'ueberschritten'], true)) {
         $problemeJeBereich[$budget['bereich']]++;
@@ -122,13 +131,20 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="diagramm-hinweise mt-3">
         <?php foreach (BEREICHE as $schluessel => $label): ?>
-            <?php $anzahl = $problemeJeBereich[$schluessel]; ?>
-            <span class="diagramm-hinweis <?= $anzahl ? 'diagramm-hinweis--problem' : '' ?>">
-                <?php if ($anzahl): ?>
-                    <span class="diagramm-hinweis__punkt" aria-hidden="true"></span>
+            <?php
+                $status = $schlechtesterStatusJeBereich[$schluessel];
+                $anzahl = $problemeJeBereich[$schluessel];
+            ?>
+            <span class="diagramm-hinweis">
+                <span class="fw-semibold"><?= e($label) ?></span>
+                <?php if ($status === null): ?>
+                    <span class="status-badge abgelaufen">Keine laufenden Budgets</span>
+                <?php else: ?>
+                    <?= statusBadge($status) ?>
                 <?php endif; ?>
-                <?= e($label) ?>:
-                <?= $anzahl ? ($anzahl === 1 ? '1 Budget braucht Aufmerksamkeit' : "{$anzahl} Budgets brauchen Aufmerksamkeit") : 'alles im Rahmen' ?>
+                <?php if ($anzahl > 1): ?>
+                    <span class="text-muted">(<?= $anzahl ?> Budgets betroffen)</span>
+                <?php endif; ?>
             </span>
         <?php endforeach; ?>
     </div>
