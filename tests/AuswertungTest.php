@@ -113,6 +113,6 @@ final class AuswertungTest extends TestCase
         ]);
 
         $this->assertSame(['ueberschritten', 'warnung', 'laeuft_ab'], array_column($liste, 'art'));
-        $this->assertSame('85 % verbraucht', str_replace("\u{00A0}", ' ', $liste[1]['text']));
+        $this->assertSame('Nur noch 500,00 € verfügbar (85 % verbraucht)', str_replace("\u{00A0}", ' ', $liste[1]['text']));
     }
 }

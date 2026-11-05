@@ -266,12 +266,14 @@ function statusGrund(array $budget, array $k): string
 {
     $soll = (float) $budget['soll_betrag'];
 
+    // Konsequenz vor Kennzahl: nicht nur "84 % verbraucht", sondern was das
+    // konkret bedeutet (wie viel noch da ist / um wie viel es ueberzogen ist).
     return match ($k['status']) {
-        'ueberschritten' => euro($k['ist'] - $soll) . ' über dem Soll',
+        'ueberschritten' => 'Bereits ' . euro($k['ist'] - $soll) . ' über dem Soll',
         'warnung' => $k['verbrauch_prozent'] >= 80
-            ? prozent($k['verbrauch_prozent']) . ' verbraucht'
-            : 'Hochrechnung ' . euro($k['hochrechnung']) . ' liegt über dem Soll',
-        'abgelaufen' => 'abgelaufen am ' . datumDe($budget['gueltig_bis']),
+            ? 'Nur noch ' . euro($k['verfuegbar']) . ' verfügbar (' . prozent($k['verbrauch_prozent']) . ' verbraucht)'
+            : 'Hochrechnung übersteigt das Soll um ' . euro($k['hochrechnung'] - $soll),
+        'abgelaufen' => 'Abgelaufen am ' . datumDe($budget['gueltig_bis']),
         default => '',
     };
 }
