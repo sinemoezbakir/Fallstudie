@@ -66,12 +66,14 @@
                         fill: false,
                     },
                     {
-                        label: 'Soll',
+                        // Betrag direkt in der Legende, damit die Linie ohne Nachschlagen lesbar ist
+                        label: `Budget (Soll): ${euroKurz.format(verlauf.soll)}`,
                         data: verlauf.monate.map(() => verlauf.soll),
                         borderColor: farbe.rose,
-                        borderWidth: 1.5,
-                        borderDash: [2, 4],
+                        borderWidth: 2,
+                        borderDash: [4, 4],
                         pointRadius: 0,
+                        pointStyle: 'line',
                         fill: false,
                     },
                 ],
