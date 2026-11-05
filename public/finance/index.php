@@ -83,6 +83,16 @@ $topRisiken = array_keys(BEREICHE);
 usort($topRisiken, fn ($a, $b) => STATUS_RANG[$schlechtesterStatusJeBereich[$a] ?? 'im_rahmen']
     <=> STATUS_RANG[$schlechtesterStatusJeBereich[$b] ?? 'im_rahmen']);
 
+// Handlungsbedarf je Budget: Top Risiken zeigt nur das schlechteste Budget
+// pro Bereich - hier stehen alle ueberschrittenen und gewarnten Budgets
+// einzeln, Ueberschritten vor Warnung. Bewusst aus $alle statt $gefiltert,
+// damit die Entscheidungsliste nicht von den Tabellenfiltern abhaengt.
+$handlungsbedarfListe = array_values(array_filter(
+    $alle,
+    fn ($eintrag) => in_array($eintrag['k']['status'], ['ueberschritten', 'warnung'], true)
+));
+usort($handlungsbedarfListe, fn ($a, $b) => STATUS_RANG[$a['k']['status']] <=> STATUS_RANG[$b['k']['status']]);
+
 $handlungsbedarf = $summe['anzahl']['warnung'] + $summe['anzahl']['ueberschritten'];
 $anzahlJeBereich = array_count_values(array_column(array_column($alle, 'budget'), 'bereich'));
 
@@ -199,6 +209,25 @@ require __DIR__ . '/../../templates/header.php';
         </a>
     </div>
 </div>
+
+<?php if ($handlungsbedarfListe): ?>
+<section class="aufmerksamkeit mb-4" aria-labelledby="handlungsbedarf-titel">
+    <h2 id="handlungsbedarf-titel" class="karte-titel mb-2">Handlungsbedarf</h2>
+    <ul class="list-unstyled mb-0">
+        <?php foreach ($handlungsbedarfListe as ['budget' => $budget, 'k' => $k]): ?>
+            <li>
+                <a class="aufmerksamkeit__zeile" href="/finance/budget.php?id=<?= (int) $budget['id'] ?>">
+                    <span class="aufmerksamkeit__punkt aufmerksamkeit__punkt--<?= e($k['status']) ?>"></span>
+                    <span class="fw-semibold"><?= e($budget['name']) ?></span>
+                    <span class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?></span>
+                    <span class="fw-semibold <?= $k['status'] === 'ueberschritten' ? 'text-ueberschritten' : 'text-warnung' ?>"><?= e(statusGrund($budget, $k)) ?></span>
+                    <span class="ms-auto aufmerksamkeit__pfeil" aria-hidden="true">→</span>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>
+<?php endif; ?>
 
 <div class="filterleiste mb-3">
     <div class="filterleiste__gruppe">
