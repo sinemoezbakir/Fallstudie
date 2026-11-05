@@ -191,7 +191,8 @@ require __DIR__ . '/../../templates/header.php';
         </div>
     </div>
     <div class="col-6 col-lg-3">
-        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
+        <?php // Nicht gruen, wenn die Hochrechnung schon ueber dem Budget liegt ?>
+        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($summe['hochrechnung'] > $summe['soll'] ? '' : 'kennzahl--betont') ?>">
             <div class="etikett">Verfügbares Budget</div>
             <div class="kennzahl__wert"><?= euro($summe['verfuegbar']) ?></div>
             <div class="kennzahl__info">Hochrechnung <?= euro($summe['hochrechnung']) ?></div>

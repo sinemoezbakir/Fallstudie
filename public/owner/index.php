@@ -85,7 +85,8 @@ require __DIR__ . '/../../templates/header.php';
         </div>
     </div>
     <div class="col-6 col-lg-3">
-        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
+        <?php // Nicht gruen, wenn die Hochrechnung schon ueber dem Budget liegt - sonst Widerspruch zur Karte daneben ?>
+        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($summe['hochrechnung'] > $summe['soll'] ? '' : 'kennzahl--betont') ?>">
             <div class="etikett">Verfügbares Budget</div>
             <div class="kennzahl__wert"><?= euro($summe['verfuegbar']) ?></div>
             <div class="kennzahl__info">über alle laufenden Budgets</div>
@@ -163,8 +164,8 @@ require __DIR__ . '/../../templates/header.php';
                 <p class="small fw-semibold mb-3 <?= $aussageKlasse ?>"><?= e($aussage) ?></p>
 
                 <div class="budget-karte__verfuegbar">
-                    <span class="etikett"><?= $abgelaufen ? 'Nicht ausgegeben' : 'Verfügbar' ?></span>
-                    <span class="zahl-gross <?= $k['verfuegbar'] < 0 ? 'text-ueberschritten' : '' ?>"><?= euro($k['verfuegbar']) ?></span>
+                    <span class="etikett"><?= $k['verfuegbar'] < 0 ? 'Überzogen' : ($abgelaufen ? 'Nicht ausgegeben' : 'Verfügbar') ?></span>
+                    <span class="zahl-gross <?= $k['verfuegbar'] < 0 ? 'text-ueberschritten' : '' ?>"><?= euro(abs($k['verfuegbar'])) ?></span>
                 </div>
 
                 <?= verbrauchsBalken($k['verbrauch_prozent']) ?>
