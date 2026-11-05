@@ -139,7 +139,18 @@ require __DIR__ . '/../../templates/header.php';
 ?>
 <div class="row g-3">
     <?php foreach ($sortierteEintraege as ['budget' => $budget, 'k' => $k]): ?>
-        <?php $abgelaufen = $k['status'] === 'abgelaufen'; ?>
+        <?php
+            $abgelaufen = $k['status'] === 'abgelaufen';
+            // Eine Aussage pro Karte: was ist los und was ist zu tun - aus
+            // vorhandenem Status, statusGrund() und Restlaufzeit, ohne neue Berechnung.
+            [$aussage, $aussageKlasse] = match (true) {
+                $k['status'] === 'ueberschritten' => [statusGrund($budget, $k) . ' – mit Finance abstimmen', 'text-ueberschritten'],
+                $k['status'] === 'warnung' => [statusGrund($budget, $k) . ' – Ausgaben prüfen', 'text-warnung'],
+                $abgelaufen => ['Abgeschlossen – keine Buchungen mehr möglich', 'text-muted'],
+                laeuftBaldAb($k['tage_bis_verfall']) => [ucfirst(restlaufzeitText($k['tage_bis_verfall'])) . ' – Restbudget einplanen', 'text-warnung'],
+                default => ['Im Rahmen – kein Handlungsbedarf', 'text-im-rahmen'],
+            };
+        ?>
         <div class="col-md-6 col-xl-4">
             <article class="card budget-karte budget-karte--<?= e(str_replace('_', '-', $k['status'])) ?> h-100 card--klickbar <?= $abgelaufen ? 'budget-karte--abgelaufen' : '' ?>">
                 <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
@@ -149,6 +160,7 @@ require __DIR__ . '/../../templates/header.php';
                 <h3 class="budget-karte__name">
                     <a class="stretched-link" href="/owner/budget.php?id=<?= (int) $budget['id'] ?>"><?= e($budget['name']) ?></a>
                 </h3>
+                <p class="small fw-semibold mb-3 <?= $aussageKlasse ?>"><?= e($aussage) ?></p>
 
                 <div class="budget-karte__verfuegbar">
                     <span class="etikett">Verfügbar</span>
