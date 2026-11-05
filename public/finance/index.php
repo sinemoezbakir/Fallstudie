@@ -120,8 +120,11 @@ require __DIR__ . '/../../templates/header.php';
             Alle <span class="filter-chip__zahl"><?= count($alle) ?></span>
         </a>
         <?php foreach (STATUS_LABEL as $status => $label): ?>
-            <a href="<?= e(filterLink(['status' => $status])) ?>" class="filter-chip filter-chip--<?= e(str_replace('_', '-', $status)) ?> <?= $filterStatus === $status ? 'aktiv' : '' ?>">
-                <?= e($label) ?> <span class="filter-chip__zahl"><?= $summe['anzahl'][$status] ?></span>
+            <?php $aktiv = $filterStatus === $status; ?>
+            <a href="<?= e(filterLink(['status' => $aktiv ? '' : $status])) ?>"
+               class="filter-chip filter-chip--<?= e(str_replace('_', '-', $status)) ?> <?= $aktiv ? 'aktiv' : '' ?>"
+               title="<?= $aktiv ? 'Klicken, um den Filter zu entfernen' : '' ?>">
+                <?= e($label) ?> <span class="filter-chip__zahl"><?= $summe['anzahl'][$status] ?></span><?= $aktiv ? ' ×' : '' ?>
             </a>
         <?php endforeach; ?>
         <span class="filterleiste__trenner d-none d-md-block" aria-hidden="true"></span>
@@ -129,8 +132,11 @@ require __DIR__ . '/../../templates/header.php';
             Alle Bereiche
         </a>
         <?php foreach (BEREICHE as $schluessel => $label): ?>
-            <a href="<?= e(filterLink(['bereich' => $schluessel])) ?>" class="filter-chip <?= $filterBereich === $schluessel ? 'aktiv' : '' ?>">
-                <?= e($label) ?> <span class="filter-chip__zahl"><?= (int) ($anzahlJeBereich[$schluessel] ?? 0) ?></span>
+            <?php $aktiv = $filterBereich === $schluessel; ?>
+            <a href="<?= e(filterLink(['bereich' => $aktiv ? '' : $schluessel])) ?>"
+               class="filter-chip <?= $aktiv ? 'aktiv' : '' ?>"
+               title="<?= $aktiv ? 'Klicken, um den Filter zu entfernen' : '' ?>">
+                <?= e($label) ?> <span class="filter-chip__zahl"><?= (int) ($anzahlJeBereich[$schluessel] ?? 0) ?></span><?= $aktiv ? ' ×' : '' ?>
             </a>
         <?php endforeach; ?>
     </div>
