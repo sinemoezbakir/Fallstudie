@@ -55,7 +55,7 @@
                         pointBackgroundColor: farbe.sageDeep,
                     },
                     {
-                        label: 'Hochrechnung mit Forecast',
+                        label: prognoseFarbe === farbe.rose ? 'Hochrechnung – über Budget' : 'Hochrechnung mit Forecast',
                         data: verlauf.prognose,
                         borderColor: prognoseFarbe,
                         borderDash: [6, 5],
@@ -67,9 +67,11 @@
                     },
                     {
                         // Betrag direkt in der Legende, damit die Linie ohne Nachschlagen lesbar ist
+                        // Neutral statt rot: Rot bleibt allein der Hochrechnung vorbehalten,
+                        // wenn sie ueber dem Budget liegt - sonst zwei rote Linien
                         label: `Budget (Soll): ${euroKurz.format(verlauf.soll)}`,
                         data: verlauf.monate.map(() => verlauf.soll),
-                        borderColor: farbe.rose,
+                        borderColor: farbe.ink,
                         borderWidth: 2,
                         borderDash: [4, 4],
                         pointRadius: 0,
