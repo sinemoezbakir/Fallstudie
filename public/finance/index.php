@@ -51,7 +51,7 @@ require __DIR__ . '/../../templates/header.php';
 
 <div class="seitenkopf d-flex flex-wrap justify-content-between align-items-end gap-3">
     <div>
-        <p class="etikett mb-2"><?= e(datumDe(date('Y-m-d'))) ?> · live aus der Datenbank</p>
+        <p class="etikett mb-2">Stand: <?= date('d.m.Y, H:i') ?> Uhr</p>
         <h1>Alle Budgets</h1>
         <p class="lead">Soll-Ist-Stand aller Bereiche – Kurse, Geräte und Marketing.</p>
     </div>

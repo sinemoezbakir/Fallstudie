@@ -23,7 +23,7 @@ require __DIR__ . '/../../templates/header.php';
 ?>
 
 <div class="seitenkopf">
-    <p class="etikett mb-2"><?= e(datumDe(date('Y-m-d'))) ?> · live aus der Datenbank</p>
+    <p class="etikett mb-2">Stand: <?= date('d.m.Y, H:i') ?> Uhr</p>
     <h1><?= e($gruss) ?>, <?= e($_SESSION['anzeigename']) ?></h1>
     <p class="lead">
         <?php if (!$eintraege): ?>
