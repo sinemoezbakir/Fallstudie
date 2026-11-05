@@ -98,14 +98,16 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 
 <div class="card p-3 p-md-4 mb-4">
-    <div class="d-flex justify-content-between align-items-baseline mb-1">
-        <h2 class="karte-titel mb-0">Soll, Ist und Hochrechnung je Bereich</h2>
+    <div class="d-flex justify-content-between align-items-baseline mb-2">
+        <h2 class="karte-titel mb-0">
+            Soll, Ist und Hochrechnung je Bereich
+            <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
+                    data-bs-title="Was ist die Hochrechnung?"
+                    data-bs-content="Ist-Ausgaben + bereits eingetragener Forecast für die restliche Laufzeit. Zeigt, wo ein Bereich am Ende der Laufzeit stehen wird, wenn alles wie geplant eintrifft – auch wenn das Ist bisher noch niedrig ist."
+                    aria-label="Was bedeutet Hochrechnung?">i</button>
+        </h2>
         <span class="small text-muted">laufende Budgets</span>
     </div>
-    <p class="small text-muted mb-3">
-        Hochrechnung = Ist-Ausgaben + bereits eingetragener Forecast für die restliche Laufzeit —
-        also der erwartete Endstand, wenn alles wie geplant eintrifft.
-    </p>
     <div class="diagramm-rahmen" style="height: 260px;">
         <canvas id="diagrammBereiche" role="img" aria-label="Balkendiagramm: Soll, Ist und Hochrechnung je Bereich"></canvas>
     </div>
@@ -188,5 +190,8 @@ require __DIR__ . '/../../templates/header.php';
 <script type="application/json" id="bereich-daten"><?= json_encode(array_values($jeBereich), JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script src="/assets/js/diagramm-bereiche.js"></script>
+<script>
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach((el) => new bootstrap.Popover(el));
+</script>
 
 <?php require __DIR__ . '/../../templates/footer.php'; ?>
