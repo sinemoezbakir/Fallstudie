@@ -121,7 +121,13 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 
 <div class="card p-3 p-md-4 mb-4">
-    <h2 class="karte-titel mb-3">Top Risiken</h2>
+    <h2 class="karte-titel mb-3">
+        Top Risiken
+        <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
+                data-bs-title="Was ist die Hochrechnung?"
+                data-bs-content="Ist-Ausgaben + bereits eingetragener Forecast für die restliche Laufzeit. Zeigt, wo ein Bereich am Ende der Laufzeit stehen wird, wenn alles wie geplant eintrifft – auch wenn das Ist bisher noch niedrig ist."
+                aria-label="Was bedeutet Hochrechnung?">i</button>
+    </h2>
     <div class="top-risiken">
         <?php foreach ($topRisiken as $schluessel): ?>
             <?php

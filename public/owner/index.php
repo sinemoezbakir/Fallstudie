@@ -90,7 +90,13 @@ require __DIR__ . '/../../templates/header.php';
     <div class="col-6 col-lg-3">
         <?php $differenz = $summe['soll'] - $summe['hochrechnung']; ?>
         <div class="kennzahl <?= $differenz < 0 ? 'kennzahl--negativ' : '' ?>">
-            <div class="etikett">Hochrechnung</div>
+            <div class="etikett">
+                Hochrechnung
+                <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
+                        data-bs-title="Was ist die Hochrechnung?"
+                        data-bs-content="Ist-Ausgaben + bereits eingetragener Forecast für die restliche Laufzeit. Zeigt, wo du am Ende der Laufzeit stehen wirst, wenn alles wie geplant eintrifft."
+                        aria-label="Was bedeutet Hochrechnung?">i</button>
+            </div>
             <div class="kennzahl__wert"><?= euro($summe['hochrechnung']) ?></div>
             <div class="kennzahl__info <?= $differenz < 0 ? 'fw-semibold' : '' ?>">
                 <?= $differenz < 0 ? euro(-$differenz) . ' über dem Budget' : euro($differenz) . ' Puffer bis Laufzeitende' ?>
