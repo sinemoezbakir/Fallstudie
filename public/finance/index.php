@@ -44,6 +44,7 @@ foreach ($alle as ['budget' => $budget, 'k' => $k]) {
 }
 
 $handlungsbedarf = $summe['anzahl']['warnung'] + $summe['anzahl']['ueberschritten'];
+$anzahlJeBereich = array_count_values(array_column(array_column($alle, 'budget'), 'bereich'));
 
 $pageTitle = 'Alle Budgets';
 require __DIR__ . '/../../templates/header.php';
@@ -114,7 +115,7 @@ require __DIR__ . '/../../templates/header.php';
 </div>
 
 <div class="filterleiste mb-3">
-    <div class="d-flex flex-wrap gap-2">
+    <div class="d-flex flex-wrap align-items-center gap-2">
         <a href="<?= e(filterLink(['status' => ''])) ?>" class="filter-chip <?= $filterStatus === '' ? 'aktiv' : '' ?>">
             Alle <span class="filter-chip__zahl"><?= count($alle) ?></span>
         </a>
@@ -123,15 +124,19 @@ require __DIR__ . '/../../templates/header.php';
                 <?= e($label) ?> <span class="filter-chip__zahl"><?= $summe['anzahl'][$status] ?></span>
             </a>
         <?php endforeach; ?>
+        <span class="filterleiste__trenner d-none d-md-block" aria-hidden="true"></span>
+        <a href="<?= e(filterLink(['bereich' => ''])) ?>" class="filter-chip <?= $filterBereich === '' ? 'aktiv' : '' ?>">
+            Alle Bereiche
+        </a>
+        <?php foreach (BEREICHE as $schluessel => $label): ?>
+            <a href="<?= e(filterLink(['bereich' => $schluessel])) ?>" class="filter-chip <?= $filterBereich === $schluessel ? 'aktiv' : '' ?>">
+                <?= e($label) ?> <span class="filter-chip__zahl"><?= (int) ($anzahlJeBereich[$schluessel] ?? 0) ?></span>
+            </a>
+        <?php endforeach; ?>
     </div>
     <form method="get" action="/finance/" class="d-flex flex-wrap flex-sm-nowrap gap-2">
         <input type="hidden" name="status" value="<?= e($filterStatus) ?>">
-        <select class="form-select form-select-sm" name="bereich" onchange="this.form.submit()" aria-label="Bereich" style="min-width: 170px; width: auto;">
-            <option value="">Alle Bereiche</option>
-            <?php foreach (BEREICHE as $schluessel => $label): ?>
-                <option value="<?= e($schluessel) ?>" <?= $filterBereich === $schluessel ? 'selected' : '' ?>><?= e($label) ?></option>
-            <?php endforeach; ?>
-        </select>
+        <input type="hidden" name="bereich" value="<?= e($filterBereich) ?>">
         <input type="search" class="form-control form-control-sm suche-feld" name="q" value="<?= e($suche) ?>"
                placeholder="Budget oder Owner suchen …" aria-label="Budget oder Owner suchen">
     </form>
