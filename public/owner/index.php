@@ -84,9 +84,13 @@ require __DIR__ . '/../../templates/header.php';
             <div class="kennzahl__info"><?= prozent($summe['verbrauch_prozent']) ?> vom Budget</div>
         </div>
     </div>
+    <?php
+        // Gleiche Regel wie bei Finance: Ueberschreitung je Budget, nicht mit Puffer anderer Budgets verrechnet
+        $risiken = array_filter(array_map(fn ($e) => $e['k']['status'] === 'abgelaufen' ? 0.0 : erwarteteUeberschreitung($e['budget'], $e['k']), $eintraege));
+    ?>
     <div class="col-6 col-lg-3">
-        <?php // Nicht gruen, wenn die Hochrechnung schon ueber dem Budget liegt - sonst Widerspruch zur Karte daneben ?>
-        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($summe['hochrechnung'] > $summe['soll'] ? '' : 'kennzahl--betont') ?>">
+        <?php // Nicht gruen, wenn ein Budget voraussichtlich ueberzieht - sonst Widerspruch zur Karte daneben ?>
+        <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($risiken ? '' : 'kennzahl--betont') ?>">
             <div class="etikett">Verfügbares Budget</div>
             <div class="kennzahl__wert"><?= euro($summe['verfuegbar']) ?></div>
             <div class="kennzahl__info">über alle laufenden Budgets</div>
@@ -94,7 +98,7 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="col-6 col-lg-3">
         <?php $differenz = $summe['soll'] - $summe['hochrechnung']; ?>
-        <div class="kennzahl <?= $differenz < 0 ? 'kennzahl--negativ' : '' ?>">
+        <div class="kennzahl <?= $risiken ? 'kennzahl--negativ' : '' ?>">
             <div class="etikett">
                 Hochrechnung
                 <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
@@ -103,8 +107,10 @@ require __DIR__ . '/../../templates/header.php';
                         aria-label="Was bedeutet Hochrechnung?">i</button>
             </div>
             <div class="kennzahl__wert"><?= euro($summe['hochrechnung']) ?></div>
-            <div class="kennzahl__info <?= $differenz < 0 ? 'fw-semibold' : '' ?>">
-                <?= $differenz < 0 ? euro(-$differenz) . ' über dem Budget' : euro($differenz) . ' Puffer bis Laufzeitende' ?>
+            <div class="kennzahl__info <?= $risiken ? 'fw-semibold' : '' ?>">
+                <?= $risiken
+                    ? 'Voraussichtlich ' . euro(array_sum($risiken)) . ' über Budget (' . (count($risiken) === 1 ? '1 Budget' : count($risiken) . ' Budgets') . ')'
+                    : euro($differenz) . ' Puffer bis Laufzeitende' ?>
             </div>
         </div>
     </div>
@@ -134,9 +140,11 @@ require __DIR__ . '/../../templates/header.php';
 <h2 class="karte-titel mb-3">Meine Budgets</h2>
 <?php
     // Dringendste Budgets zuerst, nicht in Lade-Reihenfolge (Priorisierungsregel:
-    // Handlungsbedarf vor Detaildaten) - "schlechtester Status" zuerst.
+    // Handlungsbedarf vor Detaildaten) - "schlechtester Status" zuerst, innerhalb
+    // desselben Status die groesste erwartete Ueberschreitung (wie "Braucht Aufmerksamkeit").
     $sortierteEintraege = $eintraege;
-    usort($sortierteEintraege, fn ($a, $b) => STATUS_RANG[$a['k']['status']] <=> STATUS_RANG[$b['k']['status']]);
+    usort($sortierteEintraege, fn ($a, $b) => [STATUS_RANG[$a['k']['status']], erwarteteUeberschreitung($b['budget'], $b['k'])]
+        <=> [STATUS_RANG[$b['k']['status']], erwarteteUeberschreitung($a['budget'], $a['k'])]);
 ?>
 <div class="row g-3">
     <?php foreach ($sortierteEintraege as ['budget' => $budget, 'k' => $k]): ?>

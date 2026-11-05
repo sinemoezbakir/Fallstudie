@@ -41,10 +41,12 @@ function filterLink(array $aenderung): string
 // Soll-Ist-Summe, sondern aus dem schlechtesten Einzelstatus seiner Budgets.
 // So kann ein einzelnes ueberschrittenes Budget nicht in der Summe
 // "untergehen", selbst wenn andere Budgets im selben Bereich gut dastehen.
+// Risiko je Bereich = Summe der erwarteten Ueberschreitungen seiner Budgets,
+// NICHT mit dem Puffer anderer Budgets im selben Bereich verrechnet.
 $jeBereich = [];
 $schlechtesterStatusJeBereich = [];
 foreach (BEREICHE as $schluessel => $label) {
-    $jeBereich[$schluessel] = ['label' => $label, 'soll' => 0.0, 'ist' => 0.0, 'hochrechnung' => 0.0];
+    $jeBereich[$schluessel] = ['label' => $label, 'soll' => 0.0, 'ist' => 0.0, 'hochrechnung' => 0.0, 'risiko' => 0.0, 'risikoBudgets' => 0];
     $schlechtesterStatusJeBereich[$schluessel] = null;
 }
 foreach ($alle as $eintrag) {
@@ -53,6 +55,11 @@ foreach ($alle as $eintrag) {
         $jeBereich[$budget['bereich']]['soll'] += (float) $budget['soll_betrag'];
         $jeBereich[$budget['bereich']]['ist'] += $k['ist'];
         $jeBereich[$budget['bereich']]['hochrechnung'] += $k['hochrechnung'];
+        $ueber = erwarteteUeberschreitung($budget, $k);
+        if ($ueber > 0) {
+            $jeBereich[$budget['bereich']]['risiko'] += $ueber;
+            $jeBereich[$budget['bereich']]['risikoBudgets']++;
+        }
 
         $bisher = $schlechtesterStatusJeBereich[$budget['bereich']];
         if ($bisher === null || STATUS_RANG[$k['status']] < STATUS_RANG[$bisher]) {
@@ -78,11 +85,11 @@ $handlungsbedarfListe = array_values(array_filter(
 // Fruehwarnsystem: entscheidend ist, wo ein Budget am Laufzeitende landet
 // (Hochrechnung), nicht nur was schon ausgegeben ist. Innerhalb desselben
 // Status steht die groesste erwartete Ueberschreitung zuerst.
-$ueberSoll = fn (array $eintrag): float => round($eintrag['k']['hochrechnung'] - (float) $eintrag['budget']['soll_betrag'], 2);
+$ueberSoll = fn (array $eintrag): float => erwarteteUeberschreitung($eintrag['budget'], $eintrag['k']);
 usort($handlungsbedarfListe, fn ($a, $b) => [STATUS_RANG[$a['k']['status']], $ueberSoll($b)]
     <=> [STATUS_RANG[$b['k']['status']], $ueberSoll($a)]);
 
-// Risikoausmass fuers Banner: Summe der erwarteten Ueberschreitungen je Budget,
+// Gesamtrisiko fuers Banner: Summe der erwarteten Ueberschreitungen je Budget,
 // bewusst nicht mit dem Puffer anderer Budgets verrechnet
 $prognoseUeber = array_filter(array_map($ueberSoll, $handlungsbedarfListe), fn ($betrag) => $betrag > 0);
 
@@ -116,8 +123,8 @@ require __DIR__ . '/../../templates/header.php';
             <?php if ($istRisiko): ?>
                 <?php $ueberschritten = $summe['anzahl']['ueberschritten']; $warnung = $summe['anzahl']['warnung']; ?>
                 <?php if ($prognoseUeber): ?>
-                    <strong>Voraussichtlich <?= euro(array_sum($prognoseUeber)) ?> über Budget</strong> bis Laufzeitende
-                    (<?= count($prognoseUeber) === 1 ? '1 Budget' : count($prognoseUeber) . ' Budgets' ?>).
+                    <strong>Gesamtrisiko: voraussichtlich <?= euro(array_sum($prognoseUeber)) ?> über Budget</strong> bis Laufzeitende,
+                    verteilt auf <?= count($prognoseUeber) === 1 ? '1 Budget' : count($prognoseUeber) . ' Budgets' ?>.
                 <?php else: ?>
                     Kein Budget überschreitet voraussichtlich sein Soll.
                 <?php endif; ?>
@@ -134,21 +141,13 @@ require __DIR__ . '/../../templates/header.php';
     <h2 id="handlungsbedarf-titel" class="karte-titel mb-2">Handlungsbedarf <span class="small text-muted fw-normal">– in dieser Reihenfolge prüfen</span></h2>
     <ul class="list-unstyled mb-0">
         <?php foreach ($handlungsbedarfListe as $eintrag): ?>
-            <?php
-                ['budget' => $budget, 'k' => $k] = $eintrag;
-                $ueber = $ueberSoll($eintrag);
-                $bereitsUeber = $k['ist'] - (float) $budget['soll_betrag'];
-                // Erwartete Entwicklung zuerst, aktueller Stand in Klammern
-                $ursache = $ueber > 0
-                    ? 'Voraussichtlich ' . euro($ueber) . ' über Budget' . ($bereitsUeber > 0 ? ' (bereits ' . euro($bereitsUeber) . ' überschritten)' : '')
-                    : statusGrund($budget, $k);
-            ?>
+            <?php ['budget' => $budget, 'k' => $k] = $eintrag; ?>
             <li>
                 <a class="aufmerksamkeit__zeile" href="/finance/budget.php?id=<?= (int) $budget['id'] ?>">
                     <span class="aufmerksamkeit__punkt aufmerksamkeit__punkt--<?= e($k['status']) ?>"></span>
                     <span class="fw-semibold"><?= e($budget['name']) ?></span>
                     <span class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?></span>
-                    <span class="fw-semibold <?= $k['status'] === 'ueberschritten' ? 'text-ueberschritten' : 'text-warnung' ?>"><?= e($ursache) ?></span>
+                    <span class="fw-semibold <?= $k['status'] === 'ueberschritten' ? 'text-ueberschritten' : 'text-warnung' ?>"><?= e(statusGrund($budget, $k)) ?></span>
                     <span class="ms-auto aufmerksamkeit__pfeil" aria-hidden="true">→</span>
                 </a>
             </li>
@@ -171,7 +170,7 @@ require __DIR__ . '/../../templates/header.php';
                 $daten = $jeBereich[$schluessel];
                 $status = $schlechtesterStatusJeBereich[$schluessel] ?? 'im_rahmen';
                 $ruhig = $status === 'im_rahmen';
-                $diff = $daten['hochrechnung'] - $daten['soll'];
+                $puffer = $daten['soll'] - $daten['hochrechnung'];
                 $fuellung = $daten['soll'] > 0 ? round(min(100, $daten['hochrechnung'] / $daten['soll'] * 100), 1) : 0;
                 $balkenKlasse = $ruhig ? '' : $status;
             ?>
@@ -180,8 +179,11 @@ require __DIR__ . '/../../templates/header.php';
                 <div class="top-risiko__kopf">
                     <span class="fw-semibold"><?= e(BEREICHE[$schluessel]) ?></span>
                     <?= statusBadge($status) ?>
-                    <span class="ms-auto tabular small <?= $diff > 0 ? 'text-ueberschritten fw-semibold' : 'text-muted' ?>">
-                        <?= $diff > 0 ? '+' . euro($diff) . ' über Budget' : euro(-$diff) . ' Puffer bis Laufzeitende' ?>
+                    <?php // Ueberschreitung einzelner Budgets wird nicht mit dem Puffer der anderen verrechnet ?>
+                    <span class="ms-auto tabular small <?= $daten['risiko'] > 0 ? 'text-ueberschritten fw-semibold' : 'text-muted' ?>">
+                        <?= $daten['risiko'] > 0
+                            ? 'Voraussichtlich ' . euro($daten['risiko']) . ' über Budget (' . ($daten['risikoBudgets'] === 1 ? '1 Budget' : $daten['risikoBudgets'] . ' Budgets') . ')'
+                            : euro($puffer) . ' Puffer bis Laufzeitende' ?>
                     </span>
                 </div>
                 <div class="verbrauch-balken verbrauch-balken--gross">
@@ -213,12 +215,16 @@ require __DIR__ . '/../../templates/header.php';
             // klingt nach Spielraum, obwohl laut Plan Geld fehlt. Verfuegbar bleibt als Zusatz.
             $gesamtDifferenz = $summe['hochrechnung'] - $summe['soll'];
         ?>
-        <div class="kennzahl <?= $gesamtDifferenz > 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
+        <div class="kennzahl <?= $gesamtDifferenz > 0 ? 'kennzahl--negativ' : ($prognoseUeber ? '' : 'kennzahl--betont') ?>">
             <div class="etikett">Hochrechnung gesamt</div>
             <div class="kennzahl__wert"><?= euro($summe['hochrechnung']) ?></div>
             <div class="kennzahl__info fw-semibold">
                 <?= $gesamtDifferenz > 0 ? euro($gesamtDifferenz) . ' über dem Gesamtbudget' : euro(-$gesamtDifferenz) . ' Puffer zum Gesamtbudget' ?>
             </div>
+            <?php if ($prognoseUeber): ?>
+                <?php // Einzige verrechnete Zahl der Seite - ausdruecklich als solche benannt ?>
+                <div class="kennzahl__info">wenn Puffer anderer Budgets umgeschichtet werden</div>
+            <?php endif; ?>
             <div class="kennzahl__info">Heute noch <?= euro($summe['verfuegbar']) ?> verfügbar</div>
         </div>
     </div>

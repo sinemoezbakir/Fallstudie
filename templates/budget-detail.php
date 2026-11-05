@@ -61,10 +61,7 @@ require __DIR__ . '/header.php';
     </div>
 <?php elseif ($k['status'] === 'ueberschritten'): ?>
     <div class="alert alert-danger">
-        <strong>Budget überschritten:</strong> Es wurden <?= euro($k['ist'] - $soll) ?> mehr ausgegeben als geplant.
-        <?php if ($k['offener_forecast'] > 0): ?>
-            Mit den geplanten Ausgaben liegt es am Laufzeitende voraussichtlich <strong><?= euro(-$puffer) ?> über Budget</strong>.
-        <?php endif; ?>
+        <strong>Budget überschritten:</strong> <?= e(statusGrund($budget, $k)) ?>.
         <?= $istOwner ? 'Bitte mit Finance abstimmen.' : 'Bitte mit dem Budget-Owner (' . e($budget['owner_name'] ?? '') . ') klären.' ?>
     </div>
 <?php elseif ($k['status'] === 'warnung'): ?>
