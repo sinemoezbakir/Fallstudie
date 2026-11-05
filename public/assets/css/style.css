@@ -638,11 +638,14 @@ footer {
 .forecast-raster__zeile:last-child { border-bottom: none; }
 .forecast-raster__monat { font-weight: 600; margin: 0; }
 
-/* --- Status-Ampel je Bereich unter dem Diagramm: "schlechtester Status
-   gewinnt" (Enterprise-Standard) statt Ampel aus der Soll-Ist-Summe, damit
-   ein einzelnes kritisches Budget nicht in der Summe "untergeht" --- */
-.diagramm-hinweise { display: flex; flex-wrap: wrap; gap: 0.6rem 1.75rem; }
-.diagramm-hinweis { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+/* --- Top Risiken: Bereiche nach Dringlichkeit, nicht alphabetisch --- */
+.top-risiken { display: flex; flex-direction: column; gap: 1.25rem; }
+.top-risiko { display: block; color: var(--ink); border-radius: var(--radius-klein); padding: 0.4rem; margin: -0.4rem; transition: var(--uebergang); }
+.top-risiko:hover { background: var(--cream); color: var(--ink); }
+.top-risiko__kopf { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; }
+.top-risiko--ruhig { opacity: 0.6; }
+.top-risiko--ruhig .verbrauch-balken--gross { height: 0.5rem; }
+.verbrauch-balken--gross { height: 0.85rem; }
 
 /* --- Finance-Übersicht: Filter und sortierbare Tabelle --- */
 .filterleiste { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 1.5rem 2rem; }

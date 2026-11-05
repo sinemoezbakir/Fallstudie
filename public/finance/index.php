@@ -55,13 +55,14 @@ function filterLink(array $aenderung): string
 // "untergehen", selbst wenn andere Budgets im selben Bereich gut dastehen.
 $jeBereich = [];
 $schlechtesterStatusJeBereich = [];
-$problemeJeBereich = [];
+$schlechtestesBudgetJeBereich = [];
 foreach (BEREICHE as $schluessel => $label) {
     $jeBereich[$schluessel] = ['label' => $label, 'soll' => 0.0, 'ist' => 0.0, 'hochrechnung' => 0.0];
     $schlechtesterStatusJeBereich[$schluessel] = null;
-    $problemeJeBereich[$schluessel] = 0;
+    $schlechtestesBudgetJeBereich[$schluessel] = null;
 }
-foreach ($alle as ['budget' => $budget, 'k' => $k]) {
+foreach ($alle as $eintrag) {
+    ['budget' => $budget, 'k' => $k] = $eintrag;
     if ($k['status'] !== 'abgelaufen') {
         $jeBereich[$budget['bereich']]['soll'] += (float) $budget['soll_betrag'];
         $jeBereich[$budget['bereich']]['ist'] += $k['ist'];
@@ -70,12 +71,16 @@ foreach ($alle as ['budget' => $budget, 'k' => $k]) {
         $bisher = $schlechtesterStatusJeBereich[$budget['bereich']];
         if ($bisher === null || STATUS_RANG[$k['status']] < STATUS_RANG[$bisher]) {
             $schlechtesterStatusJeBereich[$budget['bereich']] = $k['status'];
+            $schlechtestesBudgetJeBereich[$budget['bereich']] = $eintrag;
         }
     }
-    if (in_array($k['status'], ['warnung', 'ueberschritten'], true)) {
-        $problemeJeBereich[$budget['bereich']]++;
-    }
 }
+
+// Top-Risiken: Bereiche nach Dringlichkeit sortiert (nicht alphabetisch),
+// "schlechtester Status gewinnt" wie beim Banner und den Badges.
+$topRisiken = array_keys(BEREICHE);
+usort($topRisiken, fn ($a, $b) => STATUS_RANG[$schlechtesterStatusJeBereich[$a] ?? 'im_rahmen']
+    <=> STATUS_RANG[$schlechtesterStatusJeBereich[$b] ?? 'im_rahmen']);
 
 $handlungsbedarf = $summe['anzahl']['warnung'] + $summe['anzahl']['ueberschritten'];
 $anzahlJeBereich = array_count_values(array_column(array_column($alle, 'budget'), 'bereich'));
@@ -112,6 +117,42 @@ require __DIR__ . '/../../templates/header.php';
                 Alle <?= $summe['laufend'] ?> laufenden Budgets sind im grünen Bereich.
             <?php endif; ?>
         </p>
+    </div>
+</div>
+
+<div class="card p-3 p-md-4 mb-4">
+    <h2 class="karte-titel mb-3">Top Risiken</h2>
+    <div class="top-risiken">
+        <?php foreach ($topRisiken as $schluessel): ?>
+            <?php
+                $daten = $jeBereich[$schluessel];
+                $status = $schlechtesterStatusJeBereich[$schluessel] ?? 'im_rahmen';
+                $ruhig = $status === 'im_rahmen';
+                $diff = $daten['hochrechnung'] - $daten['soll'];
+                $fuellung = $daten['soll'] > 0 ? round(min(100, $daten['hochrechnung'] / $daten['soll'] * 100), 1) : 0;
+                $balkenKlasse = $ruhig ? '' : $status;
+                $schlechtestes = $schlechtestesBudgetJeBereich[$schluessel];
+            ?>
+            <a href="<?= e(filterLink(['bereich' => $schluessel])) ?>"
+               class="top-risiko text-decoration-none <?= $ruhig ? 'top-risiko--ruhig' : '' ?>">
+                <div class="top-risiko__kopf">
+                    <span class="fw-semibold"><?= e(BEREICHE[$schluessel]) ?></span>
+                    <?= statusBadge($status) ?>
+                    <span class="ms-auto tabular small <?= $diff > 0 ? 'text-ueberschritten fw-semibold' : 'text-muted' ?>">
+                        <?= $diff > 0 ? '+' . euro($diff) . ' über Budget' : euro(-$diff) . ' Puffer bis Jahresende' ?>
+                    </span>
+                </div>
+                <div class="verbrauch-balken verbrauch-balken--gross">
+                    <div class="verbrauch-balken__fuellung <?= e($balkenKlasse) ?>" style="width: <?= $fuellung ?>%"></div>
+                </div>
+                <div class="small text-muted mt-1">
+                    Hochrechnung <?= euro($daten['hochrechnung']) ?> · Budget <?= euro($daten['soll']) ?>
+                    <?php if ($schlechtestes && !$ruhig): ?>
+                        · <?= e($schlechtestes['budget']['name']) ?>: <?= e(statusGrund($schlechtestes['budget'], $schlechtestes['k'])) ?>
+                    <?php endif; ?>
+                </div>
+            </a>
+        <?php endforeach; ?>
     </div>
 </div>
 
@@ -163,25 +204,6 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="diagramm-rahmen" style="height: 260px;">
         <canvas id="diagrammBereiche" role="img" aria-label="Balkendiagramm: Soll, Ist und Hochrechnung je Bereich"></canvas>
-    </div>
-    <div class="diagramm-hinweise mt-3">
-        <?php foreach (BEREICHE as $schluessel => $label): ?>
-            <?php
-                $status = $schlechtesterStatusJeBereich[$schluessel];
-                $anzahl = $problemeJeBereich[$schluessel];
-            ?>
-            <span class="diagramm-hinweis">
-                <span class="fw-semibold"><?= e($label) ?></span>
-                <?php if ($status === null): ?>
-                    <span class="status-badge abgelaufen">Keine laufenden Budgets</span>
-                <?php else: ?>
-                    <?= statusBadge($status) ?>
-                <?php endif; ?>
-                <?php if ($anzahl > 1): ?>
-                    <span class="text-muted">(<?= $anzahl ?> Budgets betroffen)</span>
-                <?php endif; ?>
-            </span>
-        <?php endforeach; ?>
     </div>
 </div>
 
