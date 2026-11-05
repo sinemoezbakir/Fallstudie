@@ -155,12 +155,11 @@ require __DIR__ . '/../../templates/header.php';
                 <div class="verbrauch-balken verbrauch-balken--gross">
                     <div class="verbrauch-balken__fuellung <?= e($balkenKlasse) ?>" style="width: <?= $fuellung ?>%"></div>
                 </div>
-                <div class="small text-muted mt-1">
-                    Hochrechnung <?= euro($daten['hochrechnung']) ?> · Budget <?= euro($daten['soll']) ?>
-                    <?php if ($schlechtestes && !$ruhig): ?>
-                        · <?= e($schlechtestes['budget']['name']) ?>: <?= e(statusGrund($schlechtestes['budget'], $schlechtestes['k'])) ?>
-                    <?php endif; ?>
-                </div>
+                <?php if ($schlechtestes && !$ruhig): ?>
+                    <div class="small text-muted mt-1">
+                        <?= e($schlechtestes['budget']['name']) ?>: <?= e(statusGrund($schlechtestes['budget'], $schlechtestes['k'])) ?>
+                    </div>
+                <?php endif; ?>
             </a>
         <?php endforeach; ?>
     </div>
