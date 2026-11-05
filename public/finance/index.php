@@ -191,22 +191,6 @@ require __DIR__ . '/../../templates/header.php';
     </div>
 </div>
 
-<div class="card p-3 p-md-4 mb-4">
-    <div class="d-flex justify-content-between align-items-baseline mb-2">
-        <h2 class="karte-titel mb-0">
-            Soll, Ist und Hochrechnung je Bereich
-            <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
-                    data-bs-title="Was ist die Hochrechnung?"
-                    data-bs-content="Ist-Ausgaben + bereits eingetragener Forecast für die restliche Laufzeit. Zeigt, wo ein Bereich am Ende der Laufzeit stehen wird, wenn alles wie geplant eintrifft – auch wenn das Ist bisher noch niedrig ist."
-                    aria-label="Was bedeutet Hochrechnung?">i</button>
-        </h2>
-        <span class="small text-muted">laufende Budgets</span>
-    </div>
-    <div class="diagramm-rahmen" style="height: 260px;">
-        <canvas id="diagrammBereiche" role="img" aria-label="Balkendiagramm: Soll, Ist und Hochrechnung je Bereich"></canvas>
-    </div>
-</div>
-
 <div class="filterleiste mb-3">
     <div class="filterleiste__gruppe">
         <span class="etikett filterleiste__label">Status</span>
@@ -302,14 +286,5 @@ require __DIR__ . '/../../templates/header.php';
         </table>
     </div>
 </div>
-
-<script type="application/json" id="bereich-daten"><?= json_encode(array_values($jeBereich), JSON_HEX_TAG | JSON_UNESCAPED_UNICODE) ?></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="/assets/js/diagramm-bereiche.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('[data-bs-toggle="popover"]').forEach((el) => new bootstrap.Popover(el));
-    });
-</script>
 
 <?php require __DIR__ . '/../../templates/footer.php'; ?>
