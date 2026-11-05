@@ -12,23 +12,10 @@ erfordereRolle(ROLLE_FINANCE);
 $alle = budgetsMitKennzahlen(ladeAlleBudgets());
 $summe = zusammenfassung($alle);
 
-// --- Status-Banner: ein einziger Satz ganz oben statt Zahlen, die man erst
-// interpretieren muss. "Schlechtester Status gewinnt" ueber alle Budgets,
-// benennt das dringendste Budget konkret statt nur eine Anzahl zu nennen.
-$dringendsterEintrag = null;
-$dringendsterRang = null;
-foreach ($alle as $eintrag) {
-    if ($eintrag['k']['status'] === 'abgelaufen') {
-        continue;
-    }
-    $rang = STATUS_RANG[$eintrag['k']['status']];
-    if ($dringendsterRang === null || $rang < $dringendsterRang) {
-        $dringendsterRang = $rang;
-        $dringendsterEintrag = $eintrag;
-    }
-}
-$istRisiko = $dringendsterRang !== null && $dringendsterRang <= STATUS_RANG['warnung'];
-$anzahlAbgelaufen = $summe['anzahl']['abgelaufen'] ?? 0;
+// Seitenaufbau nach "Antwort -> Ursache -> Details -> Analyse":
+// Banner (wie ernst?), Handlungsbedarf (welches Budget zuerst, warum?),
+// Top Risiken (welche Bereiche, was laeuft gut?), Kennzahlen, Filter + Tabelle.
+// Jede Ebene beantwortet eine eigene Frage, nichts wird doppelt genannt.
 
 // --- Filter (alle per GET, damit man gefilterte Ansichten verlinken kann) ---
 $filterStatus = isset(STATUS_LABEL[$_GET['status'] ?? '']) ? $_GET['status'] : '';
@@ -56,11 +43,9 @@ function filterLink(array $aenderung): string
 // "untergehen", selbst wenn andere Budgets im selben Bereich gut dastehen.
 $jeBereich = [];
 $schlechtesterStatusJeBereich = [];
-$schlechtestesBudgetJeBereich = [];
 foreach (BEREICHE as $schluessel => $label) {
     $jeBereich[$schluessel] = ['label' => $label, 'soll' => 0.0, 'ist' => 0.0, 'hochrechnung' => 0.0];
     $schlechtesterStatusJeBereich[$schluessel] = null;
-    $schlechtestesBudgetJeBereich[$schluessel] = null;
 }
 foreach ($alle as $eintrag) {
     ['budget' => $budget, 'k' => $k] = $eintrag;
@@ -72,7 +57,6 @@ foreach ($alle as $eintrag) {
         $bisher = $schlechtesterStatusJeBereich[$budget['bereich']];
         if ($bisher === null || STATUS_RANG[$k['status']] < STATUS_RANG[$bisher]) {
             $schlechtesterStatusJeBereich[$budget['bereich']] = $k['status'];
-            $schlechtestesBudgetJeBereich[$budget['bereich']] = $eintrag;
         }
     }
 }
@@ -94,6 +78,7 @@ $handlungsbedarfListe = array_values(array_filter(
 usort($handlungsbedarfListe, fn ($a, $b) => STATUS_RANG[$a['k']['status']] <=> STATUS_RANG[$b['k']['status']]);
 
 $handlungsbedarf = $summe['anzahl']['warnung'] + $summe['anzahl']['ueberschritten'];
+$istRisiko = $handlungsbedarf > 0;
 $anzahlJeBereich = array_count_values(array_column(array_column($alle, 'budget'), 'bereich'));
 
 $pageTitle = 'Alle Budgets';
@@ -118,21 +103,35 @@ require __DIR__ . '/../../templates/header.php';
     <div>
         <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Keine aktiven Risiken' ?></p>
         <p class="status-banner__text">
+            <?php // Nur das Urteil (wie ernst?) - welche Budgets und warum steht direkt darunter ?>
             <?php if ($istRisiko): ?>
-                <strong><?= e($dringendsterEintrag['budget']['name']) ?></strong>:
-                <?= e(statusGrund($dringendsterEintrag['budget'], $dringendsterEintrag['k'])) ?>.
-                <?php if ($handlungsbedarf > 1): ?>
-                    Insgesamt <?= $handlungsbedarf ?> Budgets brauchen Aufmerksamkeit.
-                <?php endif; ?>
+                <?php $ueberschritten = $summe['anzahl']['ueberschritten']; $warnung = $summe['anzahl']['warnung']; ?>
+                <?= $ueberschritten === 1 ? '1 Budget ist überschritten' : ($ueberschritten > 1 ? "{$ueberschritten} Budgets sind überschritten" : '') ?><?= $ueberschritten && $warnung ? ', ' : '' ?><?= $warnung === 1 ? '1 Budget steht auf Warnung' : ($warnung > 1 ? "{$warnung} Budgets stehen auf Warnung" : '') ?>.
             <?php else: ?>
                 Alle <?= $summe['laufend'] ?> laufenden Budgets sind im grünen Bereich.
-            <?php endif; ?>
-            <?php if ($anzahlAbgelaufen > 0): ?>
-                <?= $anzahlAbgelaufen === 1 ? '1 Budget ist' : "{$anzahlAbgelaufen} Budgets sind" ?> bereits abgeschlossen (abgelaufen).
             <?php endif; ?>
         </p>
     </div>
 </div>
+
+<?php if ($handlungsbedarfListe): ?>
+<section class="aufmerksamkeit mb-4" aria-labelledby="handlungsbedarf-titel">
+    <h2 id="handlungsbedarf-titel" class="karte-titel mb-2">Handlungsbedarf <span class="small text-muted fw-normal">– in dieser Reihenfolge prüfen</span></h2>
+    <ul class="list-unstyled mb-0">
+        <?php foreach ($handlungsbedarfListe as ['budget' => $budget, 'k' => $k]): ?>
+            <li>
+                <a class="aufmerksamkeit__zeile" href="/finance/budget.php?id=<?= (int) $budget['id'] ?>">
+                    <span class="aufmerksamkeit__punkt aufmerksamkeit__punkt--<?= e($k['status']) ?>"></span>
+                    <span class="fw-semibold"><?= e($budget['name']) ?></span>
+                    <span class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?></span>
+                    <span class="fw-semibold <?= $k['status'] === 'ueberschritten' ? 'text-ueberschritten' : 'text-warnung' ?>"><?= e(statusGrund($budget, $k)) ?></span>
+                    <span class="ms-auto aufmerksamkeit__pfeil" aria-hidden="true">→</span>
+                </a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</section>
+<?php endif; ?>
 
 <div class="card p-3 p-md-4 mb-4">
     <h2 class="karte-titel mb-3">
@@ -151,7 +150,6 @@ require __DIR__ . '/../../templates/header.php';
                 $diff = $daten['hochrechnung'] - $daten['soll'];
                 $fuellung = $daten['soll'] > 0 ? round(min(100, $daten['hochrechnung'] / $daten['soll'] * 100), 1) : 0;
                 $balkenKlasse = $ruhig ? '' : $status;
-                $schlechtestes = $schlechtestesBudgetJeBereich[$schluessel];
             ?>
             <a href="<?= e(filterLink(['bereich' => $schluessel])) ?>"
                class="top-risiko text-decoration-none <?= $ruhig ? 'top-risiko--ruhig' : '' ?>">
@@ -165,11 +163,6 @@ require __DIR__ . '/../../templates/header.php';
                 <div class="verbrauch-balken verbrauch-balken--gross">
                     <div class="verbrauch-balken__fuellung <?= e($balkenKlasse) ?>" style="width: <?= $fuellung ?>%"></div>
                 </div>
-                <?php if ($schlechtestes && !$ruhig): ?>
-                    <div class="small text-muted mt-1">
-                        <?= e($schlechtestes['budget']['name']) ?>: <?= e(statusGrund($schlechtestes['budget'], $schlechtestes['k'])) ?>
-                    </div>
-                <?php endif; ?>
             </a>
         <?php endforeach; ?>
     </div>
@@ -199,25 +192,6 @@ require __DIR__ . '/../../templates/header.php';
         </div>
     </div>
 </div>
-
-<?php if ($handlungsbedarfListe): ?>
-<section class="aufmerksamkeit mb-4" aria-labelledby="handlungsbedarf-titel">
-    <h2 id="handlungsbedarf-titel" class="karte-titel mb-2">Handlungsbedarf</h2>
-    <ul class="list-unstyled mb-0">
-        <?php foreach ($handlungsbedarfListe as ['budget' => $budget, 'k' => $k]): ?>
-            <li>
-                <a class="aufmerksamkeit__zeile" href="/finance/budget.php?id=<?= (int) $budget['id'] ?>">
-                    <span class="aufmerksamkeit__punkt aufmerksamkeit__punkt--<?= e($k['status']) ?>"></span>
-                    <span class="fw-semibold"><?= e($budget['name']) ?></span>
-                    <span class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?></span>
-                    <span class="fw-semibold <?= $k['status'] === 'ueberschritten' ? 'text-ueberschritten' : 'text-warnung' ?>"><?= e(statusGrund($budget, $k)) ?></span>
-                    <span class="ms-auto aufmerksamkeit__pfeil" aria-hidden="true">→</span>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-</section>
-<?php endif; ?>
 
 <div class="filterleiste mb-3">
     <div class="filterleiste__gruppe">
