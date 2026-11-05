@@ -64,6 +64,11 @@ require __DIR__ . '/header.php';
         <strong>Budget überschritten:</strong> Es wurden <?= euro($k['ist'] - $soll) ?> mehr ausgegeben als geplant.
         Bitte mit Finance abstimmen.
     </div>
+<?php elseif ($k['status'] === 'warnung'): ?>
+    <div class="alert alert-warning">
+        <strong>Budget in Warnung:</strong> <?= e(statusGrund($budget, $k)) ?>.
+        Weitere Ausgaben kritisch prüfen und die Hochrechnung im Blick behalten.
+    </div>
 <?php endif; ?>
 
 <div class="row g-3 mb-4">
@@ -84,8 +89,8 @@ require __DIR__ . '/header.php';
     <div class="col-6 col-lg-3">
         <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
             <div class="etikett">Verfügbar</div>
-            <div class="kennzahl__wert"><?= euro($k['verfuegbar']) ?></div>
-            <div class="kennzahl__info">Soll − Ist</div>
+            <div class="kennzahl__wert"><?= euro(abs($k['verfuegbar'])) ?></div>
+            <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : 'Soll − Ist' ?></div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
