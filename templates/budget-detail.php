@@ -88,10 +88,10 @@ require __DIR__ . '/header.php';
         </div>
     </div>
     <div class="col-6 col-lg-3">
-        <div class="kennzahl <?= $puffer < 0 ? 'kennzahl--ueberschritten' : '' ?>">
+        <div class="kennzahl <?= $puffer < 0 ? 'kennzahl--negativ' : '' ?>">
             <div class="etikett">Hochrechnung</div>
             <div class="kennzahl__wert"><?= euro($k['hochrechnung']) ?></div>
-            <div class="kennzahl__info <?= $puffer < 0 ? 'text-ueberschritten fw-semibold' : '' ?>">
+            <div class="kennzahl__info <?= $puffer < 0 ? 'fw-semibold' : '' ?>">
                 <?php if ($istAbgelaufen): ?>
                     Budget abgeschlossen
                 <?php else: ?>

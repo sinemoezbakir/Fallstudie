@@ -61,10 +61,10 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="col-6 col-lg-3">
         <?php $differenz = $summe['soll'] - $summe['hochrechnung']; ?>
-        <div class="kennzahl <?= $differenz < 0 ? 'kennzahl--ueberschritten' : '' ?>">
+        <div class="kennzahl <?= $differenz < 0 ? 'kennzahl--negativ' : '' ?>">
             <div class="etikett">Hochrechnung</div>
             <div class="kennzahl__wert"><?= euro($summe['hochrechnung']) ?></div>
-            <div class="kennzahl__info <?= $differenz < 0 ? 'text-ueberschritten fw-semibold' : '' ?>">
+            <div class="kennzahl__info <?= $differenz < 0 ? 'fw-semibold' : '' ?>">
                 <?= $differenz < 0 ? euro(-$differenz) . ' über dem Budget' : euro($differenz) . ' Puffer bis Laufzeitende' ?>
             </div>
         </div>
