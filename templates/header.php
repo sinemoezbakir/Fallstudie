@@ -56,11 +56,20 @@ if ($rolle && DEMO_MODUS && isset($GLOBALS['pdo'])) {
         <div class="collapse navbar-collapse" id="hauptnavigation">
             <ul class="navbar-nav me-auto ms-lg-4 gap-lg-1">
                 <?php if ($rolle === 'ADMIN'): ?>
-                    <li class="nav-item"><a class="nav-link <?= aktivWenn('/admin') ?>" href="/admin/">Benutzer</a></li>
+                    <li class="nav-item"><a class="nav-link <?= aktivWenn('/admin') ?>" href="/admin/">
+                        <svg class="nav-link__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+                        Benutzer
+                    </a></li>
                 <?php elseif ($rolle === 'FINANCE'): ?>
-                    <li class="nav-item"><a class="nav-link <?= aktivWenn('/finance') ?>" href="/finance/">Alle Budgets</a></li>
+                    <li class="nav-item"><a class="nav-link <?= aktivWenn('/finance') ?>" href="/finance/">
+                        <svg class="nav-link__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+                        Alle Budgets
+                    </a></li>
                 <?php elseif ($rolle === 'OWNER'): ?>
-                    <li class="nav-item"><a class="nav-link <?= aktivWenn('/owner') ?>" href="/owner/">Meine Budgets</a></li>
+                    <li class="nav-item"><a class="nav-link <?= aktivWenn('/owner') ?>" href="/owner/">
+                        <svg class="nav-link__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M8 15h3"/></svg>
+                        Meine Budgets
+                    </a></li>
                 <?php endif; ?>
             </ul>
 
@@ -75,19 +84,26 @@ if ($rolle && DEMO_MODUS && isset($GLOBALS['pdo'])) {
                 <div class="dropdown-menu dropdown-menu-end konto-menue">
                     <div class="px-3 py-2 small text-muted"><?= e(ROLLEN[$rolle]['beschreibung'] ?? '') ?></div>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/konto.php">Passwort ändern</a>
+                    <a class="dropdown-item" href="/konto.php">
+                        <svg class="nav-link__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+                        Passwort ändern
+                    </a>
                     <?php if (DEMO_MODUS): ?>
                         <form method="post" action="/demo-zuruecksetzen.php">
                             <?= csrfFeld() ?>
                             <button type="submit" class="dropdown-item"
                                     data-bestaetigen="Alle Änderungen verwerfen und die Demo-Daten neu laden?">
+                                <svg class="nav-link__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 1 3 6.7M3 12v5h5"/></svg>
                                 Demo-Daten zurücksetzen
                             </button>
                         </form>
                     <?php endif; ?>
                     <form method="post" action="/logout.php">
                         <?= csrfFeld() ?>
-                        <button type="submit" class="dropdown-item">Abmelden</button>
+                        <button type="submit" class="dropdown-item">
+                            <svg class="nav-link__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+                            Abmelden
+                        </button>
                     </form>
                 </div>
             </div>

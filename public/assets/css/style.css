@@ -118,6 +118,8 @@ a:hover { color: var(--ink); }
 }
 .navbar .nav-link:hover { color: var(--ink); background: var(--cream); }
 .navbar .nav-link.active { color: var(--ink); background: var(--cream); font-weight: 700; }
+.nav-link__icon { vertical-align: -0.25em; margin-right: 0.4rem; opacity: 0.75; }
+.nav-link.active .nav-link__icon { opacity: 1; }
 .navbar-toggler { border-color: var(--line); }
 
 .konto-knopf {
@@ -203,12 +205,12 @@ a.text-decoration-none:hover .card,
     transform: translateY(-1px);
 }
 .btn-maliá-outline {
-    background-color: var(--flaeche);
+    background-color: var(--cream);
     color: var(--ink);
     border-color: var(--line);
 }
 .btn-maliá-outline:hover {
-    background-color: var(--cream);
+    background-color: #ece0ce;
     border-color: var(--sage);
     color: var(--ink);
 }
@@ -300,10 +302,12 @@ form .mb-3 { margin-bottom: 1.1rem !important; }
     box-shadow: 0 0 0 0.22rem rgba(124, 154, 146, 0.2);
 }
 .form-label {
-    font-weight: 600;
-    font-size: 0.87rem;
-    color: var(--ink);
-    margin-bottom: 0.35rem;
+    font-weight: 700;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 0.5rem;
 }
 .form-text { color: var(--muted); }
 .input-group-text { background: var(--cream); border-color: var(--line); color: var(--muted); }

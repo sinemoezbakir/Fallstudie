@@ -40,7 +40,7 @@ require __DIR__ . '/../../templates/header.php';
 <div class="row g-3 mb-4">
     <div class="col-6 col-lg-3">
         <div class="kennzahl">
-            <div class="etikett">Budget gesamt</div>
+            <div class="etikett">Gesamtbudget</div>
             <div class="kennzahl__wert"><?= euro($summe['soll']) ?></div>
             <div class="kennzahl__info"><?= $summe['laufend'] ?> laufende Budgets</div>
         </div>
@@ -54,7 +54,7 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="col-6 col-lg-3">
         <div class="kennzahl <?= $summe['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
-            <div class="etikett">Noch verfügbar</div>
+            <div class="etikett">Verfügbares Budget</div>
             <div class="kennzahl__wert"><?= euro($summe['verfuegbar']) ?></div>
             <div class="kennzahl__info">über alle laufenden Budgets</div>
         </div>
