@@ -240,6 +240,7 @@ a.text-decoration-none:hover .card,
 .status-badge.warnung { background-color: var(--status-warnung-bg); color: var(--status-warnung-text); }
 .status-badge.ueberschritten { background-color: var(--status-ueberschritten-bg); color: var(--status-ueberschritten-text); }
 .status-badge.abgelaufen { background-color: var(--status-abgelaufen-bg); color: var(--status-abgelaufen-text); }
+.status-badge[title] { cursor: help; }
 
 /* --- Fortschrittsbalken für Verbrauch % --- */
 .verbrauch-balken {

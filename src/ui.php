@@ -20,6 +20,14 @@ const STATUS_LABEL = [
     'abgelaufen' => 'Abgelaufen',
 ];
 
+/** Dringlichkeit für die Sortierung der Status-Spalte (1 = am dringendsten). */
+const STATUS_RANG = [
+    'ueberschritten' => 1,
+    'warnung' => 2,
+    'im_rahmen' => 3,
+    'abgelaufen' => 4,
+];
+
 const ROLLEN = [
     'ADMIN' => ['label' => 'Admin', 'beschreibung' => 'Benutzer und Rollen verwalten'],
     'FINANCE' => ['label' => 'Finance', 'beschreibung' => 'alle Budgets anlegen und überwachen'],
@@ -123,11 +131,12 @@ function laeuftBaldAb(int $tage): bool
  *
  * @param string $status Einer von: 'im_rahmen', 'warnung', 'ueberschritten', 'abgelaufen'
  */
-function statusBadge(string $status): string
+function statusBadge(string $status, string $grund = ''): string
 {
     return sprintf(
-        '<span class="status-badge %s">%s</span>',
+        '<span class="status-badge %s"%s>%s</span>',
         e(str_replace('_', '-', $status)),
+        $grund !== '' ? ' title="' . e($grund) . '"' : '',
         e(statusLabel($status))
     );
 }

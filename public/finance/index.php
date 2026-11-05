@@ -171,7 +171,7 @@ require __DIR__ . '/../../templates/header.php';
                     <th data-sortieren="zahl" class="text-end d-none d-sm-table-cell">Ist</th>
                     <th data-sortieren="zahl" style="min-width: 140px;">Verbrauch</th>
                     <th data-sortieren="zahl" class="text-end d-none d-lg-table-cell">Hochrechnung</th>
-                    <th data-sortieren="text" class="d-none d-sm-table-cell">Status</th>
+                    <th data-sortieren="zahl" class="d-none d-sm-table-cell" title="Sortiert nach Dringlichkeit: Überschritten, Warnung, Im Rahmen, Abgelaufen">Status</th>
                     <th data-sortieren="zahl" class="d-none d-lg-table-cell">Läuft bis</th>
                 </tr>
             </thead>
@@ -182,7 +182,7 @@ require __DIR__ . '/../../templates/header.php';
                         <td data-wert="<?= e($budget['name']) ?>">
                             <a href="<?= e($link) ?>" class="fw-semibold text-reset"><?= e($budget['name']) ?></a>
                             <div class="small text-muted"><?= e(bereichLabel($budget['bereich'])) ?></div>
-                            <div class="d-sm-none mt-1"><?= statusBadge($k['status']) ?></div>
+                            <div class="d-sm-none mt-1"><?= statusBadge($k['status'], statusGrund($budget, $k)) ?></div>
                         </td>
                         <td class="d-none d-xxl-table-cell" data-wert="<?= e($budget['owner_name']) ?>"><?= e($budget['owner_name']) ?></td>
                         <td class="text-end text-nowrap tabular d-none d-md-table-cell" data-wert="<?= (float) $budget['soll_betrag'] ?>"><?= euro((float) $budget['soll_betrag']) ?></td>
@@ -193,7 +193,7 @@ require __DIR__ . '/../../templates/header.php';
                         </td>
                         <td class="text-end text-nowrap tabular d-none d-lg-table-cell <?= $k['hochrechnung'] > (float) $budget['soll_betrag'] && $k['status'] !== 'abgelaufen' ? 'text-ueberschritten fw-semibold' : '' ?>"
                             data-wert="<?= $k['hochrechnung'] ?>"><?= euro($k['hochrechnung']) ?></td>
-                        <td class="d-none d-sm-table-cell" data-wert="<?= e(statusLabel($k['status'])) ?>"><?= statusBadge($k['status']) ?></td>
+                        <td class="d-none d-sm-table-cell" data-wert="<?= STATUS_RANG[$k['status']] ?>"><?= statusBadge($k['status'], statusGrund($budget, $k)) ?></td>
                         <td class="small text-nowrap d-none d-lg-table-cell" data-wert="<?= e($budget['gueltig_bis']) ?>">
                             <?= e(datumDe($budget['gueltig_bis'])) ?>
                             <div class="<?= laeuftBaldAb($k['tage_bis_verfall']) ? 'text-warnung fw-semibold' : 'text-muted' ?>"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></div>
