@@ -31,15 +31,23 @@ function filterLink(array $aenderung): string
 }
 
 // --- Diagramm: Soll / Ist / Hochrechnung je Bereich (laufende Budgets) ---
+// $problemeJeBereich zaehlt Budgets mit Warnung/Ueberschritten einzeln, auch
+// wenn die Summe im Diagramm wegen anderer, gut stehender Budgets im selben
+// Bereich unauffaellig bleibt (ein einzelnes Problem soll nicht "untergehen").
 $jeBereich = [];
+$problemeJeBereich = [];
 foreach (BEREICHE as $schluessel => $label) {
     $jeBereich[$schluessel] = ['label' => $label, 'soll' => 0.0, 'ist' => 0.0, 'hochrechnung' => 0.0];
+    $problemeJeBereich[$schluessel] = 0;
 }
 foreach ($alle as ['budget' => $budget, 'k' => $k]) {
     if ($k['status'] !== 'abgelaufen') {
         $jeBereich[$budget['bereich']]['soll'] += (float) $budget['soll_betrag'];
         $jeBereich[$budget['bereich']]['ist'] += $k['ist'];
         $jeBereich[$budget['bereich']]['hochrechnung'] += $k['hochrechnung'];
+    }
+    if (in_array($k['status'], ['warnung', 'ueberschritten'], true)) {
+        $problemeJeBereich[$budget['bereich']]++;
     }
 }
 
@@ -111,6 +119,18 @@ require __DIR__ . '/../../templates/header.php';
     </div>
     <div class="diagramm-rahmen" style="height: 260px;">
         <canvas id="diagrammBereiche" role="img" aria-label="Balkendiagramm: Soll, Ist und Hochrechnung je Bereich"></canvas>
+    </div>
+    <div class="diagramm-hinweise mt-3">
+        <?php foreach (BEREICHE as $schluessel => $label): ?>
+            <?php $anzahl = $problemeJeBereich[$schluessel]; ?>
+            <span class="diagramm-hinweis <?= $anzahl ? 'diagramm-hinweis--problem' : '' ?>">
+                <?php if ($anzahl): ?>
+                    <span class="diagramm-hinweis__punkt" aria-hidden="true"></span>
+                <?php endif; ?>
+                <?= e($label) ?>:
+                <?= $anzahl ? ($anzahl === 1 ? '1 Budget braucht Aufmerksamkeit' : "{$anzahl} Budgets brauchen Aufmerksamkeit") : 'alles im Rahmen' ?>
+            </span>
+        <?php endforeach; ?>
     </div>
 </div>
 
