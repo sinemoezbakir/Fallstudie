@@ -80,7 +80,10 @@ require __DIR__ . '/../../templates/header.php';
                 <a class="aufmerksamkeit__zeile" href="/owner/budget.php?id=<?= (int) $punkt['budget']['id'] ?>">
                     <span class="aufmerksamkeit__punkt aufmerksamkeit__punkt--<?= e($punkt['art']) ?>"></span>
                     <span class="fw-semibold"><?= e($punkt['budget']['name']) ?></span>
-                    <span class="text-muted"><?= e($punkt['text']) ?></span>
+                    <span class="fw-semibold <?= match ($punkt['art']) {
+                        'ueberschritten' => 'text-ueberschritten',
+                        default => 'text-warnung',
+                    } ?>"><?= e($punkt['text']) ?></span>
                     <span class="ms-auto aufmerksamkeit__pfeil" aria-hidden="true">→</span>
                 </a>
             </li>
