@@ -20,6 +20,7 @@ $aufmerksamkeit = aufmerksamkeitsListe($eintraege);
 // weiter unten (ueberschritten/warnung/laeuft-bald-ab), damit beide
 // Anzeigen immer konsistent sind.
 $istRisiko = (bool) $aufmerksamkeit;
+$anzahlAbgelaufen = $summe['anzahl']['abgelaufen'] ?? 0;
 $dringendsterPunkt = null;
 foreach (['ueberschritten', 'warnung', 'laeuft_ab'] as $art) {
     foreach ($aufmerksamkeit as $punkt) {
@@ -48,7 +49,7 @@ require __DIR__ . '/../../templates/header.php';
     <div class="status-banner <?= $istRisiko ? 'status-banner--risiko' : 'status-banner--gut' ?> mb-4">
         <span class="status-banner__icon" aria-hidden="true"><?= $istRisiko ? '!' : '✓' ?></span>
         <div>
-            <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Alles im Plan' ?></p>
+            <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Keine aktiven Risiken' ?></p>
             <p class="status-banner__text">
                 <?php if ($istRisiko): ?>
                     <strong><?= e($dringendsterPunkt['budget']['name']) ?></strong>:
@@ -57,7 +58,10 @@ require __DIR__ . '/../../templates/header.php';
                         Insgesamt <?= count($aufmerksamkeit) ?> Budgets brauchen deine Aufmerksamkeit.
                     <?php endif; ?>
                 <?php else: ?>
-                    Alle deine Budgets sind im grünen Bereich.
+                    Alle laufenden Budgets sind im grünen Bereich.
+                <?php endif; ?>
+                <?php if ($anzahlAbgelaufen > 0): ?>
+                    <?= $anzahlAbgelaufen === 1 ? '1 Budget ist' : "{$anzahlAbgelaufen} Budgets sind" ?> bereits abgeschlossen (abgelaufen).
                 <?php endif; ?>
             </p>
         </div>
@@ -137,7 +141,7 @@ require __DIR__ . '/../../templates/header.php';
     <?php foreach ($sortierteEintraege as ['budget' => $budget, 'k' => $k]): ?>
         <?php $abgelaufen = $k['status'] === 'abgelaufen'; ?>
         <div class="col-md-6 col-xl-4">
-            <article class="card budget-karte h-100 card--klickbar <?= $abgelaufen ? 'budget-karte--abgelaufen' : '' ?>">
+            <article class="card budget-karte budget-karte--<?= e(str_replace('_', '-', $k['status'])) ?> h-100 card--klickbar <?= $abgelaufen ? 'budget-karte--abgelaufen' : '' ?>">
                 <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
                     <span class="bereich-chip bereich-chip--<?= e(strtolower($budget['bereich'])) ?>"><?= e(bereichLabel($budget['bereich'])) ?></span>
                     <?= statusBadge($k['status']) ?>

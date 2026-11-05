@@ -28,6 +28,7 @@ foreach ($alle as $eintrag) {
     }
 }
 $istRisiko = $dringendsterRang !== null && $dringendsterRang <= STATUS_RANG['warnung'];
+$anzahlAbgelaufen = $summe['anzahl']['abgelaufen'] ?? 0;
 
 // --- Filter (alle per GET, damit man gefilterte Ansichten verlinken kann) ---
 $filterStatus = isset(STATUS_LABEL[$_GET['status'] ?? '']) ? $_GET['status'] : '';
@@ -105,7 +106,7 @@ require __DIR__ . '/../../templates/header.php';
 <div class="status-banner <?= $istRisiko ? 'status-banner--risiko' : 'status-banner--gut' ?> mb-4">
     <span class="status-banner__icon" aria-hidden="true"><?= $istRisiko ? '!' : '✓' ?></span>
     <div>
-        <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Alles im Plan' ?></p>
+        <p class="status-banner__titel"><?= $istRisiko ? 'Risiko erkannt' : 'Keine aktiven Risiken' ?></p>
         <p class="status-banner__text">
             <?php if ($istRisiko): ?>
                 <strong><?= e($dringendsterEintrag['budget']['name']) ?></strong>:
@@ -115,6 +116,9 @@ require __DIR__ . '/../../templates/header.php';
                 <?php endif; ?>
             <?php else: ?>
                 Alle <?= $summe['laufend'] ?> laufenden Budgets sind im grünen Bereich.
+            <?php endif; ?>
+            <?php if ($anzahlAbgelaufen > 0): ?>
+                <?= $anzahlAbgelaufen === 1 ? '1 Budget ist' : "{$anzahlAbgelaufen} Budgets sind" ?> bereits abgeschlossen (abgelaufen).
             <?php endif; ?>
         </p>
     </div>

@@ -550,7 +550,10 @@ footer {
 .aufmerksamkeit__punkt--laeuft_ab { background: var(--ocker); }
 
 /* --- Budget-Karten im Dashboard --- */
-.budget-karte { padding: 1.5rem; display: flex; flex-direction: column; }
+.budget-karte { padding: 1.5rem; display: flex; flex-direction: column; border-left: 3px solid var(--line); }
+.budget-karte--ueberschritten { border-left-color: var(--rose); }
+.budget-karte--warnung { border-left-color: var(--ocker); }
+.budget-karte--im-rahmen { border-left-color: var(--sage); }
 .budget-karte__name { font-family: var(--sans); font-size: 1.05rem; font-weight: 700; margin: 0.6rem 0 0.9rem; }
 .budget-karte__name a { color: var(--ink); }
 .budget-karte__verfuegbar { display: flex; flex-direction: column; margin-bottom: 0.75rem; }
