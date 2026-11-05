@@ -84,7 +84,14 @@
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 18 } },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true, boxWidth: 8, padding: 18,
+                            // Keine Hochrechnung in der Legende, wenn es keine Linie dazu gibt (z. B. abgelaufene Budgets)
+                            filter: (eintrag) => eintrag.datasetIndex !== 1 || prognoseWerte.length > 0,
+                        },
+                    },
                     tooltip: {
                         backgroundColor: farbe.ink,
                         padding: 10,

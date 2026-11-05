@@ -96,10 +96,10 @@ require __DIR__ . '/header.php';
     </div>
     <div class="col-6 col-lg-3">
         <?php $verplant = !$istAbgelaufen && $k['verfuegbar'] >= 0 && $k['offener_forecast'] > 0; ?>
-        <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($puffer < 0 ? '' : 'kennzahl--betont') ?>">
-            <div class="etikett"><?= $k['verfuegbar'] < 0 ? 'Überzogen' : 'Verfügbar' ?></div>
+        <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($puffer < 0 || $istAbgelaufen ? '' : 'kennzahl--betont') ?>">
+            <div class="etikett"><?= $k['verfuegbar'] < 0 ? 'Überzogen' : ($istAbgelaufen ? 'Nicht ausgegeben' : 'Verfügbar') ?></div>
             <div class="kennzahl__wert"><?= euro(abs($k['verfuegbar'])) ?></div>
-            <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : 'noch nicht ausgegeben' ?><?= $verplant ? ' · davon ' . euro($k['offener_forecast']) . ' schon verplant' : '' ?></div>
+            <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : ($istAbgelaufen ? 'Restbetrag bei Ablauf' : 'noch nicht ausgegeben') ?><?= $verplant ? ' · davon ' . euro($k['offener_forecast']) . ' schon verplant' : '' ?></div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
