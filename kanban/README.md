@@ -1,4 +1,4 @@
-# Kanban-Board
+ja # Kanban-Board
 
 **Board: https://github.com/users/sinemoezbakir/projects/3**
 
@@ -83,12 +83,14 @@ Gleich wie Abschnitt 6.1 im Projektplan. Ardita hält die Spalte **Status** aktu
 
 | Phase | Zeitraum | Meilenstein (Ende der Phase) | Ardita | Sinem | Natalia | Status |
 |---|---|---|---|---|---|---|
-| 0 – Planung | 07.09. – 04.10. | **M1** Projektplan abgegeben | MB-070, 001, 002 | MB-002 | MB-002 | in Arbeit |
-| 1 – Fundament | 05.10. – 11.10. | **M2** App läuft, DB mit Demodaten, Design-Grundlage, Annahmen bestätigt | MB-001, 077 | MB-003, 004, 005 | MB-010, 011, 012 | offen |
-| 2 – Grundsystem | 12.10. – 22.10. | **M3** Grundsystem fertig und getestet, Demo in der Sprechstunde | MB-073 | MB-020, 021, 022, 033, 045 | MB-030, 031, 032, 034, 035, 051 | offen |
-| 3 – Owner-Sicht | 23.10. – 01.11. | **M4** Owner-Sicht komplett, Zwischenbericht abgegeben | MB-074 | MB-042, 044 | MB-040, 041, 043 | offen |
-| 4 – Abschluss | 02.11. – 06.11. | **M5** Präsentation (Feature-Freeze 04.11.) | MB-057, 075 | MB-052 (Soll), 053 | MB-054, 055, 056 | offen |
-| 5 – Ergebnisdoku | 07.11. – 22.11. | **M6** Ergebnisdokumentation abgegeben | MB-076 | nur Bugfixes | nur Bugfixes | offen |
+| 0 – Planung | 07.09. – 04.10. | **M1** Projektplan abgegeben | MB-070, 001, 002 | MB-002 | MB-002 | erreicht 04.10. (Projektplan, Note 1) |
+| 1 – Fundament | 05.10. – 11.10. | **M2** App läuft, DB mit Demodaten, Design-Grundlage, Annahmen bestätigt | MB-001, 077 | MB-003, 004, 005 | MB-010, 011, 012 | verspätet erreicht 22.10. (Krankheit, R1/R7); Annahmen am 23.10. bestätigt |
+| 2 – Grundsystem | 12.10. – 22.10. | **M3** Grundsystem fertig und getestet, Demo in der Sprechstunde | MB-073 | MB-020, 021, 022, 033, 045 | MB-030, 031, 032, 034, 035, 051 | verspätet: Entwurf 22./23.10., nicht in der Sprechstunde vorgeführt; fertig mit M4 |
+| 3 – Owner-Sicht | 23.10. – 01.11. | **M4** Owner-Sicht komplett, Zwischenbericht abgegeben | MB-074 | MB-042, 044 | MB-040, 041, 043 | Zwischenbericht 25.10. abgegeben; App funktional fertig 25.10., Korrekturen bis 05.11. (E-023–E-028), Merge in `main` erst am 06.11. (PR #45) |
+| 4 – Abschluss | 02.11. – 06.11. | **M5** Präsentation (Feature-Freeze 04.11.) | MB-057, 075 | MB-052 (Soll), 053 | MB-054, 055, 056 | Präsentation 06.11.; Demo am 05.11. gegen die laufende App geprüft; Ergebnis der Abnahme (MB-057) nachtragen |
+| 5 – Ergebnisdoku | 07.11. – 22.11. | **M6** Ergebnisdokumentation abgegeben | MB-076 | nur Bugfixes | nur Bugfixes | in Arbeit (Grundlage: [docs/uebergabe-ergebnisdokumentation.md](../docs/uebergabe-ergebnisdokumentation.md)) |
+
+Stand 06.11.2026. Das GitHub-Project-Board selbst wird von Hand nachgezogen (Status und Ist-Stunden je Karte).
 
 Laufend: Ardita MB-071, MB-072 (Testkoordination auch MB-057) · Sinem und Natalia MB-058 (Code-Reviews).
 Eigene Ideen (MB-06x, `Kann`) nur, wenn eine Phase früher fertig ist – spätestens bis zum Feature-Freeze.
