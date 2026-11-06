@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
         bootstrap.Toast.getOrCreateInstance(element).show();
     });
 
+    // Info-Knöpfe (z. B. "Was ist die Hochrechnung?") als Popover.
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach((element) => {
+        new bootstrap.Popover(element);
+    });
+
     // Suchfeld filtert Tabellenzeilen: <input data-filter-tabelle="#tabellen-id">
     document.querySelectorAll('[data-filter-tabelle]').forEach((feld) => {
         const zeilen = document.querySelectorAll(`${feld.dataset.filterTabelle} tbody tr`);

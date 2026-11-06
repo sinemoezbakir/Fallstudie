@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$istAbgelaufen) {
         setzeFlash(
             $puffer < 0 ? 'hinweis' : 'erfolg',
             'Forecast gespeichert. Hochrechnung: ' . euro($k['hochrechnung'])
-                . ($puffer < 0 ? ' – ' . euro(-$puffer) . ' über dem Soll.' : ' – ' . euro($puffer) . ' Puffer.')
+                . ($puffer < 0 ? ' – voraussichtlich ' . euro(-$puffer) . ' über Budget.' : ' – ' . euro($puffer) . ' Puffer.')
         );
         header('Location: /owner/budget.php?id=' . $budget['id']);
         exit;
@@ -168,7 +168,7 @@ require __DIR__ . '/../../templates/header.php';
         teil('balken').style.width = `${Math.min(prozent, 100)}%`;
         teil('balken').className = 'verbrauch-balken__fuellung ' + (puffer < 0 ? 'ueberschritten' : (prozent >= 80 ? 'warnung' : ''));
         teil('fazit').innerHTML = puffer < 0
-            ? `<span class="text-ueberschritten fw-semibold">${euro.format(-puffer)} über dem Soll</span> – das Budget wird auf <strong>Warnung</strong> gesetzt.`
+            ? `<span class="text-ueberschritten fw-semibold">Voraussichtlich ${euro.format(-puffer)} über Budget</span> – das Budget wird auf <strong>Warnung</strong> gesetzt.`
             : `<span class="text-im-rahmen fw-semibold">${euro.format(puffer)} Puffer</span> bis zum Budgetende.`;
     };
 

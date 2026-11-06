@@ -58,7 +58,7 @@ erDiagram
     BUDGET {
         int id PK
         varchar name
-        enum bereich "STUDIO, CAFE, MARKETING"
+        enum bereich "KURSE, GERAETE, MARKETING"
         decimal soll_betrag
         date gueltig_von
         date gueltig_bis "Verfallszeit"
@@ -112,8 +112,8 @@ Zusätzlich wird überall „noch X Tage“ bis zum Verfall angezeigt.
 |---|---|---|
 | `admin` | Admin | – |
 | `finance` | Finance (Inhaberin) | – |
-| `studio` | Owner (Studio-Leitung) | Reformer-Wartung 2026 (4.800 €), Kursmaterial & Kleingeräte (2.500 €), Trainer-Fortbildung (3.000 €) |
-| `cafe` | Owner (Café-Leitung) | Café-Wareneinkauf Q4 (12.000 €), Café-Ausstattung Siebträger (6.500 €) |
+| `kurse` | Owner (Kurse) | Kursmaterial & Zubehör (2.500 €), Trainer-Fortbildung (3.000 €), Herbst-Workshop-Reihe (1.800 €) |
+| `geraete` | Owner (Geräte) | Reformer-Wartung 2026 (4.800 €), Großgeräte-Beschaffung Q4 (12.000 €), Neue Kraftgeräte-Ausstattung (6.500 €) |
 | `marketing` | Owner (Marketing) | Social Media & Fotoshooting (2.000 €), Frühlings-Event (1.500 €, abgelaufen) |
 
 Die Daten so wählen, dass jeder Status mindestens einmal vorkommt.

@@ -259,19 +259,34 @@ function zusammenfassung(array $eintraege): array
 }
 
 /**
+ * Risiko eines Budgets: um wie viel die Hochrechnung (Ist + offener Forecast)
+ * das Soll übersteigt, 0 wenn nicht. Bewusst je Budget und nie mit dem Puffer
+ * anderer Budgets verrechnet - dieselbe Regel für Finance, Owner und Detailseite.
+ */
+function erwarteteUeberschreitung(array $budget, array $k): float
+{
+    return round(max(0.0, $k['hochrechnung'] - (float) $budget['soll_betrag']), 2);
+}
+
+/**
  * Warum ein Budget Aufmerksamkeit braucht - in Worten, für Dashboard und
  * Übersicht. Leerer String, wenn alles in Ordnung ist.
  */
 function statusGrund(array $budget, array $k): string
 {
     $soll = (float) $budget['soll_betrag'];
+    $ueber = erwarteteUeberschreitung($budget, $k);
+
+    // Erwartete Entwicklung vor aktuellem Stand: was am Laufzeitende fehlt,
+    // das bereits Überschrittene in Klammern.
+    if (in_array($k['status'], ['ueberschritten', 'warnung'], true) && $ueber > 0) {
+        return 'Voraussichtlich ' . euro($ueber) . ' über Budget'
+            . ($k['ist'] > $soll ? ' (bereits ' . euro($k['ist'] - $soll) . ' überschritten)' : '');
+    }
 
     return match ($k['status']) {
-        'ueberschritten' => euro($k['ist'] - $soll) . ' über dem Soll',
-        'warnung' => $k['verbrauch_prozent'] >= 80
-            ? prozent($k['verbrauch_prozent']) . ' verbraucht'
-            : 'Hochrechnung ' . euro($k['hochrechnung']) . ' liegt über dem Soll',
-        'abgelaufen' => 'abgelaufen am ' . datumDe($budget['gueltig_bis']),
+        'warnung' => 'Nur noch ' . euro($k['verfuegbar']) . ' verfügbar (' . prozent($k['verbrauch_prozent']) . ' verbraucht)',
+        'abgelaufen' => 'Abgelaufen am ' . datumDe($budget['gueltig_bis']),
         default => '',
     };
 }
@@ -300,7 +315,9 @@ function aufmerksamkeitsListe(array $eintraege, int $tageGrenze = 30): array
 
     // Überschritten zuerst, dann Warnung, dann "läuft ab"
     $reihenfolge = ['ueberschritten' => 0, 'warnung' => 1, 'laeuft_ab' => 2];
-    usort($liste, fn ($a, $b) => $reihenfolge[$a['art']] <=> $reihenfolge[$b['art']]);
+    // Innerhalb derselben Art die groesste erwartete Ueberschreitung zuerst - wie bei Finance
+    usort($liste, fn ($a, $b) => [$reihenfolge[$a['art']], erwarteteUeberschreitung($b['budget'], $b['k'])]
+        <=> [$reihenfolge[$b['art']], erwarteteUeberschreitung($a['budget'], $a['k'])]);
 
     return $liste;
 }

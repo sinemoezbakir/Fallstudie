@@ -30,7 +30,8 @@ require __DIR__ . '/header.php';
             <span class="bereich-chip bereich-chip--<?= e(strtolower($budget['bereich'])) ?>"><?= e(bereichLabel($budget['bereich'])) ?></span>
             <?= statusBadge($k['status']) ?>
             <span class="small text-muted">
-                <?= e(datumDe($budget['gueltig_von'])) ?> – <?= e(datumDe($budget['gueltig_bis'])) ?> · <?= e(restlaufzeitText($k['tage_bis_verfall'])) ?>
+                <?= e(datumDe($budget['gueltig_von'])) ?> – <?= e(datumDe($budget['gueltig_bis'])) ?> ·
+                <span class="<?= laeuftBaldAb($k['tage_bis_verfall']) ? 'text-warnung fw-semibold' : '' ?>"><?= e(restlaufzeitText($k['tage_bis_verfall'])) ?></span>
             </span>
         </div>
         <h1><?= e($budget['name']) ?></h1>
@@ -60,42 +61,70 @@ require __DIR__ . '/header.php';
     </div>
 <?php elseif ($k['status'] === 'ueberschritten'): ?>
     <div class="alert alert-danger">
-        <strong>Budget überschritten:</strong> Es wurden <?= euro($k['ist'] - $soll) ?> mehr ausgegeben als geplant.
-        Bitte mit Finance abstimmen.
+        <strong>Budget überschritten:</strong> <?= e(statusGrund($budget, $k)) ?>.
+        <?= $istOwner ? 'Bitte mit Finance abstimmen.' : 'Bitte mit dem Budget-Owner (' . e($budget['owner_name'] ?? '') . ') klären.' ?>
+    </div>
+<?php elseif ($k['status'] === 'warnung'): ?>
+    <div class="alert alert-warning">
+        <strong>Budget in Warnung:</strong> <?= e(statusGrund($budget, $k)) ?>.
+        <?php // Konkreter naechster Schritt je Rolle und Ursache statt eines allgemeinen Satzes ?>
+        <?php if ($istOwner): ?>
+            <?= $puffer < 0 ? 'Geplante Ausgaben (Forecast) anpassen oder mit Finance abstimmen.' : 'Weitere Ausgaben kritisch prüfen.' ?>
+        <?php else: ?>
+            <?= $puffer < 0
+                ? 'Mit dem Budget-Owner (' . e($budget['owner_name'] ?? '') . ') klären, ob alle geplanten Ausgaben nötig sind.'
+                : 'Beobachten – bei weiteren Ausgaben mit dem Budget-Owner (' . e($budget['owner_name'] ?? '') . ') sprechen.' ?>
+        <?php endif; ?>
+    </div>
+<?php else: ?>
+    <div class="alert alert-success">
+        <strong>Budget wird voraussichtlich eingehalten.</strong>
+        Bis Laufzeitende bleiben voraussichtlich <?= euro($puffer) ?> übrig (bisherige plus geplante Ausgaben).
+        <?php if (laeuftBaldAb($k['tage_bis_verfall'])): ?>
+            <strong><?= e(ucfirst(restlaufzeitText($k['tage_bis_verfall']))) ?></strong> – Restbudget rechtzeitig einplanen.
+        <?php endif; ?>
     </div>
 <?php endif; ?>
 
 <div class="row g-3 mb-4">
     <div class="col-6 col-lg-3">
         <div class="kennzahl">
-            <div class="etikett">Soll</div>
+            <div class="etikett">Budget</div>
             <div class="kennzahl__wert"><?= euro($soll) ?></div>
-            <div class="kennzahl__info">geplantes Budget</div>
+            <div class="kennzahl__info">für die ganze Laufzeit (Soll)</div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
         <div class="kennzahl">
-            <div class="etikett">Ist</div>
+            <div class="etikett">Ausgegeben</div>
             <div class="kennzahl__wert"><?= euro($k['ist']) ?></div>
-            <div class="kennzahl__info"><?= prozent($k['verbrauch_prozent']) ?> verbraucht · <?= count($buchungen) ?> Ausgaben</div>
+            <div class="kennzahl__info"><?= prozent($k['verbrauch_prozent']) ?> verbraucht · <?= count($buchungen) ?> Ausgaben (Ist)</div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
-        <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : 'kennzahl--betont' ?>">
-            <div class="etikett">Verfügbar</div>
-            <div class="kennzahl__wert"><?= euro($k['verfuegbar']) ?></div>
-            <div class="kennzahl__info">Soll − Ist</div>
+        <?php $verplant = !$istAbgelaufen && $k['verfuegbar'] >= 0 && $k['offener_forecast'] > 0; ?>
+        <div class="kennzahl <?= $k['verfuegbar'] < 0 ? 'kennzahl--negativ' : ($k['status'] === 'im_rahmen' ? 'kennzahl--betont' : '') ?>">
+            <div class="etikett"><?= $k['verfuegbar'] < 0 ? 'Überzogen' : ($istAbgelaufen ? 'Nicht ausgegeben' : 'Verfügbar') ?></div>
+            <div class="kennzahl__wert"><?= euro(abs($k['verfuegbar'])) ?></div>
+            <div class="kennzahl__info fw-semibold"><?= $k['verfuegbar'] < 0 ? 'Budget um diesen Betrag überschritten' : ($istAbgelaufen ? 'Restbetrag bei Ablauf' : 'noch nicht ausgegeben') ?><?= $verplant ? ' · davon ' . euro($k['offener_forecast']) . ' schon verplant' : '' ?></div>
         </div>
     </div>
     <div class="col-6 col-lg-3">
-        <div class="kennzahl <?= $puffer < 0 ? 'kennzahl--ueberschritten' : '' ?>">
-            <div class="etikett">Hochrechnung</div>
+        <div class="kennzahl <?= $puffer < 0 ? 'kennzahl--negativ' : '' ?>">
+            <div class="etikett">
+                Hochrechnung
+                <button type="button" class="info-knopf" data-bs-toggle="popover" data-bs-trigger="focus"
+                        data-bs-title="Was ist die Hochrechnung?"
+                        data-bs-content="Bisherige Ausgaben + geplante Ausgaben (Forecast) für die restliche Laufzeit. Zeigt, wo das Budget am Laufzeitende stehen wird, wenn alles wie geplant eintrifft – auch wenn bisher erst wenig ausgegeben wurde."
+                        aria-label="Was bedeutet Hochrechnung?">i</button>
+            </div>
             <div class="kennzahl__wert"><?= euro($k['hochrechnung']) ?></div>
-            <div class="kennzahl__info <?= $puffer < 0 ? 'text-ueberschritten fw-semibold' : '' ?>">
+            <div class="kennzahl__info <?= $puffer < 0 ? 'fw-semibold' : '' ?>">
                 <?php if ($istAbgelaufen): ?>
                     Budget abgeschlossen
                 <?php else: ?>
-                    <?= $puffer < 0 ? euro(-$puffer) . ' über Soll' : euro($puffer) . ' Puffer' ?> · Ist + offener Forecast
+                    voraussichtlich am Laufzeitende ·
+                    <?= $puffer < 0 ? euro(-$puffer) . ' über Budget' : euro($puffer) . ' bleiben übrig' ?>
                 <?php endif; ?>
             </div>
         </div>
@@ -111,19 +140,15 @@ require __DIR__ . '/header.php';
             </div>
             <div class="diagramm-rahmen diagramm-rahmen--gross">
                 <canvas id="diagrammVerlauf" role="img"
-                        aria-label="Liniendiagramm: kumulierte Ausgaben, Forecast-Hochrechnung und Soll je Monat"></canvas>
+                        aria-label="Liniendiagramm: kumulierte Ausgaben, Forecast-Hochrechnung und Budget (Soll) je Monat"></canvas>
             </div>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card p-3 p-md-4 h-100">
-            <h2 class="karte-titel mb-2">Soll-Ist-Vergleich</h2>
-            <div class="diagramm-rahmen diagramm-rahmen--rund">
-                <canvas id="diagrammSollIst" role="img"
-                        aria-label="Ringdiagramm: <?= e(prozent($k['verbrauch_prozent'])) ?> des Budgets verbraucht"></canvas>
-            </div>
-            <div class="mt-3">
-                <div class="etikett mb-2">Offener Forecast</div>
+            <div>
+                <h2 class="karte-titel mb-1">Offener Forecast</h2>
+                <p class="small text-muted mb-2">Geplante, noch nicht getätigte Ausgaben ab diesem Monat. Sie fließen in die Hochrechnung ein.</p>
                 <?php if ($offeneForecasts): ?>
                     <ul class="list-unstyled small mb-0 forecast-liste">
                         <?php foreach ($offeneForecasts as $monat => $betrag): ?>
@@ -201,10 +226,7 @@ require __DIR__ . '/header.php';
 </div>
 
 <script type="application/json" id="diagramm-daten"><?= json_encode([
-    'soll' => $soll,
     'ist' => $k['ist'],
-    'status' => $k['status'],
-    'verbrauch' => $k['verbrauch_prozent'],
     'verlauf' => $verlauf,
 ], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) ?></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>

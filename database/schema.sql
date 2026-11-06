@@ -33,7 +33,7 @@ CREATE TABLE benutzer (
 CREATE TABLE budget (
     id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     name          VARCHAR(150)   NOT NULL,
-    bereich       ENUM('STUDIO', 'CAFE', 'MARKETING') NOT NULL,
+    bereich       ENUM('KURSE', 'GERAETE', 'MARKETING') NOT NULL,
     soll_betrag   DECIMAL(10, 2) NOT NULL,
     gueltig_von   DATE           NOT NULL,
     gueltig_bis   DATE           NOT NULL,

@@ -55,7 +55,7 @@
                         pointBackgroundColor: farbe.sageDeep,
                     },
                     {
-                        label: 'Hochrechnung mit Forecast',
+                        label: prognoseFarbe === farbe.rose ? 'Hochrechnung – über Budget' : 'Hochrechnung mit Forecast',
                         data: verlauf.prognose,
                         borderColor: prognoseFarbe,
                         borderDash: [6, 5],
@@ -66,12 +66,16 @@
                         fill: false,
                     },
                     {
-                        label: 'Soll',
+                        // Betrag direkt in der Legende, damit die Linie ohne Nachschlagen lesbar ist
+                        // Neutral statt rot: Rot bleibt allein der Hochrechnung vorbehalten,
+                        // wenn sie ueber dem Budget liegt - sonst zwei rote Linien
+                        label: `Budget (Soll): ${euroKurz.format(verlauf.soll)}`,
                         data: verlauf.monate.map(() => verlauf.soll),
-                        borderColor: farbe.rose,
-                        borderWidth: 1.5,
-                        borderDash: [2, 4],
+                        borderColor: farbe.ink,
+                        borderWidth: 2,
+                        borderDash: [4, 4],
                         pointRadius: 0,
+                        pointStyle: 'line',
                         fill: false,
                     },
                 ],
@@ -80,7 +84,14 @@
                 maintainAspectRatio: false,
                 interaction: { mode: 'index', intersect: false },
                 plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 18 } },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            usePointStyle: true, boxWidth: 8, padding: 18,
+                            // Keine Hochrechnung in der Legende, wenn es keine Linie dazu gibt (z. B. abgelaufene Budgets)
+                            filter: (eintrag) => eintrag.datasetIndex !== 1 || prognoseWerte.length > 0,
+                        },
+                    },
                     tooltip: {
                         backgroundColor: farbe.ink,
                         padding: 10,
@@ -99,63 +110,6 @@
                     },
                 },
             },
-        });
-    }
-
-    // --- MB-043: Soll-Ist als Ring mit Prozentangabe in der Mitte ----------------
-    const ring = document.getElementById('diagrammSollIst');
-    if (ring) {
-        const ueberschritten = daten.ist > daten.soll;
-        const statusFarbe = {
-            im_rahmen: farbe.sageDeep,
-            warnung: farbe.ocker,
-            ueberschritten: farbe.rose,
-            abgelaufen: farbe.muted,
-        }[daten.status] || farbe.sageDeep;
-
-        const mitteText = {
-            id: 'mitteText',
-            afterDraw(chart) {
-                const { ctx, chartArea } = chart;
-                const x = (chartArea.left + chartArea.right) / 2;
-                const y = (chartArea.top + chartArea.bottom) / 2;
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.fillStyle = farbe.ink;
-                ctx.font = `2rem ${css('--serif')}`;
-                ctx.fillText(`${daten.verbrauch.toLocaleString('de-DE')} %`, x, y + 4);
-                ctx.fillStyle = farbe.muted;
-                ctx.font = `600 0.72rem ${css('--sans')}`;
-                ctx.fillText('VERBRAUCHT', x, y + 24);
-                ctx.restore();
-            },
-        };
-
-        new Chart(ring, {
-            type: 'doughnut',
-            data: {
-                labels: ueberschritten ? ['Soll', 'Überschreitung'] : ['Ist', 'Verfügbar'],
-                datasets: [{
-                    data: ueberschritten
-                        ? [daten.soll, daten.ist - daten.soll]
-                        : [daten.ist, Math.max(daten.soll - daten.ist, 0)],
-                    backgroundColor: ueberschritten ? [farbe.ocker, farbe.rose] : [statusFarbe, farbe.cream],
-                    borderWidth: 0,
-                    hoverOffset: 4,
-                }],
-            },
-            options: {
-                maintainAspectRatio: false,
-                cutout: '74%',
-                plugins: {
-                    legend: { position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } },
-                    tooltip: {
-                        backgroundColor: farbe.ink,
-                        callbacks: { label: (kontext) => ` ${kontext.label}: ${euro.format(kontext.raw)}` },
-                    },
-                },
-            },
-            plugins: [mitteText],
         });
     }
 })();

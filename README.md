@@ -1,7 +1,7 @@
-# Maliá Budget – Budgetverwaltung für Maliá Pilates & Café
+# Maliá Budget – Budgetverwaltung für das Pilates-Studio Maliá
 
 Fallstudie: Budget-Verwaltungssystem (Grundsystem + Ausprägung **Owner-Sicht**) für das
-fiktive Studio *Maliá – Pilates & Café*. Das Design orientiert sich an der Maliá-Website
+fiktive Pilates-Studio *Maliá*. Das Design orientiert sich an der Maliá-Website
 (Projekt `WebProgrammierung-neuaufbau`).
 
 ## Team
@@ -32,7 +32,7 @@ Abgaben jeweils bis 23:59 UTC in Moodle. Zeitplan und Meilensteine: [kanban/READ
 | Rolle | Wer im Studio? | Darf |
 |---|---|---|
 | **Finance** | Inhaberin | Budgets anlegen, Ownern zuweisen, Soll-Ist aller Budgets sehen |
-| **Owner** | Studio-Leitung, Café-Leitung, Marketing | eigene Budgets sehen, Ausgaben erfassen/korrigieren, Forecast eintragen, Soll-Ist- und Forecast-Vergleich |
+| **Owner** | Bereichsverantwortliche (Konten: Kurse, Geräte, Marketing) | eigene Budgets sehen, Ausgaben erfassen/korrigieren, Forecast eintragen, Soll-Ist- und Forecast-Vergleich |
 | **Admin** | Verwaltung | Benutzer anlegen, Rollen zuweisen |
 
 ## Tech-Stack
@@ -85,9 +85,9 @@ Ein Aufruf über `http://localhost/malia-budget/public/` mit dem XAMPP-Apache fu
 |---|---|---|---|
 | `admin` | Admin | Admin | Benutzer anlegen, Passwort zurücksetzen |
 | `finance` | Inhaberin | Finance | alle Budgets, Filter, Diagramm je Bereich, Budget anlegen/bearbeiten, CSV |
-| `studio` | Studio-Leitung | Owner | Warnung durch Verbrauch, Warnung durch Forecast, Budget läuft bald ab |
-| `cafe` | Café-Leitung | Owner | überschrittenes Budget |
-| `marketing` | Marketing-Leitung | Owner | abgelaufenes Budget (gesperrt) |
+| `kurse` | Kurse | Owner | Warnung durch Verbrauch, Warnung durch Forecast, Budget läuft bald ab |
+| `geraete` | Geräte | Owner | überschrittenes Budget |
+| `marketing` | Marketing | Owner | abgelaufenes Budget (gesperrt) |
 
 **Demo-Modus (E-021):** Nach dem Login wechselt man über die Leiste unter der Navigation mit einem Klick in
 jedes Konto – Rollen und Datentrennung gelten dabei unverändert. Im Kontomenü setzt

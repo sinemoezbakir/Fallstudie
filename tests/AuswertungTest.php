@@ -29,7 +29,7 @@ final class AuswertungTest extends TestCase
     {
         $stmt = $this->pdo->prepare(
             "INSERT INTO budget (name, bereich, soll_betrag, gueltig_von, gueltig_bis, owner_id)
-             VALUES ('Verlauf-Test', 'STUDIO', :soll, :von, :bis, :owner)"
+             VALUES ('Verlauf-Test', 'KURSE', :soll, :von, :bis, :owner)"
         );
         $stmt->execute(['soll' => $soll, 'von' => $von, 'bis' => $bis, 'owner' => $this->ownerId]);
         $stmt = $this->pdo->prepare('SELECT * FROM budget WHERE id = :id');
@@ -113,6 +113,6 @@ final class AuswertungTest extends TestCase
         ]);
 
         $this->assertSame(['ueberschritten', 'warnung', 'laeuft_ab'], array_column($liste, 'art'));
-        $this->assertSame('85 % verbraucht', str_replace("\u{00A0}", ' ', $liste[1]['text']));
+        $this->assertSame('Nur noch 500,00 € verfügbar (85 % verbraucht)', str_replace("\u{00A0}", ' ', $liste[1]['text']));
     }
 }

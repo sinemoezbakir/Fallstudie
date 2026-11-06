@@ -36,7 +36,7 @@ final class KennzahlenTest extends TestCase
         );
         $stmt->execute([
             'name' => 'Test-Budget ' . uniqid(),
-            'bereich' => 'STUDIO',
+            'bereich' => 'KURSE',
             'soll' => $sollBetrag,
             'von' => $gueltigVon,
             'bis' => $gueltigBis,
