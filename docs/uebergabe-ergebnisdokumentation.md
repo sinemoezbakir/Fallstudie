@@ -51,7 +51,13 @@ auch mit KI-Unterstützung. Stand: 06.11.2026, Tag der Präsentation.
   Bereiche Studio (Kurse, Geräte, Wartung, Weiterbildung), Café und Marketing. Umgesetzt sind
   Kurse, Geräte, Marketing; das Café ist nicht umgesetzt und wurde nicht mit dem Auftraggeber
   abgestimmt. In der Ergebnisdokumentation offen als Abweichung vom Plan nennen.
-- **M5 (06.11.)**: Präsentation und Abnahme. **Ergebnis der Abnahme vom Team nachtragen.**
+- **M5 (06.11.)**: Präsentation gehalten, Abnahmetest MB-057 auf Fertig.
+- **Kanban-Board am 06.11. nachgezogen** (GitHub Project „Maliá Budget – Kanban“): 38 Karten
+  Fertig, 5 In Arbeit (MB-054, 058, 071, 072, 076), 2 bewusst nicht umgesetzt im Backlog
+  (MB-061 Dashboard aktualisiert sich selbst, MB-063 Kategorien). Neue Karte MB-078 (Issue #46)
+  für die Risikoregel vom 05.11. Das Board war vorher nicht laufend gepflegt – in der
+  Retrospektive als Lessons Learned nennen. Meilenstein-Status in `kanban/README.md` (PR #47).
+- Branch `ardita.new.app` über PR #45 und #47 in `main` gemerged.
 
 ## 4. Ergebnis: das Produkt in einem Satz
 
@@ -89,10 +95,28 @@ Amortisation nach ca. 2 Jahren), Architektur als Problem → Entscheidung → Nu
 
 ## 6. Vom Team noch zu liefern (nicht erfinden)
 
-- [ ] **Finale Ist-Stunden je Person** (Ardita, Sinem, Natalia) bis Projektende und damit der
-      finale Soll-Ist-Vergleich bei Stunden und Budget (Plan: 135 h / 8.125 €; Prognose im
-      Zwischenbericht: 140 h, Budget eingehalten, 250 € Puffer genutzt)
-- [ ] **Ergebnis der Abnahme** am 06.11. und Rückmeldung des Dozenten
+**Ist-Stunden: Rekonstruktion als Vorschlag, vom Team zu bestätigen.** Laufend erfasste
+Ist-Stunden gibt es nicht (Zwischenbericht 5). Vorschlag auf Basis der Prognose im
+Zwischenbericht 4.1 (Ardita 50 h, Sinem 45 h, Natalia 45 h = 140 h):
+
+| Arbeitspaket | Soll (h) | Ist rekonstruiert (h) |
+|---|---|---|
+| AP1 Projektmanagement | 12 | 12 |
+| AP2 Analyse und Konzept | 10 | 10 |
+| AP3 Einrichtung | 6 | 6 |
+| AP4 Grundsystem | 21 | 21 |
+| AP5 Owner-Sicht | 12 | 12 |
+| AP6 Testen | 21 | 21 |
+| AP7 Dokumentation | 26 | 31 (Ardita +5 h Ergebnisdokumentation) |
+| Absprachen (20 %) | 27 | 27 |
+| **Summe** | **135** | **140** (7.000 € Personal; Budget 8.125 € eingehalten, 250 € Puffer genutzt) |
+
+In der Dokumentation ausdrücklich als „nachträglich rekonstruiert“ kennzeichnen. Erst nach
+Bestätigung durch das Team ins Board (Feld „Ist (h)“) übernehmen.
+
+- [ ] **Ist-Stunden** oben bestätigen oder korrigieren
+- [ ] ~~Ergebnis der Abnahme~~: Team hat entschieden, Abnahme-Ergebnis und Feedback des
+      Dozenten **nicht** in die Dokumentation aufzunehmen. MB-057 steht im Board auf Fertig.
 - [ ] **Abschließende Retrospektive** (Start-Stop-Continue) und Lessons Learned
 - [ ] **KI-Nutzung** ehrlich beschreiben: wofür (Code, Texte, Präsentation, Prüfung) und wie
       geprüft. Projektplan und Zwischenbericht enthalten dazu bereits Hinweise; Commits ab
